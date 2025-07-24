@@ -169,11 +169,19 @@ nav ul li a:hover::after {
     margin-right: 8px;
 }
 
+.profile-image {
+    text-align: center;
+}
+
 .profile-image img {
     width: 100%;
     max-width: 300px;
+    height: auto;
+    display: block;
+    margin: 0 auto;
     border-radius: 10px;
     box-shadow: var(--shadow);
+    object-fit: cover;
 }
 
 /* Research Section */
