@@ -3,40 +3,204 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chunjiang Liu's Personal Website</title>
+    <title>Chunjiang Liu - Researcher</title>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Merriweather:wght@300;400;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <header>
-        <h1>Welcome to My Website</h1>
-        <nav>
-            <ul>
-                <li><a href="#home">Home</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#projects">Projects</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
-        </nav>
+        <div class="container">
+            <div class="header-content">
+                <h1>Chunjiang Liu</h1>
+                <p class="tagline">Researcher | Scholar | Academic Professional</p>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#research">Research</a></li>
+                    <li><a href="#publications">Publications</a></li>
+                    <li><a href="#education">Education</a></li>
+                    <li><a href="#experience">Experience</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
     </header>
-    <section id="home">
-        <h2>Home</h2>
-        <p>Welcome to my personal website. Here you will find information about me and my projects.</p>
-    </section>
-    <section id="about">
-        <h2>About Me</h2>
-        <p>Here is some information about me...</p>
-    </section>
-    <section id="projects">
-        <h2>Projects</h2>
-        <p>Here are some of my projects...</p>
-    </section>
-    <section id="contact">
-        <h2>Contact</h2>
-        <p>You can contact me at...</p>
-    </section>
+
+    <main>
+        <section id="about" class="section">
+            <div class="container">
+                <h2>About Me</h2>
+                <div class="about-content">
+                    <div class="bio">
+                        <p>Welcome to my academic website. I am a dedicated researcher with expertise in [Your Research Field]. My work focuses on advancing knowledge in [Specific Research Areas] through innovative approaches and interdisciplinary collaboration.</p>
+                        <p>I am passionate about [Research Interests] and committed to contributing meaningful insights to the academic community.</p>
+                        <div class="cv-download">
+                            <a href="Chunjiang Liu CV.pdf" class="btn" target="_blank">
+                                <i class="fas fa-download"></i> Download Full CV
+                            </a>
+                        </div>
+                    </div>
+                    <div class="profile-image">
+                        <img src="https://via.placeholder.com/300x400" alt="Chunjiang Liu">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="research" class="section bg-light">
+            <div class="container">
+                <h2>Research Interests</h2>
+                <div class="research-areas">
+                    <div class="research-item">
+                        <i class="fas fa-microscope"></i>
+                        <h3>Research Area 1</h3>
+                        <p>Brief description of your first major research area and its significance.</p>
+                    </div>
+                    <div class="research-item">
+                        <i class="fas fa-brain"></i>
+                        <h3>Research Area 2</h3>
+                        <p>Brief description of your second major research area and current projects.</p>
+                    </div>
+                    <div class="research-item">
+                        <i class="fas fa-chart-line"></i>
+                        <h3>Research Area 3</h3>
+                        <p>Brief description of your third research focus and future directions.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="publications" class="section">
+            <div class="container">
+                <h2>Selected Publications</h2>
+                <div class="publications-list">
+                    <article class="publication">
+                        <h3>Title of Your Recent Publication</h3>
+                        <p class="authors">Liu, C., Co-author, A., Co-author, B. (2024)</p>
+                        <p class="journal">Journal Name, Volume(Issue), Pages. DOI: 10.xxxx/xxxxx</p>
+                        <div class="publication-links">
+                            <a href="#" class="pub-link">PDF</a>
+                            <a href="#" class="pub-link">Abstract</a>
+                            <a href="#" class="pub-link">BibTeX</a>
+                        </div>
+                    </article>
+                    <article class="publication">
+                        <h3>Another Important Publication</h3>
+                        <p class="authors">Liu, C., et al. (2023)</p>
+                        <p class="journal">Conference/Journal Name, Location/Volume.</p>
+                        <div class="publication-links">
+                            <a href="#" class="pub-link">PDF</a>
+                            <a href="#" class="pub-link">Abstract</a>
+                            <a href="#" class="pub-link">BibTeX</a>
+                        </div>
+                    </article>
+                </div>
+                <a href="#" class="btn-secondary">View All Publications</a>
+            </div>
+        </section>
+
+        <section id="education" class="section bg-light">
+            <div class="container">
+                <h2>Education</h2>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-date">20XX - 20XX</div>
+                        <div class="timeline-content">
+                            <h3>Ph.D. in [Your Field]</h3>
+                            <p>University Name, Location</p>
+                            <p>Dissertation: "Title of Your Dissertation"</p>
+                            <p>Advisor: Prof. Name</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-date">20XX - 20XX</div>
+                        <div class="timeline-content">
+                            <h3>M.S. in [Your Field]</h3>
+                            <p>University Name, Location</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-date">20XX - 20XX</div>
+                        <div class="timeline-content">
+                            <h3>B.S. in [Your Field]</h3>
+                            <p>University Name, Location</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="experience" class="section">
+            <div class="container">
+                <h2>Professional Experience</h2>
+                <div class="experience-list">
+                    <div class="experience-item">
+                        <h3>Current Position</h3>
+                        <p class="position-meta">Institution Name | 20XX - Present</p>
+                        <ul>
+                            <li>Key responsibility or achievement</li>
+                            <li>Another important contribution</li>
+                            <li>Research or teaching focus</li>
+                        </ul>
+                    </div>
+                    <div class="experience-item">
+                        <h3>Previous Position</h3>
+                        <p class="position-meta">Institution Name | 20XX - 20XX</p>
+                        <ul>
+                            <li>Major accomplishment</li>
+                            <li>Research project or initiative</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="section bg-light">
+            <div class="container">
+                <h2>Contact Information</h2>
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <div>
+                            <h3>Email</h3>
+                            <p>chunjiang.liu@university.edu</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div>
+                            <h3>Office</h3>
+                            <p>Building Name, Room Number<br>
+                            University Name<br>
+                            City, State ZIP</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-globe"></i>
+                        <div>
+                            <h3>Links</h3>
+                            <div class="social-links">
+                                <a href="#" title="Google Scholar"><i class="fas fa-graduation-cap"></i></a>
+                                <a href="#" title="ORCID"><i class="fab fa-orcid"></i></a>
+                                <a href="#" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                                <a href="#" title="Twitter"><i class="fab fa-twitter"></i></a>
+                                <a href="#" title="GitHub"><i class="fab fa-github"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
     <footer>
-        <p>&copy; 2024 Chunjiang Liu</p>
+        <div class="container">
+            <p>&copy; 2024 Chunjiang Liu. All rights reserved. | Last updated: <span id="last-updated"></span></p>
+        </div>
     </footer>
+
     <script src="js/script.js"></script>
 </body>
 </html>
