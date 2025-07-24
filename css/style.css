@@ -5,9 +5,9 @@
 }
 
 :root {
-    --primary-color: #1a472a;
-    --secondary-color: #2c5f2d;
-    --accent-color: #4a7c59;
+    --primary-color: #8B0000;
+    --secondary-color: #DC143C;
+    --accent-color: #CD5C5C;
     --text-dark: #333;
     --text-light: #666;
     --bg-light: #f8f9fa;
@@ -141,8 +141,11 @@ nav ul li a:hover::after {
     color: var(--text-light);
 }
 
-.cv-download {
+.contact-buttons {
     margin-top: 2rem;
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
 }
 
 .btn {
@@ -351,6 +354,41 @@ nav ul li a:hover::after {
 }
 
 .experience-item ul li {
+    margin-bottom: 0.5rem;
+}
+
+/* Project Section */
+.project-list {
+    margin-top: 2rem;
+}
+
+.project-item {
+    background: var(--white);
+    padding: 2rem;
+    margin-bottom: 2rem;
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+    border-left: 4px solid var(--accent-color);
+}
+
+.project-item h3 {
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+}
+
+.project-meta {
+    color: var(--accent-color);
+    font-weight: 500;
+    margin-bottom: 1rem;
+    font-style: italic;
+}
+
+.project-item ul {
+    list-style-position: inside;
+    color: var(--text-light);
+}
+
+.project-item ul li {
     margin-bottom: 0.5rem;
 }
 
