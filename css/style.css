@@ -139,6 +139,8 @@ nav ul li a:hover::after {
     margin-bottom: 1.5rem;
     line-height: 1.8;
     color: var(--text-light);
+    text-align: justify;
+    text-justify: inter-word;
 }
 
 .contact-buttons {
@@ -214,6 +216,11 @@ nav ul li a:hover::after {
 .research-item h3 {
     color: var(--primary-color);
     margin-bottom: 1rem;
+}
+
+.research-item p {
+    text-align: justify;
+    text-justify: inter-word;
 }
 
 /* Publications Section */
@@ -330,6 +337,8 @@ nav ul li a:hover::after {
 .timeline-content p {
     color: var(--text-light);
     margin-bottom: 0.25rem;
+    text-align: justify;
+    text-justify: inter-word;
 }
 
 /* Experience Section */
@@ -363,6 +372,8 @@ nav ul li a:hover::after {
 
 .experience-item ul li {
     margin-bottom: 0.5rem;
+    text-align: justify;
+    text-justify: inter-word;
 }
 
 /* Project Section */
@@ -398,6 +409,8 @@ nav ul li a:hover::after {
 
 .project-item ul li {
     margin-bottom: 0.5rem;
+    text-align: justify;
+    text-justify: inter-word;
 }
 
 /* Contact Section */
