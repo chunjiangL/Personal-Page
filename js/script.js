@@ -1,5 +1,8 @@
+console.log('Script loaded!');
+
 // Set last updated date
 document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOM Content Loaded!');
     const lastUpdated = document.getElementById('last-updated');
     if (lastUpdated) {
         const date = new Date();
@@ -21,6 +24,45 @@ document.addEventListener('DOMContentLoaded', function() {
                     top: targetPosition,
                     behavior: 'smooth'
                 });
+            }
+        });
+    });
+
+    // Section navigation buttons
+    const navButtons = document.querySelectorAll('.nav-btn');
+    const sectionGroups = document.querySelectorAll('.section-group');
+    
+    console.log('Found nav buttons:', navButtons.length);
+    console.log('Found section groups:', sectionGroups.length);
+
+    navButtons.forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            console.log('Button clicked:', this.getAttribute('data-section'));
+            
+            // Remove active class from all buttons
+            navButtons.forEach(btn => btn.classList.remove('active'));
+            // Add active class to clicked button
+            this.classList.add('active');
+            
+            // Hide all section groups
+            sectionGroups.forEach(group => {
+                group.style.display = 'none';
+            });
+            
+            // Show the corresponding section group
+            const sectionType = this.getAttribute('data-section');
+            const targetGroup = document.getElementById(sectionType + '-group');
+            console.log('Looking for:', sectionType + '-group');
+            console.log('Found group:', targetGroup);
+            
+            if (targetGroup) {
+                targetGroup.style.display = 'block';
+                // Reset animation
+                targetGroup.style.animation = 'none';
+                setTimeout(() => {
+                    targetGroup.style.animation = 'fadeIn 0.3s ease';
+                }, 10);
             }
         });
     });
@@ -69,16 +111,6 @@ document.addEventListener('DOMContentLoaded', function() {
         observer.observe(section);
     });
 
-    // Publications expand/collapse functionality
-    const publications = document.querySelectorAll('.publication');
-    publications.forEach(pub => {
-        pub.style.cursor = 'pointer';
-        pub.addEventListener('click', function(e) {
-            if (!e.target.classList.contains('pub-link')) {
-                this.classList.toggle('expanded');
-            }
-        });
-    });
 
     // Header scroll effect
     const header = document.querySelector('header');
