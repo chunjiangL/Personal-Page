@@ -467,22 +467,27 @@ nav ul li a:hover::after {
     border-left: 4px solid var(--accent-color);
     margin-bottom: 2rem;
     box-shadow: var(--shadow);
+    font-family: 'Times New Roman', Times, serif;
 }
 
 .publication h3 {
     color: var(--primary-color);
     margin-bottom: 0.5rem;
+    font-family: 'Times New Roman', Times, serif;
+    letter-spacing: -0.02em;
 }
 
 .authors {
     color: var(--text-light);
     margin-bottom: 0.5rem;
     font-style: italic;
+    letter-spacing: -0.01em;
 }
 
 .journal {
     color: var(--text-light);
     margin-bottom: 1rem;
+    letter-spacing: -0.01em;
 }
 
 .publication-links {
@@ -626,11 +631,14 @@ nav ul li a:hover::after {
     margin-bottom: 2rem;
     box-shadow: var(--shadow);
     border-left: 4px solid var(--accent-color);
+    font-family: 'Times New Roman', Times, serif;
 }
 
 .project-item h3 {
     color: var(--primary-color);
     margin-bottom: 0.5rem;
+    font-family: 'Times New Roman', Times, serif;
+    letter-spacing: -0.02em;
 }
 
 .project-meta {
@@ -638,6 +646,7 @@ nav ul li a:hover::after {
     font-weight: 500;
     margin-bottom: 1rem;
     font-style: italic;
+    letter-spacing: -0.01em;
 }
 
 .project-item ul {
@@ -649,6 +658,7 @@ nav ul li a:hover::after {
     margin-bottom: 0.5rem;
     text-align: justify;
     text-justify: inter-word;
+    letter-spacing: -0.01em;
 }
 
 
