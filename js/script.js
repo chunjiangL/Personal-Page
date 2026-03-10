@@ -3,6 +3,37 @@ console.log('Script loaded!');
 // Set last updated date
 document.addEventListener('DOMContentLoaded', function() {
     console.log('DOM Content Loaded!');
+
+    // Pixel art canvas renderer
+    const pixelCanvas = document.getElementById('heroPixelArt');
+    if (pixelCanvas) {
+        fetch('assets/landscape_pixel.json')
+            .then(r => r.json())
+            .then(data => {
+                const cols = data.cols;
+                const rows = data.pattern.split(',');
+                const numRows = rows.length;
+                const colors = data.colors;
+                const cellW = 12;
+                const cellH = 8;
+                const gap = 1;
+                const stepX = cellW + gap;
+                const stepY = cellH + gap;
+
+                pixelCanvas.width = cols * stepX - gap;
+                pixelCanvas.height = numRows * stepY - gap;
+                const ctx = pixelCanvas.getContext('2d');
+                ctx.fillStyle = '#fff';
+                ctx.fillRect(0, 0, pixelCanvas.width, pixelCanvas.height);
+
+                rows.forEach((row, y) => {
+                    [...row].forEach((ch, x) => {
+                        ctx.fillStyle = colors[parseInt(ch)];
+                        ctx.fillRect(x * stepX, y * stepY, cellW, cellH);
+                    });
+                });
+            });
+    }
     const lastUpdated = document.getElementById('last-updated');
     if (lastUpdated) {
         const date = new Date();
