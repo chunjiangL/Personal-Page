@@ -6,16 +6,41 @@ console.log('Script loaded!');
         const w = window.innerWidth;
         const body = document.body;
         body.classList.remove('is-mobile', 'is-tablet', 'is-desktop');
-        if (w <= 480) {
+        if (w <= 768) {
             body.classList.add('is-mobile');
-        } else if (w <= 768) {
-            body.classList.add('is-tablet');
         } else {
             body.classList.add('is-desktop');
         }
     }
     detectDevice();
     window.addEventListener('resize', detectDevice);
+
+    // Convert code-block bullets to numbered lists on mobile
+    function convertToNumberedList() {
+        if (window.innerWidth > 768) return;
+        document.querySelectorAll('.code-block').forEach(block => {
+            if (block.dataset.converted) return;
+            if (!block.innerHTML.includes('class="code-dim"')) return;
+            const html = block.innerHTML;
+            if (!html.includes('–')) return;
+            const items = html.split('<br>').map(s => s.trim()).filter(s => s.length > 0);
+            let counter = 1;
+            const ol = document.createElement('ol');
+            ol.className = 'mobile-exp-list';
+            items.forEach(item => {
+                // Strip the dash span
+                let text = item.replace(/<span class="code-dim"[^>]*>–<\/span>\s*/g, '');
+                if (!text.trim()) return;
+                const li = document.createElement('li');
+                li.innerHTML = text;
+                ol.appendChild(li);
+            });
+            block.innerHTML = '';
+            block.appendChild(ol);
+            block.dataset.converted = 'true';
+        });
+    }
+    document.addEventListener('DOMContentLoaded', convertToNumberedList);
 })();
 
 // Set last updated date
