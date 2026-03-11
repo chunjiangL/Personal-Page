@@ -68,6 +68,10 @@ header nav a {
     text-transform: uppercase;
     letter-spacing: 0.06em;
     font-weight: 500;
+}
+
+header nav a:last-child {
+    border-right: 1px solid #000;
     transition: all .12s;
 }
 
@@ -243,7 +247,11 @@ header nav a:hover {
 }
 
 .card-row-stack .card .card-title {
-    flex-grow: 1;
+    min-height: 2.7em;
+}
+
+.card-row-stack .card .card-desc {
+    min-height: 1.5em;
 }
 
 .card-header {
