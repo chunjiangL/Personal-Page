@@ -42,12 +42,10 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Smooth scroll for navigation links
-    const navLinks = document.querySelectorAll('nav a[href*="#"]');
+    const navLinks = document.querySelectorAll('nav a[data-scroll]');
     navLinks.forEach(link => {
         link.addEventListener('click', function(e) {
-            const href = this.getAttribute('href');
-            const hash = href.substring(href.indexOf('#'));
-            const targetId = hash.substring(1);
+            const targetId = this.getAttribute('data-scroll');
             const targetSection = document.getElementById(targetId);
             if (!targetSection) return;
             e.preventDefault();
@@ -57,7 +55,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 top: targetPosition,
                 behavior: 'smooth'
             });
-            history.pushState(null, '', hash);
+            history.pushState(null, '', '/');
         });
     });
 
