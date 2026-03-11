@@ -1,5 +1,23 @@
 console.log('Script loaded!');
 
+// Device detection hook
+(function() {
+    function detectDevice() {
+        const w = window.innerWidth;
+        const body = document.body;
+        body.classList.remove('is-mobile', 'is-tablet', 'is-desktop');
+        if (w <= 480) {
+            body.classList.add('is-mobile');
+        } else if (w <= 768) {
+            body.classList.add('is-tablet');
+        } else {
+            body.classList.add('is-desktop');
+        }
+    }
+    detectDevice();
+    window.addEventListener('resize', detectDevice);
+})();
+
 // Set last updated date
 document.addEventListener('DOMContentLoaded', function() {
     console.log('DOM Content Loaded!');
