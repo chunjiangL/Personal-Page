@@ -42,20 +42,22 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Smooth scroll for navigation links
-    const navLinks = document.querySelectorAll('nav a[href^="#"]');
+    const navLinks = document.querySelectorAll('nav a[href*="#"]');
     navLinks.forEach(link => {
         link.addEventListener('click', function(e) {
-            e.preventDefault();
-            const targetId = this.getAttribute('href').substring(1);
+            const href = this.getAttribute('href');
+            const hash = href.substring(href.indexOf('#'));
+            const targetId = hash.substring(1);
             const targetSection = document.getElementById(targetId);
-            if (targetSection) {
-                const headerHeight = document.querySelector('header').offsetHeight;
-                const targetPosition = targetSection.offsetTop - headerHeight - 20;
-                window.scrollTo({
-                    top: targetPosition,
-                    behavior: 'smooth'
-                });
-            }
+            if (!targetSection) return;
+            e.preventDefault();
+            const headerHeight = document.querySelector('header').offsetHeight;
+            const targetPosition = targetSection.offsetTop - headerHeight - 20;
+            window.scrollTo({
+                top: targetPosition,
+                behavior: 'smooth'
+            });
+            history.pushState(null, '', hash);
         });
     });
 
