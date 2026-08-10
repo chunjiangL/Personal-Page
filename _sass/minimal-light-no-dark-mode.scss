@@ -82,8 +82,30 @@
   background-color:#000}
 
 email {
-    font-size: 14px;
-    font-family: "Ubuntu Mono";
+  display:block;
+  font-size:14px;
+  font-family:"Ubuntu Mono";
+  line-height:1.35;
+  white-space:nowrap;
+}
+
+.profile-meta {
+  display:grid;
+  gap:6px;
+  margin:0 0 18px;
+}
+
+.profile-meta position {
+  display:block;
+  font-size:1.10rem;
+  line-height:1.35;
+}
+
+.profile-affiliation {
+  display:block;
+  font-size:15px;
+  line-height:1.35;
+  white-space:nowrap;
 }
 
 .icon-button i{
@@ -233,7 +255,7 @@ a:hover small {
 }
 
 .wrapper {
-  width:960px;
+  width:1040px;
   margin:0 auto;
 }
 
@@ -283,7 +305,7 @@ img {
 }
 
 header {
-  width:232px;
+  width:320px;
   float:left;
   position:fixed;
   -webkit-font-smoothing:subpixel-antialiased;
@@ -379,7 +401,7 @@ footer {
   text-align:center;
 }
 
-@media print, screen and (max-width: 960px) {
+@media print, screen and (max-width: 1040px) {
 
   .pub-row {
   display: flex;
@@ -434,7 +456,7 @@ footer {
 
 }
 
-@media print, screen and (max-width: 960px) {
+@media print, screen and (max-width: 1040px) {
   body {
     word-wrap:break-word;
     padding:15px;
@@ -480,6 +502,11 @@ footer {
       width: 95px;
       padding:20px;
   }
+
+  .profile-affiliation,
+  email {
+    font-size:14px;
+  }
   #head1o2 {
     visibility: hidden;
   }
@@ -488,6 +515,13 @@ footer {
     visibility: hidden;
   }
 
+}
+
+@media print, screen and (max-width: 360px) {
+  .profile-affiliation,
+  email {
+    font-size:13px;
+  }
 }
 
 @media print {
