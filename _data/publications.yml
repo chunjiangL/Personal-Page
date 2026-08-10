@@ -1,5 +1,12 @@
 main:
 
+  - title: "SimWorlds: A Multi-Agent System for Dynamic 3D Scene Creation"
+    authors: <strong>Chunjiang Liu</strong>, Xiaoyuan Wang, Haoyu Chen, Yizhou Zhao, Ming-Hsuan Yang, László A. Jeni
+    conference_short: arXiv
+    conference: arXiv preprint, 2026.
+    pdf: https://arxiv.org/abs/2607.01766
+    image: ./assets/img/simworlds_preview.png
+
   - title: "MOSIV: Multi-Object System Identification from Videos"
     authors: <strong>Chunjiang Liu</strong>, Xiaoyuan Wang, Qingran Lin, Albert Xiao, Haoyu Chen, Shizheng Wen, Hao Zhang, Lu Qi, Ming-Hsuan Yang, Laszlo A. Jeni, Min Xu, Yizhou Zhao
     conference_short: ICLR
