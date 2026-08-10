@@ -50,32 +50,67 @@ document.addEventListener('DOMContentLoaded', function() {
     // Pixel art canvas renderer
     const pixelCanvas = document.getElementById('heroPixelArt');
     if (pixelCanvas) {
-        fetch('assets/landscape_pixel.json')
-            .then(r => r.json())
-            .then(data => {
-                const cols = data.cols;
-                const rows = data.pattern.split(',');
-                const numRows = rows.length;
-                const colors = data.colors;
-                const cellW = 12;
-                const cellH = 8;
-                const gap = 1;
-                const stepX = cellW + gap;
-                const stepY = cellH + gap;
+        const source = new Image();
+        source.src = 'assets/landscape.jpg';
+        source.onload = () => {
+            const cols = 80;
+            const rows = 42;
+            const cellSize = 10;
+            const gap = 1;
+            const step = cellSize + gap;
 
-                pixelCanvas.width = cols * stepX - gap;
-                pixelCanvas.height = numRows * stepY - gap;
-                const ctx = pixelCanvas.getContext('2d');
-                ctx.fillStyle = '#fff';
-                ctx.fillRect(0, 0, pixelCanvas.width, pixelCanvas.height);
+            const sampler = document.createElement('canvas');
+            sampler.width = cols;
+            sampler.height = rows;
+            const samplerCtx = sampler.getContext('2d');
 
-                rows.forEach((row, y) => {
-                    [...row].forEach((ch, x) => {
-                        ctx.fillStyle = colors[parseInt(ch)];
-                        ctx.fillRect(x * stepX, y * stepY, cellW, cellH);
-                    });
-                });
-            });
+            const targetAspect = cols / rows;
+            const sourceAspect = source.naturalWidth / source.naturalHeight;
+            let sourceX = 0;
+            let sourceY = 0;
+            let sourceWidth = source.naturalWidth;
+            let sourceHeight = source.naturalHeight;
+
+            if (sourceAspect < targetAspect) {
+                sourceHeight = sourceWidth / targetAspect;
+                sourceY = (source.naturalHeight - sourceHeight) * 0.38;
+            } else {
+                sourceWidth = sourceHeight * targetAspect;
+                sourceX = (source.naturalWidth - sourceWidth) / 2;
+            }
+
+            samplerCtx.drawImage(
+                source,
+                sourceX,
+                sourceY,
+                sourceWidth,
+                sourceHeight,
+                0,
+                0,
+                cols,
+                rows
+            );
+
+            const pixels = samplerCtx.getImageData(0, 0, cols, rows).data;
+            pixelCanvas.width = cols * step - gap;
+            pixelCanvas.height = rows * step - gap;
+            const ctx = pixelCanvas.getContext('2d');
+            ctx.fillStyle = '#fff';
+            ctx.fillRect(0, 0, pixelCanvas.width, pixelCanvas.height);
+
+            const quantize = value => Math.min(255, Math.round(value / 24) * 24);
+
+            for (let y = 0; y < rows; y += 1) {
+                for (let x = 0; x < cols; x += 1) {
+                    const offset = (y * cols + x) * 4;
+                    const red = quantize(pixels[offset]);
+                    const green = quantize(pixels[offset + 1]);
+                    const blue = quantize(pixels[offset + 2]);
+                    ctx.fillStyle = `rgb(${red}, ${green}, ${blue})`;
+                    ctx.fillRect(x * step, y * step, cellSize, cellSize);
+                }
+            }
+        };
     }
     const lastUpdated = document.getElementById('last-updated');
     if (lastUpdated) {
