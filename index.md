@@ -38,24 +38,3 @@ GPA: 3.83 / 4.00
 ### University of Electronic Science and Technology of China
 **B.E. in Communication Engineering**, 2018 — 2022<br>
 GPA: 3.84 / 4.00
-
-## Academic Projects
-
-### Stage-Aware Vision-and-Language Navigation
-*Fall 2024 · Advisor: Daniel Fried*
-
-- Weighted angular-distance loss for navigation decisions.
-- LLM-based instruction paraphrasing for data augmentation.
-- 53.2% success rate on unseen environments in R2R.
-
-### Zero-Shot Text-to-Video Generation
-*Spring 2024 · Advisor: Giulia Fanti*
-
-- LLM-based prompt elaboration and few-shot frame consistency.
-- CLIP score: 30.4, compared with 29.6 for the baseline.
-
-### Lightweight Transformer for Next-Word Prediction
-*Spring 2024 · Advisor: Yuejie Chi*
-
-- Knowledge distillation on DailyDialog.
-- Perplexity of 35, comparable to GPT-2.
