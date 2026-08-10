@@ -354,22 +354,9 @@ header nav a:hover {
     padding-top: 0.15rem;
 }
 
-.pub-venue-badge {
-    display: inline-block;
-    font-family: 'GeistPixelSquare', 'Geist', sans-serif;
-    font-size: 11px;
-    font-weight: 400;
-    padding: 3px 7px;
-    background: #000;
-    color: #fff;
-    text-transform: uppercase;
-    letter-spacing: 0.02em;
-    margin-bottom: 0.75rem;
-}
-
 .pub-info h3 {
     max-width: 760px;
-    font-size: 21px;
+    font-size: 24px;
     font-weight: 650;
     line-height: 1.22;
     letter-spacing: -0.025em;
@@ -378,7 +365,7 @@ header nav a:hover {
 
 .pub-authors {
     max-width: 780px;
-    font-size: 12px;
+    font-size: 13px;
     color: #666;
     line-height: 1.65;
     margin-bottom: 1.15rem;
@@ -573,20 +560,14 @@ footer .wrap {
     }
 
     .pub-info h3 {
-        font-size: 17px;
+        font-size: 19px;
         margin-bottom: 0.6rem;
     }
 
     .pub-authors {
-        font-size: 11px;
+        font-size: 12px;
         line-height: 1.5;
         margin-bottom: 0.85rem;
-    }
-
-    .pub-venue-badge {
-        font-size: 10px;
-        padding: 2px 6px;
-        margin-bottom: 0.55rem;
     }
 
     footer .wrap {
@@ -629,7 +610,7 @@ footer .wrap {
     }
 
     .pub-info h3 {
-        font-size: 16px;
+        font-size: 18px;
     }
 }
 
