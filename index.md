@@ -10,7 +10,7 @@ I worked at an AI startup, where I built evaluation and sandbox infrastructure f
 
 - **Multi-Agent Orchestration and Verifiable Agentic Systems**
 - **Self-Evolving Agents and Recursive Self-Improvement (RSI)**
-- **Persistent World-State Models and Neural Dynamics**
+- **World Models and Physical AI**
 - **3D Vision and Physical System Identification**
 
 {% include_relative _includes/publications.md %}
