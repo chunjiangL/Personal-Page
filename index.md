@@ -4,9 +4,7 @@ layout: homepage
 
 ## About Me
 
-I received my M.S. in ECE from **Carnegie Mellon University**, where I worked with [Prof. László A. Jeni](https://www.laszlojeni.com/) and [Yizhou Zhao](https://yizhou42.github.io/) on dynamic reconstruction and system identification from video. I studied how to recover object motion and physical properties from multi-object interactions using differentiable simulation and learned constitutive models.
-
-After CMU, I worked at an AI startup, where I built evaluation and sandbox infrastructure for AI agents and developed the 1Bench and ArtArena benchmarks.
+I worked at an AI startup, where I built evaluation and sandbox infrastructure for AI agents. I received my M.S. in ECE from **Carnegie Mellon University**, where I worked with [Prof. László A. Jeni](https://www.laszlojeni.com/) and [Yizhou Zhao](https://yizhou42.github.io/) on dynamic reconstruction and system identification from video.
 
 ## Research Interests
 
