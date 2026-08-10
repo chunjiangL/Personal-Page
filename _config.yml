@@ -1,8 +1,10 @@
 # Basic Information
 title: Chunjiang Liu
-position: CMU ECE M.S.
-affiliation: 3D Vision · Stealth AI Startup · AI Agents
-affiliation_link: https://www.ece.cmu.edu/
+profile_roles:
+  - organization: CMU ECE M.S.
+    focus: 3D Vision
+  - organization: Stealth AI Startup
+    focus: AI Agents
 email: chunjiang.liu.richard (at) gmail.com
 
 # Search Engine Optimization (SEO)

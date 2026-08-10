@@ -117,37 +117,28 @@ email {
   margin:0 0 16px;
 }
 
-.profile-meta position {
-  display:block;
-  font-size:1.10rem;
-  font-weight:600;
-  line-height:1.35;
-}
-
-.profile-affiliation {
-  display:block;
+.profile-roles {
+  color:#595959;
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  column-gap:16px;
+  row-gap:3px;
   font-size:16px;
   line-height:1.35;
 }
 
-.profile-affiliation autocolor {
-  display:flex;
-  flex-wrap:wrap;
-  justify-content:center;
-  row-gap:2px;
-}
-
-.profile-affiliation span {
+.profile-role {
   white-space:nowrap;
 }
 
-.profile-affiliation span + span::before {
+.profile-role-focus::before {
   content:"·";
   font-weight:400;
   margin:0 0.35em;
 }
 
-.profile-affiliation .profile-company {
+.profile-role-organization {
   color:#222;
   font-weight:600;
 }
@@ -224,7 +215,7 @@ papertitle {
     color:#eeeff0;
     }
 
-    .profile-affiliation .profile-company {
+    .profile-role-organization {
       color:#eeeff0;
     }
 
@@ -611,7 +602,7 @@ footer {
       padding:20px;
   }
 
-  .profile-affiliation,
+  .profile-roles,
   email {
     font-size:15px;
   }
@@ -630,7 +621,7 @@ footer {
 }
 
 @media print, screen and (max-width: 360px) {
-  .profile-affiliation,
+  .profile-roles,
   email {
     font-size:13px;
   }

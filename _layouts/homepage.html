@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="{{ site.lang | default: "en-US" }}">
   <head>
-    <title>{{ site.title }} | {{site.affiliation}}</title>
+    <title>{{ site.title }} | Personal Website</title>
 
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -50,16 +50,15 @@
         <h1>{{ site.title }}</h1>
 
         <div class="profile-meta">
-          {% if site.position %}
-          <position>{{ site.position }}</position>
-          {% endif %}
-          {% if site.affiliation %}
-          {% assign profile_areas = site.affiliation | split: " · " %}
-          <div class="profile-affiliation"><autocolor>
-            {% for area in profile_areas %}
-            <span{% if area == "Stealth AI Startup" %} class="profile-company"{% endif %}>{{ area }}</span>
+          {% if site.profile_roles %}
+          <div class="profile-roles">
+            {% for role in site.profile_roles %}
+            <span class="profile-role">
+              <span class="profile-role-organization">{{ role.organization }}</span>
+              <span class="profile-role-focus">{{ role.focus }}</span>
+            </span>
             {% endfor %}
-          </autocolor></div>
+          </div>
           {% endif %}
           {% if site.email %}
           <email>{{ site.email }}</email>
