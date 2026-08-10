@@ -2,8 +2,8 @@ main:
 
   - title: "SimWorlds: A Multi-Agent System for Dynamic 3D Scene Creation"
     authors: <strong>Chunjiang Liu</strong>, Xiaoyuan Wang, Haoyu Chen, Yizhou Zhao, Ming-Hsuan Yang, László A. Jeni
-    conference_short: arXiv
-    conference: arXiv preprint, 2026.
+    conference_short: NeurIPS
+    conference: Submitted to the Conference on Neural Information Processing Systems <strong>(NeurIPS)</strong>, 2026.
     pdf: https://arxiv.org/abs/2607.01766
     image: ./assets/img/simworlds_preview.png
 
