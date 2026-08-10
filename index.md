@@ -8,9 +8,8 @@ I worked at an AI startup, where I built evaluation and sandbox infrastructure f
 
 ## Research Interests
 
-- **Multi-Agent Orchestration and Verifiable Agentic Systems**
-- **Self-Evolving Agents and Recursive Self-Improvement (RSI)**
 - **World Models and Physical AI**
+- **Harness & Recursive Self-Improvement (RSI)**
 - **3D Vision and Physical System Identification**
 
 {% include_relative _includes/publications.md %}
