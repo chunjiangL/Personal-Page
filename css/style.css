@@ -328,81 +328,85 @@ header nav a:hover {
    PUBLICATIONS
    ═══════════════════════════════════ */
 .pub-list {
-    display: flex;
-    flex-direction: column;
-    gap: 1px;
-    background: #000;
-    border: 1px solid #000;
+    border-top: 1px solid #000;
 }
 
 .pub-card {
     display: grid;
-    grid-template-columns: 140px 1fr;
-    background: #fff;
+    grid-template-columns: 190px minmax(0, 1fr);
+    gap: 2rem;
+    align-items: start;
+    padding: 1.5rem 0;
+    border-bottom: 1px solid #000;
 }
 
 .pub-thumb {
     width: 100%;
-    height: 100%;
-    object-fit: cover;
+    height: auto;
+    aspect-ratio: 17 / 22;
+    object-fit: contain;
     display: block;
-    border-right: 1px solid #000;
+    border: 1px solid #000;
+    background: #f6f6f6;
 }
 
 .pub-info {
-    padding: 1.25rem;
+    padding-top: 0.15rem;
 }
 
 .pub-venue-badge {
     display: inline-block;
     font-family: 'GeistPixelSquare', 'Geist', sans-serif;
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 400;
-    padding: 3px 8px;
+    padding: 3px 7px;
     background: #000;
     color: #fff;
     text-transform: uppercase;
     letter-spacing: 0.02em;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.75rem;
 }
 
 .pub-info h3 {
-    font-size: 14px;
-    font-weight: 700;
-    line-height: 1.35;
-    letter-spacing: -0.01em;
-    margin-bottom: 0.35rem;
+    max-width: 760px;
+    font-size: 21px;
+    font-weight: 650;
+    line-height: 1.22;
+    letter-spacing: -0.025em;
+    margin-bottom: 0.75rem;
 }
 
 .pub-authors {
-    font-size: 11px;
-    color: #999;
-    line-height: 1.5;
-    margin-bottom: 0.6rem;
+    max-width: 780px;
+    font-size: 12px;
+    color: #666;
+    line-height: 1.65;
+    margin-bottom: 1.15rem;
 }
+
+.pub-authors strong { color: #000; font-weight: 650; }
 
 .pub-links {
     display: flex;
-    gap: 0;
-    border: 1px solid #000;
+    gap: 1rem;
     width: fit-content;
 }
 
 .pub-links a {
-    font-size: 10px;
-    padding: 4px 10px;
+    position: relative;
+    font-size: 11px;
+    padding: 0 0 2px;
     text-transform: uppercase;
     letter-spacing: 0.06em;
     font-weight: 600;
-    border-right: 1px solid #000;
-    transition: all .12s;
+    border-bottom: 1px solid #000;
+    transition: opacity .12s;
 }
 
-.pub-links a:last-child { border-right: none; }
+.pub-links a::after { content: ' ↗'; }
 
 .pub-links a:hover {
-    background: #000;
-    color: #fff;
+    opacity: 0.55;
 }
 
 /* ═══════════════════════════════════
@@ -559,24 +563,30 @@ footer .wrap {
     }
 
     .pub-card {
-        grid-template-columns: 100px 1fr;
+        grid-template-columns: 150px minmax(0, 1fr);
+        gap: 1.25rem;
+        padding: 1.25rem 0;
     }
 
     .pub-info {
-        padding: 0.75rem;
+        padding-top: 0;
     }
 
     .pub-info h3 {
-        font-size: 13px;
+        font-size: 17px;
+        margin-bottom: 0.6rem;
     }
 
     .pub-authors {
-        font-size: 10px;
+        font-size: 11px;
+        line-height: 1.5;
+        margin-bottom: 0.85rem;
     }
 
     .pub-venue-badge {
         font-size: 10px;
         padding: 2px 6px;
+        margin-bottom: 0.55rem;
     }
 
     footer .wrap {
@@ -607,6 +617,19 @@ footer .wrap {
 
     .hero-divider {
         margin: 0.5rem 0;
+    }
+
+    .pub-card {
+        grid-template-columns: 1fr;
+        gap: 0.9rem;
+    }
+
+    .pub-thumb {
+        width: 140px;
+    }
+
+    .pub-info h3 {
+        font-size: 16px;
     }
 }
 
