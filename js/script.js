@@ -56,7 +56,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const cols = 80;
             const rows = 42;
             const cellSize = 10;
-            const gap = 1;
+            const gap = 0;
             const step = cellSize + gap;
 
             const sampler = document.createElement('canvas');
@@ -98,7 +98,7 @@ document.addEventListener('DOMContentLoaded', function() {
             ctx.fillStyle = '#fff';
             ctx.fillRect(0, 0, pixelCanvas.width, pixelCanvas.height);
 
-            const quantize = value => Math.min(255, Math.round(value / 24) * 24);
+            const quantize = value => Math.min(255, Math.round(value / 16) * 16);
 
             for (let y = 0; y < rows; y += 1) {
                 for (let x = 0; x < cols; x += 1) {
