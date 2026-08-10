@@ -105,7 +105,7 @@
 
 email {
   display:block;
-  font-size:14px;
+  font-size:15px;
   font-family:"Ubuntu Mono";
   line-height:1.35;
   white-space:nowrap;
@@ -113,21 +113,43 @@ email {
 
 .profile-meta {
   display:grid;
-  gap:6px;
-  margin:0 0 18px;
+  gap:5px;
+  margin:0 0 16px;
 }
 
 .profile-meta position {
   display:block;
   font-size:1.10rem;
+  font-weight:600;
   line-height:1.35;
 }
 
 .profile-affiliation {
   display:block;
-  font-size:15px;
+  font-size:16px;
   line-height:1.35;
+}
+
+.profile-affiliation autocolor {
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  row-gap:2px;
+}
+
+.profile-affiliation span {
   white-space:nowrap;
+}
+
+.profile-affiliation span + span::before {
+  content:"·";
+  font-weight:400;
+  margin:0 0.35em;
+}
+
+.profile-affiliation .profile-company {
+  color:#222;
+  font-weight:600;
 }
 
 .icon-button i{
@@ -200,6 +222,10 @@ papertitle {
 
     papertitle {
     color:#eeeff0;
+    }
+
+    .profile-affiliation .profile-company {
+      color:#eeeff0;
     }
 
 }
@@ -321,7 +347,7 @@ a:hover small {
 }
 
 .wrapper {
-  width:1040px;
+  width:1080px;
   margin:0 auto;
 }
 
@@ -381,7 +407,7 @@ img {
 }
 
 header {
-  width:320px;
+  width:340px;
   float:left;
   position:fixed;
   -webkit-font-smoothing:subpixel-antialiased;
@@ -483,7 +509,7 @@ footer {
   text-align:center;
 }
 
-@media print, screen and (max-width: 1040px) {
+@media print, screen and (max-width: 1080px) {
 
   .pub-row {
   display: flex;
@@ -538,7 +564,7 @@ footer {
 
 }
 
-@media print, screen and (max-width: 1040px) {
+@media print, screen and (max-width: 1080px) {
   body {
     word-wrap:break-word;
     padding:15px;
@@ -586,6 +612,10 @@ footer {
   }
 
   .profile-affiliation,
+  email {
+    font-size:15px;
+  }
+
   email {
     font-size:14px;
   }

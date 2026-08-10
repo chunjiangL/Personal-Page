@@ -50,7 +50,12 @@
           <position>{{ site.position }}</position>
           {% endif %}
           {% if site.affiliation %}
-          <a class="profile-affiliation" href="{{ site.affiliation_link }}" rel="noopener"><autocolor>{{ site.affiliation }}</autocolor></a>
+          {% assign profile_areas = site.affiliation | split: " · " %}
+          <div class="profile-affiliation"><autocolor>
+            {% for area in profile_areas %}
+            <span{% if area == "Stealth AI Startup" %} class="profile-company"{% endif %}>{{ area }}</span>
+            {% endfor %}
+          </autocolor></div>
           {% endif %}
           {% if site.email %}
           <email>{{ site.email }}</email>
