@@ -8,8 +8,9 @@ I worked at an AI startup, where I built evaluation and sandbox infrastructure f
 
 ## Research Interests
 
-- **Adaptive AI Agents and Harness Evolution**
-- **Persistent World Models and Neural Dynamics**
+- **Multi-Agent Orchestration and Verifiable Agentic Systems**
+- **Self-Evolving Agents and Recursive Self-Improvement (RSI)**
+- **Persistent World-State Models and Neural Dynamics**
 - **3D Vision and Physical System Identification**
 
 {% include_relative _includes/publications.md %}
