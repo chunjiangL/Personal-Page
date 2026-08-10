@@ -17,7 +17,7 @@ I worked at an AI startup, where I built evaluation and sandbox infrastructure f
 ## Working Experience
 
 ### Member of Technical Staff, Bake AI Inc.
-*Jan. 2026 — Jun. 2026*
+*2025-2026*
 
 <p class="experience-keywords">Agent Evaluation · Benchmarking · 1Bench · ArtArena</p>
 
