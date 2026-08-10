@@ -143,6 +143,46 @@ email {
   font-weight:600;
 }
 
+.sidebar-toc {
+  border-top:1.5px solid #d7d7d7;
+  margin:23px auto 0;
+  padding-top:13px;
+  text-align:left;
+  width:230px;
+}
+
+.sidebar-toc-title {
+  color:#888;
+  font-size:11px;
+  font-weight:600;
+  letter-spacing:0.12em;
+  margin-bottom:7px;
+  text-transform:uppercase;
+}
+
+.sidebar-toc-links {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  column-gap:18px;
+  row-gap:5px;
+}
+
+.sidebar-toc a {
+  color:#595959;
+  font-size:13px;
+  font-weight:500;
+  line-height:1.35;
+}
+
+.sidebar-toc a:hover {
+  color:#069;
+}
+
+.experience-keywords {
+  color:#595959;
+  line-height:1.55;
+}
+
 .icon-button i{
   background:none;
   color:white;
@@ -217,6 +257,16 @@ papertitle {
 
     .profile-role-organization {
       color:#eeeff0;
+    }
+
+    .sidebar-toc {
+      border-top-color:#4b4d5a;
+    }
+
+    .sidebar-toc-title,
+    .sidebar-toc a,
+    .experience-keywords {
+      color:#b8bac2;
     }
 
 }

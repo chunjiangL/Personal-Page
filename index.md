@@ -19,22 +19,9 @@ I worked at an AI startup, where I built evaluation and sandbox infrastructure f
 ### Member of Technical Staff, Bake AI Inc.
 *Jan. 2026 — Jun. 2026*
 
-- Built 1Bench, a living benchmark platform tracking frontier AI on expert-verified, unsolvable problems across multiple domains.
-- Built ArtArena, a visual aesthetic benchmark comparing AI models on artist-curated artworks and expert judgments.
+<p class="experience-keywords">Agent Evaluation · Benchmarking · 1Bench · ArtArena</p>
 
 ### Research Associate, Carnegie Mellon University, ECE
 *2024 — 2025*
 
-- Worked on multi-object dynamic reconstruction and physics estimation from video through differentiable simulation.
-- Developed material-agnostic dynamic reconstruction with learnable neural constitutive models.
-- Worked on joint control of appearance, motion, and lighting for head avatar editing.
-
-## Education
-
-### Carnegie Mellon University
-**M.S. in Electrical and Computer Engineering**, 2023 — 2024<br>
-GPA: 3.83 / 4.00
-
-### University of Electronic Science and Technology of China
-**B.E. in Communication Engineering**, 2018 — 2022<br>
-GPA: 3.84 / 4.00
+<p class="experience-keywords">Dynamic Reconstruction · System Identification · Differentiable Simulation · Neural Constitutive Models · Head Avatar Editing</p>
