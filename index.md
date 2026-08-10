@@ -8,8 +8,9 @@ I worked at an AI startup, where I built evaluation and sandbox infrastructure f
 
 ## Research Interests
 
-- **AI Agents and World Models**
-- **3D Vision and Physical World Modeling**
+- **Adaptive AI Agents and Harness Evolution**
+- **Persistent World Models and Neural Dynamics**
+- **3D Vision and Physical System Identification**
 
 {% include_relative _includes/publications.md %}
 
