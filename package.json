@@ -1,0 +1,10 @@
+{
+  "name": "chunjiang-personal-page",
+  "private": true,
+  "scripts": {
+    "test": "bundle exec jekyll build --destination _site && node --test tests/mobile-layout.test.cjs"
+  },
+  "devDependencies": {
+    "playwright": "^1.62.1"
+  }
+}
