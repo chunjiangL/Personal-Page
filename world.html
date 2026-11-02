@@ -35,8 +35,6 @@ permalink: /world.html
   </nav>
 <main class="world" aria-labelledby="atlas-title">
   <h1 id="atlas-title">Research Atlas</h1>
-  <p class="world-intro">Accepted papers, mapped to their conference locations. Drag the globe or select a conference to explore.</p>
-  <p class="atlas-summary" id="atlas-summary"></p>
   <div class="venue-chips" id="chips" role="group" aria-label="Choose a conference"></div>
   <div class="world-body">
     <div class="world-stage" id="stage"><canvas id="globe" aria-hidden="true"></canvas></div>
@@ -50,7 +48,7 @@ permalink: /world.html
   {% assign unmapped = site.data.publications.main | where_exp: 'paper', 'paper.atlas_venue == nil' %}
   {% if unmapped.size > 0 %}
   <div class="atlas-unmapped" aria-labelledby="unmapped-title">
-    <h2 id="unmapped-title">Preprints &amp; submissions <span class="paper-count">({{ unmapped.size }})</span></h2>
+    <h2 id="unmapped-title">Preprints &amp; submissions</h2>
     {% for paper in unmapped %}
     <a class="paper-card" href="{{ paper.pdf }}">
       <span class="card-body"><span class="card-badge submission">{{ paper.conference_short }}</span><span class="card-title">{{ paper.title }}</span><span class="paper-status">{{ paper.conference | strip_html }}</span></span>

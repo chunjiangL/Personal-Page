@@ -9,7 +9,8 @@
                 { key: 'COLM 2026', city: 'San Francisco', place: 'San Francisco, California', when: 'Oct 2026', lon: -122.410, lat: 37.786 },
                 { key: 'ECCV 2026', city: 'Malmö', place: 'Malmö, Sweden', when: 'Sep 2026', lon: 12.976, lat: 55.565 },
                 { key: 'ICLR 2026', city: 'Rio de Janeiro', place: 'Rio de Janeiro, Brazil', when: 'Apr 2026', lon: -43.41, lat: -22.98 },
-                { key: 'ICCV 2025', city: 'Honolulu', place: 'Honolulu, Hawaiʻi', when: 'Oct 2025', lon: -157.84, lat: 21.29 },
+                // Coordinates from the embedded map on the convention center's official directions page.
+                { key: 'ICCV 2025', city: 'Honolulu', place: 'Honolulu, Hawaiʻi', when: 'Oct 2025', lon: -157.8358919, lat: 21.2896943 },
             ];
 
             const DWELL = 7000;     // ms each conference stays in focus during the tour
@@ -84,7 +85,8 @@
                     const [x, y] = local(point);
                     svg.append(svgElement('text', {x: x + dx, y: y + dy, class: 'island-label', 'text-anchor': 'middle'}, name));
                 }
-                const [x, y] = local([-157.84, 21.29]);
+                const venue = shown[focus];
+                const [x, y] = local([venue.lon, venue.lat]);
                 svg.append(svgElement('path', {d: `M${x},${y} L${x - 20},145 L88,145`, class: 'island-leader'}));
                 svg.append(svgElement('circle', {cx: x, cy: y, r: 1.8, class: 'island-point'}));
                 svg.append(svgElement('text', {x: 88, y: 163, class: 'island-city'}, 'Honolulu · Oʻahu'));
@@ -210,7 +212,7 @@
 
                 const edition = document.createElement('div');
                 edition.className = 'venue-edition';
-                edition.textContent = `${v.key} · ${v.papers.length} ${v.papers.length === 1 ? 'paper' : 'papers'}`;
+                edition.textContent = v.key;
                 const city = document.createElement('h2');
                 city.className = 'venue-city';
                 city.textContent = v.city;
@@ -249,7 +251,6 @@
                     note.hidden = false;
                     return;
                 }
-                document.getElementById('atlas-summary').textContent = `${shown.reduce((sum, v) => sum + v.papers.length, 0)} papers · ${shown.length} conference locations`;
                 shown.forEach((v) => (v.vec = vec(v.lon * RAD, v.lat * RAD)));
                 arcs = [];
                 for (let i = 0; i + 1 < shown.length; i++) arcs.push(makeArc(shown[i], shown[i + 1]));
@@ -257,7 +258,7 @@
                     const chip = document.createElement('button');
                     chip.type = 'button';
                     chip.className = 'chip';
-                    chip.textContent = `${v.key} · ${v.city} · ${v.papers.length} ${v.papers.length === 1 ? 'paper' : 'papers'}`;
+                    chip.textContent = `${v.key} · ${v.city}`;
                     chip.addEventListener('click', () => setFocus(i, true));
                     return chip;
                 }));
@@ -315,12 +316,11 @@
                     }
                 }
 
-                // Keep Honolulu's marker directly above the islands, without a short leader.
+                // Use the coastline's projection directly: geographical positions have no visual offsets.
                 pins = shown.map((v) => {
                     const p = rot(...v.vec);
-                    const baseX = cx + R * p[0], baseY = cy - R * p[1];
-                    const island = v.key === 'ICCV 2025';
-                    return { x: baseX, y: baseY - (island ? 24 : 0), z: p[2] };
+                    const [x, y] = projection([v.lon, v.lat]);
+                    return { x, y, z: p[2] };
                 });
 
                 // One leader connects the selected place to its heading.
@@ -337,25 +337,25 @@
                         for (const a of anchors) {
                             const dx = a.x - 34 - f.x, dy = a.y - f.y;
                             const distance = Math.hypot(dx, dy) || 1;
-                            // Leave space for the expanding ring instead of cutting through it.
-                            leader([[f.x + dx / distance * 15, f.y + dy / distance * 15], [a.x - 34, a.y], [a.x - 1, a.y]], grow, true);
+                            leader([[f.x + dx / distance * 4, f.y + dy / distance * 4], [a.x - 34, a.y], [a.x - 1, a.y]], grow, true);
                         }
                     }
                 }
 
-                // Paint the simple dot and one outward ring above all map lines.
+                // Small yellow centers with a soft halo, painted above the map lines.
                 pins.forEach((pin, i) => {
                     if (pin.z <= 0) return;
                     const fade = Math.min(1, pin.z * 4);
                     const on = i === focus;
-                    ctx.fillStyle = `rgba(${PIN}, ${fade})`;
-                    ctx.beginPath(); ctx.arc(pin.x, pin.y, on ? 2.7 : 2.2, 0, TAU); ctx.fill();
-                    if (on) {
-                        const phase = reduceMotion ? .5 : (now % 1800) / 1800;
-                        ctx.strokeStyle = `rgba(${PIN}, ${fade * .65 * (1 - phase)})`;
-                        ctx.lineWidth = 1;
-                        ctx.beginPath(); ctx.arc(pin.x, pin.y, 5 + 9 * phase, 0, TAU); ctx.stroke();
-                    }
+                    const radius = on ? 10 : 6;
+                    const halo = ctx.createRadialGradient(pin.x, pin.y, 0, pin.x, pin.y, radius);
+                    halo.addColorStop(0, `rgba(255, 199, 45, ${fade * .7})`);
+                    halo.addColorStop(.3, `rgba(255, 199, 45, ${fade * .35})`);
+                    halo.addColorStop(1, 'rgba(255, 199, 45, 0)');
+                    ctx.fillStyle = halo;
+                    ctx.beginPath(); ctx.arc(pin.x, pin.y, radius, 0, TAU); ctx.fill();
+                    ctx.fillStyle = `rgba(255, 211, 78, ${fade})`;
+                    ctx.beginPath(); ctx.arc(pin.x, pin.y, on ? 2.3 : 1.8, 0, TAU); ctx.fill();
                 });
             }
 
