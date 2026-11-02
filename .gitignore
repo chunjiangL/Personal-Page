@@ -7,3 +7,7 @@ Gemfile.lock
 git-update.sh
 .bundle
 vendor
+
+!assets/vendor/
+!assets/vendor/**
+atlas-preview.html

@@ -1,0 +1,346 @@
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', 'Times New Roman', serif;
+            line-height: 1.7;
+            color: #222;
+            background: #f7f5ef;
+            min-height: 100vh;
+        }
+
+        a {
+            color: #b84f35;
+            text-decoration: none;
+        }
+
+        /* --- Top Nav Bar (same as index.html) --- */
+        .top-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            background: #f7f5ef;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 40px;
+            height: 50px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        .top-nav .site-name {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #b84f35;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .top-nav-links {
+            display: flex;
+            gap: 28px;
+        }
+
+        .top-nav-links a {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #444;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: color 0.2s;
+        }
+
+        .top-nav-links a:hover,
+        .top-nav-links a.active {
+            color: #b84f35;
+        }
+
+        /* --- Page --- */
+        .world {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 74px 30px 40px;
+        }
+
+        .world-head h1 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #111;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 2px solid #222;
+            padding-bottom: 6px;
+            margin-bottom: 10px;
+        }
+
+        .world-head p {
+            color: #555;
+            font-size: 0.95rem;
+        }
+
+        .world-head a:hover {
+            text-decoration: underline;
+        }
+
+        .world-body {
+            position: relative;
+        }
+
+        .world-stage {
+            position: relative;
+            height: clamp(520px, calc(100vh - 230px), 700px);
+            background: radial-gradient(ellipse 45% 55% at 33% 50%, #e5eeec 0%, rgba(255, 255, 255, 0) 100%);
+        }
+
+        .world-stage canvas {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            cursor: grab;
+            touch-action: pan-y;
+        }
+
+        .world-stage canvas.dragging {
+            cursor: grabbing;
+        }
+
+        /* --- Paper cards for the conference in focus --- */
+        .venue-panel {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 400px;
+            z-index: 2;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            transition: opacity 0.3s;
+        }
+
+        .venue-panel.detached {
+            opacity: 0.45;
+        }
+
+        .venue-place {
+            font-size: 0.78rem;
+            font-weight: 700;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin-bottom: 10px;
+        }
+
+        .paper-card {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 10px;
+            margin-bottom: 10px;
+            background: #f7f5ef;
+            border: 1px solid #e0e0e0;
+            color: inherit;
+            transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+            animation: card-in 0.45s ease backwards;
+        }
+
+        .paper-card:hover,
+        .paper-card:focus-visible {
+            border-color: #b84f35;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+            transform: translateX(-3px);
+            outline: none;
+        }
+
+        .paper-card img {
+            flex: none;
+            width: 150px;
+            height: 92px;
+            object-fit: cover;
+            background: #f5f5f5;
+            border: 1px solid #eee;
+        }
+
+        .card-body {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            min-width: 0;
+        }
+
+        .card-badge {
+            font-size: 0.68rem;
+            font-weight: 700;
+            color: #fff;
+            background: #333;
+            padding: 1px 7px;
+            letter-spacing: 0.3px;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+
+        .card-badge.workshop {
+            background: #6c757d;
+        }
+
+        .card-title {
+            display: -webkit-box;
+            -webkit-line-clamp: 5;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            font-family: 'Georgia', 'Times New Roman', serif;
+            font-size: 0.9rem;
+            font-weight: 700;
+            line-height: 1.35;
+            color: #111;
+        }
+
+        @keyframes card-in {
+            from {
+                opacity: 0;
+                transform: translateX(14px);
+            }
+        }
+
+        /* --- Conference chips --- */
+        .venue-chips {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 8px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        .chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font: inherit;
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+            color: #444;
+            background: #f7f5ef;
+            border: 1px solid #ddd;
+            padding: 5px 12px;
+            cursor: pointer;
+            transition: color 0.2s, border-color 0.2s;
+        }
+
+        .chip::before {
+            content: '';
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #c8c8c8;
+            transition: background 0.2s, box-shadow 0.2s;
+        }
+
+        .chip:hover,
+        .chip[aria-pressed="true"] {
+            color: #b84f35;
+            border-color: #b84f35;
+        }
+
+        .chip[aria-pressed="true"]::before {
+            background: #b84f35;
+            box-shadow: 0 0 0 3px rgba(165, 28, 48, 0.18);
+        }
+
+        .chip:focus-visible {
+            outline: 2px solid #b84f35;
+            outline-offset: 2px;
+        }
+
+        .world-note {
+            margin-top: 12px;
+            text-align: center;
+            color: #888;
+            font-size: 0.9rem;
+        }
+
+        .footer {
+            margin-top: 40px;
+            padding-top: 16px;
+            border-top: 1px solid #ddd;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-size: 0.8rem;
+            color: #999;
+            text-align: center;
+        }
+
+        /* --- Responsive --- */
+        @media (max-width: 720px) {
+            .top-nav {
+                padding: 0 14px;
+            }
+
+            .top-nav .site-name {
+                font-size: 0.9rem;
+                letter-spacing: 0.5px;
+                white-space: nowrap;
+            }
+
+            .top-nav-links {
+                gap: 12px;
+            }
+
+            .top-nav-links a {
+                font-size: 0.75rem;
+                letter-spacing: 0.3px;
+                white-space: nowrap;
+            }
+        }
+
+        @media (max-width: 760px) {
+            .world {
+                padding: 66px 16px 32px;
+            }
+
+            .world-stage {
+                height: min(100vw, 440px);
+                background: radial-gradient(ellipse 50% 50% at 50% 50%, #e5eeec 0%, rgba(255, 255, 255, 0) 100%);
+            }
+
+            .venue-panel {
+                position: static;
+                width: auto;
+            }
+
+            .paper-card img {
+                width: 112px;
+                height: 72px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .paper-card {
+                animation: none;
+            }
+        }
+    
+body { color:#203c40; background:#f7f5ef; }
+.top-nav { background:rgba(247,245,239,.95); border-color:#d8ded7; height:64px; }
+.top-nav .site-name { color:#203c40; text-transform:none; letter-spacing:-.5px; font-family:Georgia,serif; font-size:1.25rem; }
+.world { max-width:1200px; padding-top:108px; }
+.eyebrow,.atlas-index { font:11px/1.5 ui-monospace,monospace; text-transform:uppercase; letter-spacing:2px; color:#687c79; }
+.world-head h1 { font-weight:400; font-size:clamp(42px,6vw,76px); line-height:1.12; text-transform:none; letter-spacing:-3px; border:0; padding:12px 0; margin:0; color:#203c40; }
+.world-head p { max-width:590px; color:#60716d; }
+.world-head { border-bottom:1px solid #cfd7cf; padding-bottom:28px; }
+.atlas-meta { display:flex; gap:26px; margin-top:22px; font:11px ui-monospace,monospace; color:#687c79; text-transform:uppercase; letter-spacing:1px; }
+.world-stage { height:clamp(460px,60vh,620px); }
+.paper-card { background:#fcfbf7; border-color:#d4dcd4; padding:14px; border-radius:3px; }
+.card-title { color:#203c40; font-weight:400; font-size:17px; }
+.card-badge { background:#234d51; font-size:10px; padding:3px 8px; }
+.venue-place { color:#637974; font:11px ui-monospace,monospace; letter-spacing:1px; }
+.chip { min-height:44px; background:transparent; padding:10px 18px; border-color:#cdd7cf; border-radius:2px; font-size:12px; }
+.footer { display:flex; flex-wrap:wrap; justify-content:space-between; gap:12px; text-align:left; margin-top:32px; border-color:#cfd7cf; color:#697b76; }
+.world-note { color:#667b76; font-size:13px; }
+a:focus-visible,button:focus-visible { outline:2px solid #b84f35; outline-offset:4px; }
+@media(max-width:760px) { .world{padding:96px 20px 24px}.world-head h1{letter-spacing:-2px}.world-stage{height:min(100vw,440px)}.top-nav-links{gap:14px}.top-nav-links a{display:inline-flex;align-items:center;min-height:44px}.atlas-meta{flex-wrap:wrap;gap:14px}.paper-card img{width:100px}.footer{font-size:11px}.card-title{font-size:16px} }

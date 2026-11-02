@@ -9,6 +9,8 @@ main:
 
   - title: "MOSIV: Multi-Object System Identification from Videos"
     authors: <strong>Chunjiang Liu</strong>, Xiaoyuan Wang, Qingran Lin, Albert Xiao, Haoyu Chen, Shizheng Wen, Hao Zhang, Lu Qi, Ming-Hsuan Yang, Laszlo A. Jeni, Min Xu, Yizhou Zhao
+    atlas_venue: ICLR 2026
+    atlas_badge: ICLR 2026
     conference_short: ICLR
     conference: International Conference on Learning Representations <strong>(ICLR)</strong>, 2026.
     pdf: https://arxiv.org/abs/2603.06022
@@ -16,6 +18,8 @@ main:
 
   - title: "Toward Material-Agnostic System Identification from Videos"
     authors: Yizhou Zhao, Haoyu Chen, <strong>Chunjiang Liu</strong>, Zhenyang Li, Charles Herrmann, Junhwa Hur, Yinxiao Li, Ming-Hsuan Yang, Bhiksha Raj, Min Xu
+    atlas_venue: ICCV 2025
+    atlas_badge: ICCV 2025
     conference_short: ICCV
     conference: IEEE/CVF International Conference on Computer Vision <strong>(ICCV)</strong>, 2025.
     pdf: https://www.arxiv.org/abs/2508.01112
@@ -24,6 +28,8 @@ main:
 
   - title: "Total-Editing: Head Avatar with Editable Appearance, Motion, and Lighting"
     authors: Yizhou Zhao, <strong>Chunjiang Liu</strong>, Haoyu Chen, Bhiksha Raj, Min Xu, Tadas Baltrusaitis, Mitch Rundle, HsiangTao Wu, Kamran Ghasedi
+    atlas_venue: ICCV 2025
+    atlas_badge: ICCV 2025 Workshop
     conference_short: ICCV-W
     conference: IEEE/CVF International Conference on Computer Vision Workshop <strong>(ICCV Workshop)</strong>, 2025.
     pdf: https://arxiv.org/abs/2505.20582

@@ -1,5 +1,7 @@
 <h2 id="publications" style="margin: 2px 0px -15px;">Publications</h2>
 
+<p style="margin-top:28px;font-size:14px;"><a href="{{ "/world.html" | relative_url }}">Explore the Research Atlas <span aria-hidden="true">↗</span></a> · Accepted papers, mapped across the world.</p>
+
 <div class="publications">
 <ol class="bibliography">
 
