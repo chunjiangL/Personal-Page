@@ -1,4 +1,19 @@
-/* The homepage layout supplies typography, profile sidebar, spacing and links. */
+/* Standalone page with the homepage's shared font and theme stylesheets. */
+.atlas-page { padding: 0; }
+.atlas-nav {
+  box-sizing: border-box; max-width: 1080px; margin: 0 auto;
+  display: flex; align-items: center; justify-content: space-between; gap: 24px;
+  padding: 24px 0; border-bottom: 1px solid #e5e5e5;
+}
+.atlas-name { color: #043361; font-size: 24px; font-weight: 500; white-space: nowrap; }
+.atlas-nav-links { display: flex; align-items: center; gap: 24px; }
+.atlas-nav-links a { display: inline-flex; align-items: center; min-height: 44px; color: #595959; }
+.atlas-nav-links a:hover, .atlas-nav-links a[aria-current="page"] { color: #069; }
+.atlas-nav a:focus-visible { outline: 2px solid #069; outline-offset: 3px; }
+.world { box-sizing: border-box; max-width: 1080px; margin: 0 auto; padding: 36px 0; }
+#atlas-title { font-size: 28px; margin: 0 0 14px; }
+.world-intro { max-width: 650px; }
+
 .world {
   --atlas-heading: #043361;
   --atlas-muted: #595959;
@@ -11,7 +26,6 @@
   --atlas-sphere-light: #ffffff;
   --atlas-sphere-edge: #eaf1f8;
 }
-.atlas-page .sidebar-toc a[aria-current="page"] { color: #069; font-weight: 600; }
 .world *, .world *::before, .world *::after { box-sizing: border-box; }
 .world-intro { margin-bottom: 16px; }
 .venue-chips { display: flex; flex-wrap: wrap; gap: 8px; }
@@ -28,10 +42,10 @@
 .chip[aria-pressed="true"]::before { background: currentColor; }
 .world a:focus-visible, .world button:focus-visible { outline: 2px solid rgb(var(--atlas-pin)); outline-offset: 3px; }
 .world-body { position: relative; }
-.world-stage { position: relative; height: 380px; }
+.world-stage { position: relative; height: clamp(440px, 60vh, 600px); }
 .world-stage canvas { display: block; width: 100%; height: 100%; cursor: grab; touch-action: pan-y; }
 .world-stage canvas.dragging { cursor: grabbing; }
-.venue-panel { position: static; width: 100%; transition: opacity .3s; }
+.venue-panel { position: absolute; top: 0; left: 0; width: 400px; transition: opacity .3s; }
 .venue-panel.detached { opacity: .6; }
 .venue-place { color: var(--atlas-muted); font-size: 14px; margin: 0 0 14px; }
 .paper-card {
@@ -40,7 +54,7 @@
   color: inherit; animation: card-in .3s ease backwards;
 }
 .paper-card img {
-  flex: none; width: 185px; height: 100px; object-fit: cover;
+  flex: none; width: 135px; height: 90px; object-fit: cover;
   border-radius: 8px; box-shadow: 2px 2px 5px #8886;
 }
 .card-body { display: flex; flex-direction: column; align-items: flex-start; gap: 7px; min-width: 0; }
@@ -67,10 +81,13 @@
     --atlas-sphere-light: #293a50;
     --atlas-sphere-edge: #20212b;
   }
-  .atlas-auto-dark .sidebar-toc a[aria-current="page"],
+  .atlas-auto-dark .atlas-name,
+  .atlas-auto-dark .atlas-nav-links a[aria-current="page"],
+  .atlas-auto-dark .atlas-nav-links a:hover,
   .atlas-auto-dark .card-title,
   .atlas-auto-dark .paper-card:hover .card-title { color: #3eb7f0; }
-  .atlas-auto-dark .atlas-credit { color: #b8bac2; }
+  .atlas-auto-dark .atlas-credit, .atlas-auto-dark .atlas-nav-links a { color: #b8bac2; }
+  .atlas-auto-dark .atlas-nav { border-color: #4b4d5a; }
 }
 @media (max-width: 600px) {
   .world-stage { height: min(95vw, 350px); }
@@ -89,4 +106,19 @@
   .venue-panel, .chip { transition: none; }
 }
 
-@media (min-width: 761px) { .venue-panel { min-height: 300px; } }
+@media (max-width: 1140px) {
+  .atlas-nav { margin: 0 24px; }
+  .world { padding: 32px 24px; }
+}
+@media (max-width: 760px) {
+  .atlas-nav { margin: 0 16px; padding: 14px 0; gap: 12px; }
+  .atlas-name { font-size: 21px; }
+  .atlas-nav-links { gap: 14px; font-size: 14px; }
+  .world { padding: 26px 16px; }
+  .world-stage { height: min(95vw, 380px); }
+  .venue-panel { position: static; width: auto; }
+}
+@media (max-width: 360px) {
+  .atlas-nav { flex-wrap: wrap; gap: 0; }
+  .atlas-nav-links { width: 100%; }
+}

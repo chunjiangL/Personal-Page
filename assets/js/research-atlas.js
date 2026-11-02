@@ -143,6 +143,9 @@
             let shown = [];                     // conferences that have at least one paper
             let arcs = [];
             let pins = [];                      // where each conference's pin is on screen
+            let anchors = [];
+            let panelX = 0;
+            const OFFSET = 28;
             let focus = -1;
             let yaw = 40, pitch = 18, yawT = null, pitchT = null;
             let nextAt = 0, holdUntil = 0, lineT0 = 0;
@@ -156,9 +159,32 @@
                 canvas.width = Math.round(W * dpr);
                 canvas.height = Math.round(H * dpr);
                 ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-                R = Math.min(W, H) * 0.37;
-                cx = W / 2;
-                cy = H / 2;
+                if (narrow.matches) {
+                    R = Math.min(W, H) * 0.36;
+                    cx = W / 2;
+                    cy = H / 2;
+                    panel.style.left = panel.style.top = panel.style.width = '';
+                } else {
+                    const pw = Math.min(400, Math.round(W * 0.4));
+                    const left = W - pw - 40;   // room for the globe and its halo
+                    R = Math.min(H * 0.37, left * 0.4);
+                    cx = left / 2 + 10;
+                    cy = H / 2;
+                    panelX = W - pw;
+                    panel.style.width = pw + 'px';
+                    panel.style.left = panelX + 'px';
+                }
+                placePanel();
+            }
+
+            function placePanel() {
+                anchors = [];
+                if (narrow.matches || !cardsEl.childElementCount) return;
+                const top = Math.max(0, (H - panel.offsetHeight) / 2);
+                panel.style.top = top + 'px';
+                for (const card of cardsEl.children) {
+                    anchors.push({ x: panelX + card.offsetLeft, y: top + card.offsetTop + card.offsetHeight / 2 });
+                }
             }
 
             // ---------------- Focus ----------------
@@ -166,7 +192,7 @@
                 const now = performance.now();
                 focus = i;
                 const v = shown[i];
-                yawT = -v.lon;
+                yawT = -v.lon + (narrow.matches ? 0 : OFFSET);
                 pitchT = Math.max(-30, Math.min(40, v.lat * 0.7));
                 if (reduceMotion) {
                     yaw = yawT;
@@ -198,6 +224,7 @@
                     return card;
                 }));
                 [...chipsEl.children].forEach((chip, k) => chip.setAttribute('aria-pressed', String(k === i)));
+                placePanel();
             }
 
             function start() {
@@ -376,7 +403,11 @@
                     ctx.strokeStyle = `rgba(${PIN}, 0.75)`;
                     ctx.fillStyle = `rgba(${PIN}, 0.9)`;
                     ctx.lineWidth = 1;
-                    leader([[f.x, f.y], [f.x, H]], grow, false);
+                    if (narrow.matches) {
+                        leader([[f.x, f.y], [f.x, H]], grow, false);
+                    } else {
+                        for (const a of anchors) leader([[f.x, f.y], [a.x - 34, a.y], [a.x - 1, a.y]], grow, true);
+                    }
                 }
             }
 
@@ -417,7 +448,7 @@
                         yaw += 0.03 * (dt / 16.7);
                     }
 
-                    // Reserve space for the cards on desktop; keep mobile selection manual.
+                    // Keep mobile selection manual so cards in the document flow stay stable.
                     if (!reduceMotion && !narrow.matches && shown.length > 1 && !hoverPanel && now >= nextAt) {
                         setFocus((focus + 1) % shown.length, false);
                     }
@@ -489,6 +520,7 @@
             panel.addEventListener('focusout', () => (hoverPanel = false));
 
             window.addEventListener('resize', layout);
+            if (document.fonts) document.fonts.ready.then(layout);
             narrow.addEventListener('change', layout);
 
             // Publications are emitted from the same Jekyll data as the homepage.

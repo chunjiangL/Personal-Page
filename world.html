@@ -1,12 +1,40 @@
 ---
-layout: homepage
-title: Research Atlas
-description: Chunjiang Liu's accepted papers, mapped to their conference locations.
+layout: null
 permalink: /world.html
-atlas: true
 ---
+<!doctype html>
+<html lang="{{ site.lang | default: 'en-US' }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Research Atlas | {{ site.title }}</title>
+  <meta name="description" content="Chunjiang Liu's accepted papers, mapped to their conference locations.">
+  <link rel="canonical" href="{{ site.canonical }}world.html">
+  <link rel="icon" media="(prefers-color-scheme:dark)" href="{{ site.favicon_dark | relative_url }}" type="image/png">
+  <link rel="icon" media="(prefers-color-scheme:light)" href="{{ site.favicon | relative_url }}" type="image/png">
+  {% assign asset_version = site.github.build_revision %}
+  {% unless asset_version %}{% assign asset_version = site.time | date: '%s' %}{% endunless %}
+  {% if site.font == 'Sans Serif' %}
+  <link rel="stylesheet" href="{{ '/assets/css/font_sans_serif.css' | relative_url }}">
+  {% else %}
+  <link rel="stylesheet" href="{{ '/assets/css/font.css' | relative_url }}">
+  {% endif %}
+  {% if site.auto_dark_mode %}
+  <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}?v={{ asset_version }}">
+  <link rel="stylesheet" href="{{ '/assets/css/publications.css' | relative_url }}?v={{ asset_version }}">
+  {% else %}
+  <link rel="stylesheet" href="{{ '/assets/css/style-no-dark-mode.css' | relative_url }}?v={{ asset_version }}">
+  <link rel="stylesheet" href="{{ '/assets/css/publications-no-dark-mode.css' | relative_url }}?v={{ asset_version }}">
+  {% endif %}
+  <link rel="stylesheet" href="{{ '/assets/css/research-atlas.css' | relative_url }}?v={{ asset_version }}">
+</head>
+<body class="atlas-page{% if site.auto_dark_mode %} atlas-auto-dark{% endif %}">
+  <nav class="atlas-nav" aria-label="Main navigation">
+    <a class="atlas-name" href="{{ '/' | relative_url }}">{{ site.title }}</a>
+    <div class="atlas-nav-links"><a href="{{ '/' | relative_url }}">Home</a><a href="{{ '/' | relative_url }}#publications">Publications</a><a href="{{ '/world.html' | relative_url }}" aria-current="page">Atlas</a></div>
+  </nav>
 <main class="world" aria-labelledby="atlas-title">
-  <h2 id="atlas-title">Research Atlas</h2>
+  <h1 id="atlas-title">Research Atlas</h1>
   <p class="world-intro">Accepted papers, mapped to their conference locations. Drag the globe or select a conference to explore.</p>
   <div class="venue-chips" id="chips" role="group" aria-label="Choose a conference"></div>
   <div class="world-body">
@@ -28,4 +56,7 @@ atlas: true
 <script src="{{ '/assets/vendor/d3-array.min.js' | relative_url }}"></script>
 <script src="{{ '/assets/vendor/d3-geo.min.js' | relative_url }}"></script>
 <script src="{{ '/assets/vendor/topojson-client.min.js' | relative_url }}"></script>
-<script src="{{ '/assets/js/research-atlas.js' | relative_url }}?v={{ site.github.build_revision | default: site.time }}"></script>
+<script src="{{ '/assets/js/research-atlas.js' | relative_url }}?v={{ asset_version }}"></script>
+
+</body>
+</html>
