@@ -40,7 +40,7 @@ permalink: /world.html
     <div class="world-stage" id="stage"><canvas id="globe" aria-hidden="true"></canvas></div>
     <div class="venue-panel" id="panel">
       <div class="venue-place" id="panel-place"></div>
-      <div class="island-detail" id="island-detail" hidden><div class="island-detail-label">Hawaiʻi · enlarged detail</div><div class="island-map"></div></div>
+      <div class="region-detail" id="region-detail" hidden><div class="region-detail-label"></div><div class="region-map"></div></div>
       <div id="panel-cards"></div>
     </div>
   </div>
@@ -66,7 +66,7 @@ permalink: /world.html
 ]</script>
 <script src="{{ '/assets/vendor/d3-array.min.js' | relative_url }}"></script>
 <script src="{{ '/assets/vendor/d3-geo.min.js' | relative_url }}"></script>
-<script src="{{ '/assets/vendor/topojson-client.min.js' | relative_url }}"></script>
+<script src="{{ '/assets/js/atlas-globe-renderer.js' | relative_url }}?v={{ asset_version }}"></script>
 <script src="{{ '/assets/js/research-atlas.js' | relative_url }}?v={{ asset_version }}"></script>
 
 </body>

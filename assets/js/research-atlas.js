@@ -39,7 +39,7 @@
                 sphereEdge = css.getPropertyValue('--atlas-sphere-edge').trim();
             }
             readTheme();
-            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', readTheme);
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => { readTheme(); mapKey = ''; invalidate(); });
 
             const vec = (lon, lat) => [Math.cos(lat) * Math.sin(lon), Math.sin(lat), Math.cos(lat) * Math.cos(lon)];
             const projection = d3.geoOrthographic().clipAngle(90).precision(0.35);
@@ -47,18 +47,19 @@
             const mapCanvas = document.createElement('canvas');
             const mapCtx = mapCanvas.getContext('2d');
             const mapPath = d3.geoPath(projection, mapCtx);
-            let land = null, hawaii = null, mapKey = '';
+            let land = null, landShapes = [], regions = {}, mapKey = '', globeGPU = null;
+            const regionViews = new Map();
 
-            // Natural Earth's 1:50m coastline retains the Hawaiian islands.
-            fetch('assets/vendor/land-50m.json')
+            // Coastlines and regional paths are prepared once, outside the animation loop.
+            fetch('assets/data/atlas-geography.json')
                 .then(r => { if (!r.ok) throw new Error('Coastline unavailable'); return r.json(); })
-                .then(topo => {
-                    land = topojson.feature(topo, topo.objects.land);
-                    const geometry = land.type === 'FeatureCollection' ? land.features[0].geometry : land.geometry;
-                    hawaii = { type: 'MultiPolygon', coordinates: geometry.coordinates.filter(polygon =>
-                        polygon[0].every(([lon, lat]) => lon > -161 && lon < -154 && lat > 18 && lat < 23)) };
+                .then(data => {
+                    land = data.globe;
+                    landShapes = prepareLand(land);
+                    regions = data.regions;
                     mapKey = '';
-                    renderIslandDetail();
+                    renderRegionDetail();
+                    invalidate();
                 })
                 .catch(() => { note.hidden = false; note.textContent = 'The coastline could not load. You can still explore the conference papers below.'; });
 
@@ -69,73 +70,129 @@
                 return el;
             }
 
-            function renderIslandDetail() {
-                const detail = document.getElementById('island-detail');
-                const active = shown[focus]?.key === 'ICCV 2025';
-                detail.hidden = !active;
-                if (!active || !hawaii) { placePanel(); return; }
-                const local = d3.geoMercator().fitExtent([[18, 16], [342, 133]], hawaii);
-                const svg = svgElement('svg', {viewBox: '0 0 360 176', role: 'img', 'aria-label': 'Enlarged Hawaiian islands, with Honolulu on Oʻahu'});
-                svg.append(svgElement('path', {d: d3.geoPath(local)(hawaii), class: 'island-land'}));
-                for (const [name, point, dx, dy] of [
-                    ['Kauaʻi', [-159.5, 22.05], 0, -13],
-                    ['Maui', [-156.3, 20.8], 18, -12],
-                    ['Hawaiʻi', [-155.5, 19.5], 28, 23],
-                ]) {
-                    const [x, y] = local(point);
-                    svg.append(svgElement('text', {x: x + dx, y: y + dy, class: 'island-label', 'text-anchor': 'middle'}, name));
+            function prepareLand(geometry) {
+                return geometry.coordinates.map(coordinates => {
+                    const center = [0, 0, 0];
+                    const rings = coordinates.map(ring => {
+                        const vertices = new Float32Array(ring.length * 3);
+                        ring.forEach(([lon, lat], i) => {
+                            const point = vec(lon * RAD, lat * RAD);
+                            vertices.set(point, i * 3);
+                            for (let axis = 0; axis < 3; axis++) center[axis] += point[axis];
+                        });
+                        return vertices;
+                    });
+                    const length = Math.hypot(...center) || 1;
+                    for (let axis = 0; axis < 3; axis++) center[axis] /= length;
+                    let minDot = 1;
+                    for (const ring of rings) {
+                        for (let i = 0; i < ring.length; i += 3) {
+                            minDot = Math.min(minDot, ring[i] * center[0] + ring[i + 1] * center[1] + ring[i + 2] * center[2]);
+                        }
+                    }
+                    // Conservative spherical bounds: only skip polygons entirely behind the globe.
+                    const threshold = minDot > 0 ? Math.sqrt(Math.max(0, 1 - minDot * minDot)) + .00001 : 2;
+                    return { rings, center, threshold, geometry: { type: 'Polygon', coordinates } };
+                });
+            }
+
+            function traceLand(g) {
+                const cY = Math.cos(yaw * RAD), sY = Math.sin(yaw * RAD);
+                const cP = Math.cos(pitch * RAD), sP = Math.sin(pitch * RAD);
+                for (const shape of landShapes) {
+                    const depth = -shape.center[0] * sY * cP + shape.center[1] * sP + shape.center[2] * cY * cP;
+                    if (depth < -shape.threshold) continue;
+                    if (depth <= shape.threshold) {
+                        // D3 handles the horizon intersections and large continental polygons.
+                        mapPath(shape.geometry);
+                        continue;
+                    }
+                    // Fully visible polygons need only a matrix transform, with no trig or clipping per vertex.
+                    for (const ring of shape.rings) {
+                        for (let i = 0; i < ring.length; i += 3) {
+                            const x = ring[i] * cY + ring[i + 2] * sY;
+                            const z = ring[i + 2] * cY - ring[i] * sY;
+                            const y = ring[i + 1] * cP - z * sP;
+                            if (i === 0) g.moveTo(cx + R * x, cy - R * y);
+                            else g.lineTo(cx + R * x, cy - R * y);
+                        }
+                        g.closePath();
+                    }
                 }
+            }
+
+            function renderRegionDetail() {
+                const detail = document.getElementById('region-detail');
                 const venue = shown[focus];
-                const [x, y] = local([venue.lon, venue.lat]);
-                svg.append(svgElement('path', {d: `M${x},${y} L${x - 20},145 L88,145`, class: 'island-leader'}));
-                svg.append(svgElement('circle', {cx: x, cy: y, r: 1.8, class: 'island-point'}));
-                svg.append(svgElement('text', {x: 88, y: 163, class: 'island-city'}, 'Honolulu · Oʻahu'));
-                detail.querySelector('.island-map').replaceChildren(svg);
+                const region = regions[venue?.key];
+                detail.hidden = !region;
+                if (!region) { placePanel(); return; }
+                detail.querySelector('.region-detail-label').textContent = region.title;
+                let svg = regionViews.get(venue.key);
+                if (!svg) {
+                    const local = d3.geoMercator().center(region.center).scale(region.scale).translate(region.translate);
+                    svg = svgElement('svg', {viewBox: '0 0 360 176', role: 'img', 'aria-label': `Regional map of ${region.title}, showing ${venue.city}`});
+                    svg.append(svgElement('path', {d: region.path, class: 'region-land'}));
+                    for (const label of region.labels) {
+                        svg.append(svgElement('text', {x: label.x, y: label.y, class: 'region-label', 'text-anchor': 'middle'}, label.name));
+                    }
+                    const [x, y] = local([venue.lon, venue.lat]);
+                    const labelX = venue.key === 'ICCV 2025' ? 88 : 20;
+                    svg.append(svgElement('path', {d: `M${x},${y} L${Math.max(28, x - 20)},145 L${labelX},145`, class: 'region-leader'}));
+                    svg.append(svgElement('circle', {cx: x, cy: y, r: 1.8, class: 'region-point'}));
+                    svg.append(svgElement('text', {x: labelX, y: 163, class: 'region-city'}, venue.city + (venue.key === 'ICCV 2025' ? ' · Oʻahu' : '')));
+                    regionViews.set(venue.key, svg);
+                }
+                detail.querySelector('.region-map').replaceChildren(svg);
                 placePanel();
             }
 
             function drawBaseMap() {
-                const key = `${yaw.toFixed(2)}|${pitch.toFixed(2)}|${W}|${H}|${landColor}|${!!land}`;
+                const key = `${yaw.toFixed(2)}|${pitch.toFixed(2)}|${W}|${H}|${landColor}|${!!land}|${!!globeGPU?.ready}`;
                 if (mapKey === key) return;
                 mapKey = key;
+                projection.rotate([yaw, -pitch]).translate([cx, cy]).scale(R);
+                if (globeGPU?.ready) {
+                    globeGPU.draw({ width: canvas.width, height: canvas.height, cx: cx * pixelRatio, cy: cy * pixelRatio,
+                        radius: R * pixelRatio, yaw: yaw * RAD, pitch: pitch * RAD,
+                        colors: { land: landColor, landLight, ocean: sphereLight, oceanEdge: sphereEdge } });
+                    return;
+                }
                 const g = mapCtx;
                 g.clearRect(0, 0, W, H);
-                projection.rotate([yaw, -pitch]).translate([cx, cy]).scale(R);
                 const ocean = g.createRadialGradient(cx - R * .3, cy - R * .4, 0, cx, cy, R);
                 ocean.addColorStop(0, sphereLight);
                 ocean.addColorStop(1, sphereEdge);
                 g.fillStyle = ocean;
                 g.beginPath(); g.arc(cx, cy, R, 0, TAU); g.fill();
-                g.strokeStyle = `rgba(${landColor}, .14)`;
-                g.lineWidth = .65;
-                g.beginPath(); mapPath(graticule); g.stroke();
                 if (land) {
                     const ink = g.createLinearGradient(cx - R, cy - R, cx + R, cy + R);
                     ink.addColorStop(0, `rgb(${landLight})`);
                     ink.addColorStop(1, `rgb(${landColor})`);
-                    g.beginPath(); mapPath(land);
+                    g.beginPath(); traceLand(g);
                     g.fillStyle = ink; g.fill();
-                    g.strokeStyle = `rgba(${landColor}, .8)`;
-                    g.lineWidth = .45; g.stroke();
-                    g.save(); g.clip();
-                    g.strokeStyle = 'rgba(255, 255, 255, .17)';
-                    g.beginPath(); mapPath(graticule); g.stroke();
-                    g.restore();
                 }
+                g.strokeStyle = 'rgba(117, 155, 184, .25)';
+                g.lineWidth = .65;
+                g.beginPath(); mapPath(graticule); g.stroke();
+                drawRim(g);
+            }
+
+            function drawRim(g) {
                 // A fine graduated rim gives the globe the feel of a printed atlas.
                 g.strokeStyle = `rgba(${landColor}, .35)`;
                 g.lineWidth = .8;
                 g.beginPath(); g.arc(cx, cy, R, 0, TAU); g.stroke();
                 g.strokeStyle = `rgba(${landColor}, .16)`;
                 g.beginPath(); g.arc(cx, cy, R + 11, 0, TAU); g.stroke();
+                g.beginPath();
                 for (let i = 0; i < 72; i++) {
                     const a = i * TAU / 72;
                     const length = i % 6 === 0 ? 6 : 2.5;
-                    g.beginPath();
                     g.moveTo(cx + (R + 11) * Math.cos(a), cy + (R + 11) * Math.sin(a));
                     g.lineTo(cx + (R + 11 + length) * Math.cos(a), cy + (R + 11 + length) * Math.sin(a));
-                    g.stroke();
                 }
+                g.stroke();
             }
 
             // ---------------- State ----------------
@@ -149,12 +206,15 @@
             let yaw = 40, pitch = 18, yawT = null, pitchT = null;
             let nextAt = 0, holdUntil = 0, lineT0 = 0;
             let dragging = false, dragMoved = 0, lastX = 0, lastY = 0, hoverPanel = false;
-            let W = 0, H = 0, R = 200, cx = 0, cy = 0;
+            let W = 0, H = 0, R = 200, cx = 0, cy = 0, pixelRatio = 1;
 
             function layout() {
+                // A hidden or resizing browser surface can briefly report a zero-sized stage.
+                if (!stage.clientWidth || !stage.clientHeight) return;
                 W = stage.clientWidth;
                 H = stage.clientHeight;
                 const dpr = Math.min(2, window.devicePixelRatio || 1);
+                pixelRatio = dpr;
                 canvas.width = Math.round(W * dpr);
                 canvas.height = Math.round(H * dpr);
                 mapCanvas.width = canvas.width;
@@ -178,6 +238,7 @@
                     panel.style.left = panelX + 'px';
                 }
                 placePanel();
+                invalidate();
             }
 
             function placePanel() {
@@ -242,7 +303,8 @@
                     return card;
                 }));
                 [...chipsEl.children].forEach((chip, k) => chip.setAttribute('aria-pressed', String(k === i)));
-                renderIslandDetail();
+                renderRegionDetail();
+                invalidate();
             }
 
             function start() {
@@ -285,6 +347,7 @@
 
             // ---------------- Drawing ----------------
             function draw(now) {
+                if (!canvas.width || !canvas.height || !mapCanvas.width || !mapCanvas.height) return;
                 ctx.clearRect(0, 0, W, H);
 
                 const cY = Math.cos(yaw * RAD), sY = Math.sin(yaw * RAD);
@@ -296,24 +359,23 @@
                 };
 
                 drawBaseMap();
-                ctx.drawImage(mapCanvas, 0, 0, W, H);
+                if (globeGPU?.ready) drawRim(ctx);
+                else ctx.drawImage(mapCanvas, 0, 0, W, H);
 
-                // Connections between conference locations fade toward the horizon.
+                // Batch each route into a single canvas stroke.
                 ctx.lineWidth = 0.8;
+                ctx.strokeStyle = `rgba(${PIN}, .22)`;
                 for (const arc of arcs) {
-                    let prev = null;
+                    let drawing = false;
+                    ctx.beginPath();
                     for (const p of arc.pts) {
                         const v = rot(p[0], p[1], p[2]);
-                        const cur = { x: cx + R * v[0], y: cy - R * v[1], z: v[2] };
-                        if (prev && prev.z > 0 && cur.z > 0) {
-                            ctx.strokeStyle = `rgba(${PIN}, ${(0.3 * Math.min(1, (prev.z + cur.z) * 1.5)).toFixed(3)})`;
-                            ctx.beginPath();
-                            ctx.moveTo(prev.x, prev.y);
-                            ctx.lineTo(cur.x, cur.y);
-                            ctx.stroke();
-                        }
-                        prev = cur;
+                        if (v[2] <= 0) { drawing = false; continue; }
+                        const x = cx + R * v[0], y = cy - R * v[1];
+                        if (drawing) ctx.lineTo(x, y); else ctx.moveTo(x, y);
+                        drawing = true;
                     }
+                    ctx.stroke();
                 }
 
                 // Use the coastline's projection directly: geographical positions have no visual offsets.
@@ -383,31 +445,60 @@
             }
 
             // ---------------- Animation loop ----------------
-            let last = performance.now(), lastPaint = 0;
+            // One RAF chain at the display's refresh rate. Settled views sleep until input or the next stop.
+            let last = performance.now(), rafId = 0, tourTimer = 0, dirty = true;
+            function requestFrame() {
+                if (!document.hidden && !rafId) rafId = requestAnimationFrame(frame);
+            }
+            function invalidate() {
+                dirty = true;
+                requestFrame();
+            }
+            function scheduleTour() {
+                clearTimeout(tourTimer);
+                if (document.hidden || reduceMotion || narrow.matches || hoverPanel || shown.length < 2) return;
+                tourTimer = setTimeout(requestFrame, Math.max(0, nextAt - performance.now()));
+            }
             function frame(now) {
-                if (now - lastPaint < 32) { if (!document.hidden) requestAnimationFrame(frame); return; }
-                lastPaint = now;
+                rafId = 0;
                 const dt = Math.min(50, now - last);
                 last = now;
+                let moving = false;
                 if (!dragging) {
                     if (yawT !== null) {
-                        const ease = 1 - Math.pow(0.93, dt / 16.7);
-                        yaw += ((((yawT - yaw) % 360) + 540) % 360 - 180) * ease;   // the short way round
-                        pitch += (pitchT - pitch) * ease;
+                        const dy = ((((yawT - yaw) % 360) + 540) % 360 - 180);
+                        const dp = pitchT - pitch;
+                        if (Math.abs(dy) > .005 || Math.abs(dp) > .005) {
+                            const ease = 1 - Math.pow(0.93, dt / 16.7);
+                            yaw += dy * ease;
+                            pitch += dp * ease;
+                            moving = true;
+                        } else if (yaw !== yawT || pitch !== pitchT) {
+                            yaw = yawT; pitch = pitchT; dirty = true;
+                        }
                     } else if (!reduceMotion) {
-                        yaw += 0.03 * (dt / 16.7);
+                        yaw += .03 * (dt / 16.7);
+                        moving = true;
                     }
-
-                    // Keep mobile selection manual so cards in the document flow stay stable.
                     if (!reduceMotion && !narrow.matches && shown.length > 1 && !hoverPanel && now >= nextAt) {
                         setFocus((focus + 1) % shown.length, false);
+                        moving = true;
                     }
                 }
-                draw(now);
-                if (!document.hidden) requestAnimationFrame(frame);
+                const leaderMoving = !reduceMotion && now - lineT0 < 650;
+                if (dirty || moving || leaderMoving) {
+                    draw(now);
+                    dirty = false;
+                }
+                if (moving || leaderMoving) requestFrame(); else scheduleTour();
             }
 
-            document.addEventListener('visibilitychange', () => { if (!document.hidden) { last = performance.now(); requestAnimationFrame(frame); } });
+            document.addEventListener('visibilitychange', () => {
+                cancelAnimationFrame(rafId);
+                clearTimeout(tourTimer);
+                rafId = 0;
+                if (!document.hidden) { last = performance.now(); invalidate(); }
+            });
 
             // ---------------- Interaction ----------------
             function pinAt(x, y) {
@@ -429,6 +520,7 @@
                 lastY = e.clientY;
                 canvas.setPointerCapture(e.pointerId);
                 canvas.classList.add('dragging');
+                invalidate();
             });
             canvas.addEventListener('pointermove', (e) => {
                 if (!dragging) {
@@ -445,12 +537,14 @@
                     yaw += dx * 0.35;
                     pitch = Math.max(-60, Math.min(60, pitch + dy * 0.3));
                     holdUntil = nextAt = performance.now() + HOLD;
+                    invalidate();
                 }
             });
             function endDrag(e) {
                 if (!dragging) return;
                 dragging = false;
                 canvas.classList.remove('dragging');
+                invalidate();
                 if (e.type === 'pointerup' && dragMoved <= 4) {
                     const r = canvas.getBoundingClientRect();
                     const i = pinAt(e.clientX - r.left, e.clientY - r.top);
@@ -461,13 +555,14 @@
             canvas.addEventListener('pointercancel', endDrag);
 
             // Hovering or tabbing through the cards pauses the tour
-            panel.addEventListener('pointerenter', () => (hoverPanel = true));
+            panel.addEventListener('pointerenter', () => { hoverPanel = true; clearTimeout(tourTimer); });
             panel.addEventListener('pointerleave', () => {
                 hoverPanel = false;
                 nextAt = Math.max(nextAt, performance.now() + 2500);
+                scheduleTour();
             });
-            panel.addEventListener('focusin', () => (hoverPanel = true));
-            panel.addEventListener('focusout', () => (hoverPanel = false));
+            panel.addEventListener('focusin', () => { hoverPanel = true; clearTimeout(tourTimer); });
+            panel.addEventListener('focusout', () => { hoverPanel = false; nextAt = Math.max(nextAt, performance.now() + 2500); scheduleTour(); });
 
             window.addEventListener('resize', layout);
             if (document.fonts) document.fonts.ready.then(layout);
@@ -476,7 +571,9 @@
             // Publications are emitted from the same Jekyll data as the homepage.
             const publications = JSON.parse(document.getElementById('atlas-data').textContent);
             VENUES.forEach(v => { v.papers = publications.filter(p => p.venue === v.key); });
+            stage.dataset.renderer = 'canvas';
+            globeGPU = window.createAtlasGlobeRenderer?.(stage, canvas, invalidate) || null;
             start();
             layout();
-            requestAnimationFrame(frame);
+            invalidate();
         })();

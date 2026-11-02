@@ -77,6 +77,10 @@ THIS SOFTWARE.
 
 ## world-atlas 2.0.2
 
+Includes the 1:50m globe coastline and the 1:10m regional source in `scripts/data/land-10m.json`.
+Source: https://cdn.jsdelivr.net/npm/world-atlas@2.0.2/land-10m.json
+Generated atlas geometry and coastline masks are derived from these Natural Earth datasets.
+
 Copyright 2013-2019 Michael Bostock
 
 Permission to use, copy, modify, and/or distribute this software for any purpose

@@ -42,6 +42,8 @@
 .world-body { position: relative; margin-top: 24px; }
 .world-stage { position: relative; height: clamp(440px, 60vh, 600px); }
 .world-stage canvas { display: block; width: 100%; height: 100%; cursor: grab; touch-action: pan-y; }
+.world-stage .globe-surface { position: absolute; inset: 0; pointer-events: none; }
+.world-stage #globe { position: relative; }
 .world-stage canvas.dragging { cursor: grabbing; }
 .venue-panel { position: absolute; top: 0; left: 0; width: 400px; transition: opacity .3s; }
 .venue-panel.detached { opacity: .6; }
@@ -62,15 +64,15 @@
 .card-title { font-size: 23px; font-weight: 500; line-height: 1.25; color: var(--atlas-heading); }
 .card-arrow { color: rgb(var(--atlas-pin)); font-size: 22px; flex: none; margin-top: 18px; }
 .paper-card:hover .card-title { color: rgb(var(--atlas-pin)); text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 1px; }
-.island-detail { border-top: 1px solid var(--atlas-border); margin: 0 0 4px; padding-top: 12px; }
-.island-detail[hidden] { display: none; }
-.island-detail-label { color: var(--atlas-muted); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; }
-.island-map svg { display: block; width: 100%; height: 155px; overflow: visible; }
-.island-land { fill: rgb(var(--atlas-land)); stroke: rgb(var(--atlas-land)); stroke-width: .5; }
-.island-label { fill: var(--atlas-muted); font: 12px Georgia, serif; }
-.island-city { fill: var(--atlas-heading); font: 13px Georgia, serif; }
-.island-leader { fill: none; stroke: rgb(var(--atlas-pin)); stroke-width: .8; }
-.island-point { fill: #ffd34e; stroke: none; filter: drop-shadow(0 0 3px #ffc72db3); }
+.region-detail { border-top: 1px solid var(--atlas-border); margin: 0 0 4px; padding-top: 12px; }
+.region-detail[hidden] { display: none; }
+.region-detail-label { color: var(--atlas-muted); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; }
+.region-map svg { display: block; width: 100%; height: 155px; overflow: visible; }
+.region-land { fill: rgb(var(--atlas-land)); stroke: rgb(var(--atlas-land)); stroke-width: .5; }
+.region-label { fill: var(--atlas-muted); font: 12px Georgia, serif; }
+.region-city { fill: var(--atlas-heading); font: 13px Georgia, serif; }
+.region-leader { fill: none; stroke: rgb(var(--atlas-pin)); stroke-width: .8; }
+.region-point { fill: #ffd34e; stroke: none; filter: drop-shadow(0 0 3px #ffc72db3); }
 .world-note { color: var(--atlas-muted); margin: 22px 0 16px; font-size: 14px; }
 .atlas-credit { border-top: 1px solid var(--atlas-border); padding-top: 12px; font-size: 12px; color: #888; }
 @keyframes card-in { from { opacity: 0; transform: translateY(4px); } }
@@ -122,7 +124,7 @@
   .world-stage { height: min(95vw, 380px); }
   .venue-panel { position: static; width: auto; }
   .venue-city { font-size: 32px; }
-  .island-map svg { height: 176px; }
+  .region-map svg { height: 176px; }
 }
 @media (max-width: 360px) {
   .atlas-nav { flex-wrap: wrap; gap: 0; }
