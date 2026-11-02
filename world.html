@@ -1,27 +1,25 @@
 ---
-layout: null
+layout: homepage
+title: Research Atlas
+description: Chunjiang Liu's accepted papers, mapped to their conference locations.
 permalink: /world.html
+atlas: true
 ---
-<!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Research Atlas — Chunjiang Liu</title>
-<meta name="description" content="A geographic index of Chunjiang Liu's published research in 3D vision and physical system identification.">
-<link rel="canonical" href="https://chunjiangliu.com/world.html">
-<link rel="icon" href="{{ site.favicon | relative_url }}">
-<link rel="stylesheet" href="{{ '/assets/css/research-atlas.css' | relative_url }}">
-</head>
-<body>
-<nav class="top-nav" aria-label="Main navigation"><a class="site-name" href="{{ '/' | relative_url }}">Chunjiang Liu<span style="color:#b84f35">.</span></a><div class="top-nav-links"><a href="{{ '/' | relative_url }}#publications">Publications</a><a href="{{ '/world.html' | relative_url }}" aria-current="page">Atlas</a></div></nav>
-<main class="world">
-<header class="world-head"><div class="eyebrow">Field notes / Research across places</div><h1>Research Atlas<span style="color:#b84f35">.</span></h1><p>Ideas take shape across the world. Explore my accepted papers through the places that brought the research community together.</p><div class="atlas-meta"><span>01 — Drag to explore</span><span>02 — Select a conference</span></div></header>
-<div class="world-body"><div class="world-stage" id="stage"><canvas id="globe" aria-hidden="true"></canvas></div><div class="venue-panel" id="panel"><div class="venue-place" id="panel-place"></div><div id="panel-cards"></div></div></div>
-<div class="venue-chips" id="chips" role="group" aria-label="Choose a conference"></div>
-<p class="world-note" id="note" hidden>No mapped publications available. <a href="{{ '/' | relative_url }}#publications">View all publications</a>.</p>
-<p class="world-note">Conference locations, rather than travel history. Preprints and submissions are listed on the <a href="{{ '/' | relative_url }}#publications">publications page ↗</a>.</p>
-<noscript><p>Enable JavaScript to explore the globe, or <a href="{{ '/' | relative_url }}#publications">read all publications</a>.</p></noscript>
-<footer class="footer"><span>© {{ 'now' | date: '%Y' }} Chunjiang Liu · Research Atlas</span><span>Globe adapted from <a href="https://github.com/Tonychen050400/personal_page">Haoyu Chen ↗</a></span></footer>
+<main class="world" aria-labelledby="atlas-title">
+  <h2 id="atlas-title">Research Atlas</h2>
+  <p class="world-intro">Accepted papers, mapped to their conference locations. Drag the globe or select a conference to explore.</p>
+  <div class="venue-chips" id="chips" role="group" aria-label="Choose a conference"></div>
+  <div class="world-body">
+    <div class="world-stage" id="stage"><canvas id="globe" aria-hidden="true"></canvas></div>
+    <div class="venue-panel" id="panel">
+      <div class="venue-place" id="panel-place"></div>
+      <div id="panel-cards"></div>
+    </div>
+  </div>
+  <p class="world-note" id="note" hidden>No mapped publications available. <a href="{{ '/' | relative_url }}#publications">View all publications</a>.</p>
+  <p class="world-note"><a href="{{ '/' | relative_url }}#publications">All publications ↗</a> · Includes preprints and submissions.</p>
+  <noscript><p>Enable JavaScript to explore the globe, or <a href="{{ '/' | relative_url }}#publications">read all publications</a>.</p></noscript>
+  <div class="atlas-credit">Globe adapted from <a href="https://github.com/Tonychen050400/personal_page">Haoyu Chen</a>.</div>
 </main>
 <script id="atlas-data" type="application/json">[
 {% assign mapped = site.data.publications.main | where_exp: 'paper', 'paper.atlas_venue' %}
@@ -30,5 +28,4 @@ permalink: /world.html
 <script src="{{ '/assets/vendor/d3-array.min.js' | relative_url }}"></script>
 <script src="{{ '/assets/vendor/d3-geo.min.js' | relative_url }}"></script>
 <script src="{{ '/assets/vendor/topojson-client.min.js' | relative_url }}"></script>
-<script src="{{ '/assets/js/research-atlas.js' | relative_url }}"></script>
-</body></html>
+<script src="{{ '/assets/js/research-atlas.js' | relative_url }}?v={{ site.github.build_revision | default: site.time }}"></script>

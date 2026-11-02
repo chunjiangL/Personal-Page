@@ -13,8 +13,7 @@
 
             const DWELL = 7000;     // ms each conference stays in focus during the tour
             const HOLD = 15000;     // ms the tour waits after someone picks a conference or drags the globe
-            const OFFSET = 28;      // degrees the focused conference sits right of centre, toward its cards
-            const PIN = '184, 79, 53'; // terracotta markers
+            let PIN, landColor, landLight, sphereLight, sphereEdge;
             const TAU = Math.PI * 2;
             const RAD = Math.PI / 180;
 
@@ -29,6 +28,16 @@
             const cardsEl = document.getElementById('panel-cards');
             const chipsEl = document.getElementById('chips');
             const note = document.getElementById('note');
+            function readTheme() {
+                const css = getComputedStyle(stage);
+                PIN = css.getPropertyValue('--atlas-pin').trim();
+                landColor = css.getPropertyValue('--atlas-land').trim();
+                landLight = css.getPropertyValue('--atlas-land-light').trim();
+                sphereLight = css.getPropertyValue('--atlas-sphere-light').trim();
+                sphereEdge = css.getPropertyValue('--atlas-sphere-edge').trim();
+            }
+            readTheme();
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', readTheme);
 
             // Fixed pseudo-random numbers, so the globe looks the same on every visit
             const rnd = (i, s) => {
@@ -134,12 +143,11 @@
             let shown = [];                     // conferences that have at least one paper
             let arcs = [];
             let pins = [];                      // where each conference's pin is on screen
-            let anchors = [];                   // where the leader lines meet the cards
             let focus = -1;
             let yaw = 40, pitch = 18, yawT = null, pitchT = null;
             let nextAt = 0, holdUntil = 0, lineT0 = 0;
             let dragging = false, dragMoved = 0, lastX = 0, lastY = 0, hoverPanel = false;
-            let W = 0, H = 0, R = 200, cx = 0, cy = 0, panelX = 0;
+            let W = 0, H = 0, R = 200, cx = 0, cy = 0;
 
             function layout() {
                 W = stage.clientWidth;
@@ -148,32 +156,9 @@
                 canvas.width = Math.round(W * dpr);
                 canvas.height = Math.round(H * dpr);
                 ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-                if (narrow.matches) {
-                    R = Math.min(W, H) * 0.36;
-                    cx = W / 2;
-                    cy = H / 2;
-                    panel.style.left = panel.style.top = panel.style.width = '';
-                } else {
-                    const pw = Math.min(400, Math.round(W * 0.4));
-                    const left = W - pw - 40;   // room for the globe and its halo
-                    R = Math.min(H * 0.37, left * 0.4);
-                    cx = left / 2 + 10;
-                    cy = H / 2;
-                    panelX = W - pw;
-                    panel.style.width = pw + 'px';
-                    panel.style.left = panelX + 'px';
-                }
-                placePanel();
-            }
-
-            function placePanel() {
-                anchors = [];
-                if (narrow.matches || !cardsEl.childElementCount) return;
-                const top = Math.max(0, (H - panel.offsetHeight) / 2);
-                panel.style.top = top + 'px';
-                for (const card of cardsEl.children) {
-                    anchors.push({ x: panelX + card.offsetLeft, y: top + card.offsetTop + card.offsetHeight / 2 });
-                }
+                R = Math.min(W, H) * 0.37;
+                cx = W / 2;
+                cy = H / 2;
             }
 
             // ---------------- Focus ----------------
@@ -181,7 +166,7 @@
                 const now = performance.now();
                 focus = i;
                 const v = shown[i];
-                yawT = -v.lon + (narrow.matches ? 0 : OFFSET);
+                yawT = -v.lon;
                 pitchT = Math.max(-30, Math.min(40, v.lat * 0.7));
                 if (reduceMotion) {
                     yaw = yawT;
@@ -213,7 +198,6 @@
                     return card;
                 }));
                 [...chipsEl.children].forEach((chip, k) => chip.setAttribute('aria-pressed', String(k === i)));
-                placePanel();
             }
 
             function start() {
@@ -286,8 +270,8 @@
 
                 // 3. The sphere, lit from the upper left
                 const shade = ctx.createRadialGradient(cx - R * 0.35, cy - R * 0.4, R * 0.1, cx, cy, R);
-                shade.addColorStop(0, '#ffffff');
-                shade.addColorStop(1, '#eaf1f8');
+                shade.addColorStop(0, sphereLight);
+                shade.addColorStop(1, sphereEdge);
                 ctx.fillStyle = shade;
                 ctx.beginPath();
                 ctx.arc(cx, cy, R, 0, TAU);
@@ -318,7 +302,7 @@
                     const y = d.sl * cP - z0 * sP, z = d.sl * sP + z0 * cP;
                     if (z <= 0) continue;
                     const tw = reduceMotion ? 1 : 0.85 + 0.15 * Math.sin(t * 1.3 + d.tw);
-                    dot(d.light ? '90, 150, 154' : '34, 100, 108', (0.34 + 0.66 * z) * tw,
+                    dot(d.light ? landLight : landColor, (0.34 + 0.66 * z) * tw,
                         cx + R * x + d.jx, cy - R * y + d.jy, d.size * (0.6 + 0.65 * z));
                 }
                 flush();
@@ -392,11 +376,7 @@
                     ctx.strokeStyle = `rgba(${PIN}, 0.75)`;
                     ctx.fillStyle = `rgba(${PIN}, 0.9)`;
                     ctx.lineWidth = 1;
-                    if (narrow.matches) {
-                        leader([[f.x, f.y], [f.x, H]], grow, false);
-                    } else {
-                        for (const a of anchors) leader([[f.x, f.y], [a.x - 34, a.y], [a.x - 1, a.y]], grow, true);
-                    }
+                    leader([[f.x, f.y], [f.x, H]], grow, false);
                 }
             }
 
@@ -436,7 +416,8 @@
                     } else if (!reduceMotion) {
                         yaw += 0.03 * (dt / 16.7);
                     }
-                    // No auto-tour on phones: the card list sits in the page flow, so switching would make it jump
+
+                    // Reserve space for the cards on desktop; keep mobile selection manual.
                     if (!reduceMotion && !narrow.matches && shown.length > 1 && !hoverPanel && now >= nextAt) {
                         setFocus((focus + 1) % shown.length, false);
                     }
