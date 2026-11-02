@@ -315,32 +315,12 @@
                     }
                 }
 
-                // Offset the Honolulu marker into the ocean so it never hides the islands.
-                pins = shown.map((v, i) => {
+                // Keep Honolulu's marker directly above the islands, without a short leader.
+                pins = shown.map((v) => {
                     const p = rot(...v.vec);
                     const baseX = cx + R * p[0], baseY = cy - R * p[1];
                     const island = v.key === 'ICCV 2025';
-                    const pin = { x: baseX + (island ? 22 : 0), y: baseY - (island ? 24 : 0), z: p[2] };
-                    if (pin.z <= 0) return pin;
-                    const fade = Math.min(1, pin.z * 4);
-                    const on = i === focus;
-                    if (island) {
-                        ctx.strokeStyle = `rgba(${PIN}, ${fade * .8})`;
-                        ctx.lineWidth = .8;
-                        ctx.beginPath(); ctx.moveTo(baseX, baseY); ctx.lineTo(pin.x, pin.y); ctx.stroke();
-                    }
-                    ctx.fillStyle = `rgba(255, 255, 255, ${fade})`;
-                    ctx.strokeStyle = `rgba(${PIN}, ${fade})`;
-                    ctx.lineWidth = 1.5;
-                    ctx.beginPath(); ctx.arc(pin.x, pin.y, on ? 5.5 : 3.5, 0, TAU); ctx.fill(); ctx.stroke();
-                    if (on) {
-                        ctx.fillStyle = `rgba(${PIN}, ${fade})`;
-                        ctx.beginPath(); ctx.arc(pin.x, pin.y, 2, 0, TAU); ctx.fill();
-                        ctx.strokeStyle = `rgba(${PIN}, ${fade * .35})`;
-                        ctx.lineWidth = 1;
-                        ctx.beginPath(); ctx.arc(pin.x, pin.y, 11, 0, TAU); ctx.stroke();
-                    }
-                    return pin;
+                    return { x: baseX, y: baseY - (island ? 24 : 0), z: p[2] };
                 });
 
                 // One leader connects the selected place to its heading.
@@ -354,9 +334,29 @@
                     ctx.fillStyle = `rgba(${PIN}, 0.9)`;
                     ctx.lineWidth = 1;
                     if (!narrow.matches) {
-                        for (const a of anchors) leader([[f.x, f.y], [a.x - 34, a.y], [a.x - 1, a.y]], grow, true);
+                        for (const a of anchors) {
+                            const dx = a.x - 34 - f.x, dy = a.y - f.y;
+                            const distance = Math.hypot(dx, dy) || 1;
+                            // Leave space for the expanding ring instead of cutting through it.
+                            leader([[f.x + dx / distance * 15, f.y + dy / distance * 15], [a.x - 34, a.y], [a.x - 1, a.y]], grow, true);
+                        }
                     }
                 }
+
+                // Paint the simple dot and one outward ring above all map lines.
+                pins.forEach((pin, i) => {
+                    if (pin.z <= 0) return;
+                    const fade = Math.min(1, pin.z * 4);
+                    const on = i === focus;
+                    ctx.fillStyle = `rgba(${PIN}, ${fade})`;
+                    ctx.beginPath(); ctx.arc(pin.x, pin.y, on ? 2.7 : 2.2, 0, TAU); ctx.fill();
+                    if (on) {
+                        const phase = reduceMotion ? .5 : (now % 1800) / 1800;
+                        ctx.strokeStyle = `rgba(${PIN}, ${fade * .65 * (1 - phase)})`;
+                        ctx.lineWidth = 1;
+                        ctx.beginPath(); ctx.arc(pin.x, pin.y, 5 + 9 * phase, 0, TAU); ctx.stroke();
+                    }
+                });
             }
 
             // Draw the first `part` (0..1) of a polyline; once complete, mark its end with a dot
