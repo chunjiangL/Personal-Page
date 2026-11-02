@@ -42,6 +42,7 @@ permalink: /world.html
     <div class="world-stage" id="stage"><canvas id="globe" aria-hidden="true"></canvas></div>
     <div class="venue-panel" id="panel">
       <div class="venue-place" id="panel-place"></div>
+      <div class="island-detail" id="island-detail" hidden><div class="island-detail-label">Hawaiʻi · enlarged detail</div><div class="island-map"></div></div>
       <div id="panel-cards"></div>
     </div>
   </div>
@@ -52,7 +53,6 @@ permalink: /world.html
     <h2 id="unmapped-title">Preprints &amp; submissions <span class="paper-count">({{ unmapped.size }})</span></h2>
     {% for paper in unmapped %}
     <a class="paper-card" href="{{ paper.pdf }}">
-      <img src="{{ paper.image | relative_url }}" alt="" loading="lazy">
       <span class="card-body"><span class="card-badge submission">{{ paper.conference_short }}</span><span class="card-title">{{ paper.title }}</span><span class="paper-status">{{ paper.conference | strip_html }}</span></span>
     </a>
     {% endfor %}
@@ -60,11 +60,11 @@ permalink: /world.html
   {% endif %}
   <p class="world-note"><a href="{{ '/' | relative_url }}#publications">All publications ↗</a></p>
   <noscript><p>Enable JavaScript to explore the globe, or <a href="{{ '/' | relative_url }}#publications">read all publications</a>.</p></noscript>
-  <div class="atlas-credit">Globe adapted from <a href="https://github.com/Tonychen050400/personal_page">Haoyu Chen</a>.</div>
+  <div class="atlas-credit">Globe interaction adapted from <a href="https://github.com/Tonychen050400/personal_page">Haoyu Chen</a>. Coastlines: <a href="https://www.naturalearthdata.com/">Natural Earth</a>.</div>
 </main>
 <script id="atlas-data" type="application/json">[
 {% assign mapped = site.data.publications.main | where_exp: 'paper', 'paper.atlas_venue' %}
-{% for paper in mapped %}{"venue":{{ paper.atlas_venue | jsonify }},"title":{{ paper.title | jsonify }},"badge":{{ paper.atlas_badge | jsonify }},"workshop":{% if paper.conference_short == 'ICCV-W' %}true{% else %}false{% endif %},"img":{{ paper.image | relative_url | jsonify }},"href":{{ paper.pdf | jsonify }}}{% unless forloop.last %},{% endunless %}{% endfor %}
+{% for paper in mapped %}{"venue":{{ paper.atlas_venue | jsonify }},"title":{{ paper.title | jsonify }},"badge":{{ paper.atlas_badge | jsonify }},"workshop":{% if paper.conference_short == 'ICCV-W' %}true{% else %}false{% endif %},"href":{{ paper.pdf | jsonify }}}{% unless forloop.last %},{% endunless %}{% endfor %}
 ]</script>
 <script src="{{ '/assets/vendor/d3-array.min.js' | relative_url }}"></script>
 <script src="{{ '/assets/vendor/d3-geo.min.js' | relative_url }}"></script>

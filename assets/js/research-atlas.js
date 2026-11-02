@@ -40,103 +40,99 @@
             readTheme();
             window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', readTheme);
 
-            // Fixed pseudo-random numbers, so the globe looks the same on every visit
-            const rnd = (i, s) => {
-                const x = Math.sin(i * 12.9898 + s * 78.233) * 43758.5453;
-                return x - Math.floor(x);
-            };
             const vec = (lon, lat) => [Math.cos(lat) * Math.sin(lon), Math.sin(lat), Math.cos(lat) * Math.cos(lon)];
+            const projection = d3.geoOrthographic().clipAngle(90).precision(0.35);
+            const graticule = d3.geoGraticule().step([30, 30])();
+            const mapCanvas = document.createElement('canvas');
+            const mapCtx = mapCanvas.getContext('2d');
+            const mapPath = d3.geoPath(projection, mapCtx);
+            let land = null, hawaii = null, mapKey = '';
 
-            // ---------------- Dotted globe ----------------
-            // Points spread evenly over the sphere; the ones that fall on land are drawn
-            const DOT_COUNT = narrow.matches ? 18000 : 50000;
-            const dots = [];
-            const golden = Math.PI * (3 - Math.sqrt(5));
-            for (let i = 0; i < DOT_COUNT; i++) {
-                const sl = 1 - (2 * i + 1) / DOT_COUNT;
-                const lon = ((i * golden) % TAU) - Math.PI;
-                dots.push({
-                    lon, sl, cl: Math.sqrt(1 - sl * sl), land: false,
-                    size: 0.9 + 1.5 * Math.pow(rnd(i, 1), 2.2),
-                    light: rnd(i, 2) < 0.22,
-                    tw: rnd(i, 3) * TAU,
-                    jx: (rnd(i, 4) - 0.5) * 1.2,
-                    jy: (rnd(i, 5) - 0.5) * 1.2,
-                });
-            }
-            let land = [];
+            // Natural Earth's 1:50m coastline retains the Hawaiian islands.
+            fetch('assets/vendor/land-50m.json')
+                .then(r => { if (!r.ok) throw new Error('Coastline unavailable'); return r.json(); })
+                .then(topo => {
+                    land = topojson.feature(topo, topo.objects.land);
+                    const geometry = land.type === 'FeatureCollection' ? land.features[0].geometry : land.geometry;
+                    hawaii = { type: 'MultiPolygon', coordinates: geometry.coordinates.filter(polygon =>
+                        polygon[0].every(([lon, lat]) => lon > -161 && lon < -154 && lat > 18 && lat < 23)) };
+                    mapKey = '';
+                    renderIslandDetail();
+                })
+                .catch(() => { note.hidden = false; note.textContent = 'The coastline could not load. You can still explore the conference papers below.'; });
 
-            if (window.d3 && window.topojson) {
-                fetch('assets/vendor/land-110m.json')
-                    .then((r) => r.json())
-                    .then((topo) => {
-                        // Paint the continents onto a hidden flat map, then check which points land on paint
-                        const W = 1440, H = 720;
-                        const off = document.createElement('canvas');
-                        off.width = W;
-                        off.height = H;
-                        const g = off.getContext('2d', { willReadFrequently: true });
-                        const proj = d3.geoEquirectangular().scale(W / TAU).translate([W / 2, H / 2]);
-                        g.beginPath();
-                        d3.geoPath(proj, g)(topojson.feature(topo, topo.objects.land));
-                        g.fill();
-                        const px = g.getImageData(0, 0, W, H).data;
-                        dots.forEach((d) => {
-                            const x = Math.min(W - 1, Math.floor((d.lon / TAU + 0.5) * W));
-                            const y = Math.min(H - 1, Math.floor((0.5 - Math.asin(d.sl) / Math.PI) * H));
-                            d.land = px[(y * W + x) * 4 + 3] > 127;
-                        });
-                        land = dots.filter((d) => d.land);
-                    })
-                    .catch(() => {});   // without land data the globe is just the sphere and the pins
+            function svgElement(tag, attributes, text) {
+                const el = document.createElementNS('http://www.w3.org/2000/svg', tag);
+                for (const [name, value] of Object.entries(attributes)) el.setAttribute(name, value);
+                if (text) el.textContent = text;
+                return el;
             }
 
-            // Particles: a soft halo around the rim, shading just inside it, and dust drifting outside
-            const HALO = Array.from({ length: 2600 }, (_, i) => ({
-                ang: rnd(i, 11) * TAU,
-                d: Math.pow(rnd(i, 12), 2.2),
-                s: 0.6 + 1.4 * Math.pow(rnd(i, 13), 2.5),
-                a: 0.45 + 0.55 * rnd(i, 14),
-                sp: (0.01 + 0.035 * rnd(i, 15)) * (rnd(i, 16) < 0.5 ? -1 : 1),
-                light: rnd(i, 17) < 0.4,
-            }));
-            const RIM = Array.from({ length: 2600 }, (_, i) => ({
-                ang: rnd(i, 21) * TAU,
-                d: 0.4 * Math.pow(rnd(i, 22), 2),
-                s: 0.6 + 1.2 * Math.pow(rnd(i, 23), 2.2),
-                a: 0.4 + 0.6 * rnd(i, 24),
-                sp: (0.004 + 0.016 * rnd(i, 25)) * (rnd(i, 26) < 0.5 ? -1 : 1),
-            }));
-            const DUST = Array.from({ length: 260 }, (_, i) => ({
-                lon: rnd(i, 31) * TAU,
-                lat: Math.asin(rnd(i, 32) * 2 - 1),
-                r: 1.06 + 0.42 * Math.pow(rnd(i, 33), 1.5),
-                sp: (0.015 + 0.05 * rnd(i, 34)) * (rnd(i, 35) < 0.3 ? -1 : 1),
-                s: 0.6 + 1.0 * rnd(i, 36),
-                ph: rnd(i, 37) * TAU,
-            }));
-
-            // Thousands of tiny dots are grouped by colour and opacity, then each group is filled at once
-            const groups = new Map();
-            function dot(rgb, a, x, y, size) {
-                if (a < 0.03) return;
-                const key = rgb + '|' + Math.min(10, Math.round(a * 10));
-                let list = groups.get(key);
-                if (!list) groups.set(key, (list = []));
-                list.push(x, y, size / 2);
+            function renderIslandDetail() {
+                const detail = document.getElementById('island-detail');
+                const active = shown[focus]?.key === 'ICCV 2025';
+                detail.hidden = !active;
+                if (!active || !hawaii) { placePanel(); return; }
+                const local = d3.geoMercator().fitExtent([[18, 16], [342, 133]], hawaii);
+                const svg = svgElement('svg', {viewBox: '0 0 360 176', role: 'img', 'aria-label': 'Enlarged Hawaiian islands, with Honolulu on Oʻahu'});
+                svg.append(svgElement('path', {d: d3.geoPath(local)(hawaii), class: 'island-land'}));
+                for (const [name, point, dx, dy] of [
+                    ['Kauaʻi', [-159.5, 22.05], 0, -13],
+                    ['Maui', [-156.3, 20.8], 18, -12],
+                    ['Hawaiʻi', [-155.5, 19.5], 28, 23],
+                ]) {
+                    const [x, y] = local(point);
+                    svg.append(svgElement('text', {x: x + dx, y: y + dy, class: 'island-label', 'text-anchor': 'middle'}, name));
+                }
+                const [x, y] = local([-157.84, 21.29]);
+                svg.append(svgElement('path', {d: `M${x},${y} L${x - 20},145 L88,145`, class: 'island-leader'}));
+                svg.append(svgElement('circle', {cx: x, cy: y, r: 1.8, class: 'island-point'}));
+                svg.append(svgElement('text', {x: 88, y: 163, class: 'island-city'}, 'Honolulu · Oʻahu'));
+                detail.querySelector('.island-map').replaceChildren(svg);
+                placePanel();
             }
-            function flush() {
-                for (const [key, list] of groups) {
-                    if (!list.length) continue;
-                    const [rgb, a] = key.split('|');
-                    ctx.fillStyle = `rgba(${rgb}, ${a / 10})`;
-                    ctx.beginPath();
-                    for (let k = 0; k < list.length; k += 3) {
-                        ctx.moveTo(list[k] + list[k + 2], list[k + 1]);
-                        ctx.arc(list[k], list[k + 1], list[k + 2], 0, TAU);
-                    }
-                    ctx.fill();
-                    list.length = 0;
+
+            function drawBaseMap() {
+                const key = `${yaw.toFixed(2)}|${pitch.toFixed(2)}|${W}|${H}|${landColor}|${!!land}`;
+                if (mapKey === key) return;
+                mapKey = key;
+                const g = mapCtx;
+                g.clearRect(0, 0, W, H);
+                projection.rotate([yaw, -pitch]).translate([cx, cy]).scale(R);
+                const ocean = g.createRadialGradient(cx - R * .3, cy - R * .4, 0, cx, cy, R);
+                ocean.addColorStop(0, sphereLight);
+                ocean.addColorStop(1, sphereEdge);
+                g.fillStyle = ocean;
+                g.beginPath(); g.arc(cx, cy, R, 0, TAU); g.fill();
+                g.strokeStyle = `rgba(${landColor}, .14)`;
+                g.lineWidth = .65;
+                g.beginPath(); mapPath(graticule); g.stroke();
+                if (land) {
+                    const ink = g.createLinearGradient(cx - R, cy - R, cx + R, cy + R);
+                    ink.addColorStop(0, `rgb(${landLight})`);
+                    ink.addColorStop(1, `rgb(${landColor})`);
+                    g.beginPath(); mapPath(land);
+                    g.fillStyle = ink; g.fill();
+                    g.strokeStyle = `rgba(${landColor}, .8)`;
+                    g.lineWidth = .45; g.stroke();
+                    g.save(); g.clip();
+                    g.strokeStyle = 'rgba(255, 255, 255, .17)';
+                    g.beginPath(); mapPath(graticule); g.stroke();
+                    g.restore();
+                }
+                // A fine graduated rim gives the globe the feel of a printed atlas.
+                g.strokeStyle = `rgba(${landColor}, .35)`;
+                g.lineWidth = .8;
+                g.beginPath(); g.arc(cx, cy, R, 0, TAU); g.stroke();
+                g.strokeStyle = `rgba(${landColor}, .16)`;
+                g.beginPath(); g.arc(cx, cy, R + 11, 0, TAU); g.stroke();
+                for (let i = 0; i < 72; i++) {
+                    const a = i * TAU / 72;
+                    const length = i % 6 === 0 ? 6 : 2.5;
+                    g.beginPath();
+                    g.moveTo(cx + (R + 11) * Math.cos(a), cy + (R + 11) * Math.sin(a));
+                    g.lineTo(cx + (R + 11 + length) * Math.cos(a), cy + (R + 11 + length) * Math.sin(a));
+                    g.stroke();
                 }
             }
 
@@ -159,16 +155,20 @@
                 const dpr = Math.min(2, window.devicePixelRatio || 1);
                 canvas.width = Math.round(W * dpr);
                 canvas.height = Math.round(H * dpr);
+                mapCanvas.width = canvas.width;
+                mapCanvas.height = canvas.height;
+                mapCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+                mapKey = '';
                 ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
                 if (narrow.matches) {
-                    R = Math.min(W, H) * 0.36;
+                    R = Math.min(W, H) * 0.40;
                     cx = W / 2;
                     cy = H / 2;
                     panel.style.left = panel.style.top = panel.style.width = '';
                 } else {
                     const pw = Math.min(400, Math.round(W * 0.4));
                     const left = W - pw - 40;   // room for the globe and its halo
-                    R = Math.min(H * 0.37, left * 0.4);
+                    R = Math.min(H * 0.40, left * 0.43);
                     cx = left / 2 + 10;
                     cy = H / 2;
                     panelX = W - pw;
@@ -179,13 +179,18 @@
             }
 
             function placePanel() {
+                const minHeight = narrow.matches ? '' : (panel.offsetHeight + 56) + 'px';
+                if (stage.style.minHeight !== minHeight) {
+                    stage.style.minHeight = minHeight;
+                    layout();
+                    return;
+                }
                 anchors = [];
                 if (narrow.matches || !cardsEl.childElementCount) return;
                 const top = Math.max(0, (H - panel.offsetHeight) / 2);
                 panel.style.top = top + 'px';
-                for (const card of cardsEl.children) {
-                    anchors.push({ x: panelX + card.offsetLeft, y: top + card.offsetTop + card.offsetHeight / 2 });
-                }
+                const city = placeEl.querySelector('.venue-city');
+                anchors.push({ x: panelX, y: top + city.offsetTop + city.offsetHeight / 2 });
             }
 
             // ---------------- Focus ----------------
@@ -193,7 +198,7 @@
                 const now = performance.now();
                 focus = i;
                 const v = shown[i];
-                yawT = -v.lon + (narrow.matches ? 0 : OFFSET);
+                yawT = -v.lon + (v.key === 'ICCV 2025' ? -12 : narrow.matches ? 0 : OFFSET);
                 pitchT = Math.max(-30, Math.min(40, v.lat * 0.7));
                 if (reduceMotion) {
                     yaw = yawT;
@@ -203,15 +208,21 @@
                 nextAt = Math.max(now + DWELL, holdUntil);
                 lineT0 = now;
 
-                placeEl.textContent = `${v.place} · ${v.when} · ${v.papers.length} ${v.papers.length === 1 ? 'paper' : 'papers'}`;
+                const edition = document.createElement('div');
+                edition.className = 'venue-edition';
+                edition.textContent = `${v.key} · ${v.papers.length} ${v.papers.length === 1 ? 'paper' : 'papers'}`;
+                const city = document.createElement('h2');
+                city.className = 'venue-city';
+                city.textContent = v.city;
+                const meta = document.createElement('p');
+                meta.className = 'venue-meta';
+                meta.textContent = `${v.place.split(', ').slice(1).join(', ')} · ${v.when}`;
+                placeEl.replaceChildren(edition, city, meta);
                 cardsEl.replaceChildren(...v.papers.map((p, k) => {
                     const card = document.createElement('a');
                     card.className = 'paper-card';
                     card.href = p.href;
                     card.style.animationDelay = 150 + k * 90 + 'ms';
-                    const img = document.createElement('img');
-                    img.src = p.img;
-                    img.alt = '';
                     const body = document.createElement('span');
                     body.className = 'card-body';
                     const badge = document.createElement('span');
@@ -221,11 +232,15 @@
                     title.className = 'card-title';
                     title.textContent = p.title;
                     body.append(badge, title);
-                    card.append(img, body);
+                    const arrow = document.createElement('span');
+                    arrow.className = 'card-arrow';
+                    arrow.setAttribute('aria-hidden', 'true');
+                    arrow.textContent = '↗';
+                    card.append(body, arrow);
                     return card;
                 }));
                 [...chipsEl.children].forEach((chip, k) => chip.setAttribute('aria-pressed', String(k === i)));
-                placePanel();
+                renderIslandDetail();
             }
 
             function start() {
@@ -269,7 +284,6 @@
 
             // ---------------- Drawing ----------------
             function draw(now) {
-                const t = reduceMotion ? 0 : now / 1000;
                 ctx.clearRect(0, 0, W, H);
 
                 const cY = Math.cos(yaw * RAD), sY = Math.sin(yaw * RAD);
@@ -280,64 +294,10 @@
                     return [x1, y * cP - z1 * sP, y * sP + z1 * cP];
                 };
 
-                // 1. Halo around the rim
-                for (const p of HALO) {
-                    const th = p.ang + t * p.sp;
-                    const r = R * (1 + 0.32 * p.d);
-                    const a = p.a * Math.pow(1 - p.d, 1.8) * 0.45;
-                    dot(p.light ? '170, 200, 235' : '110, 160, 220', a, cx + r * Math.cos(th), cy + r * Math.sin(th), p.s);
-                }
-                flush();
+                drawBaseMap();
+                ctx.drawImage(mapCanvas, 0, 0, W, H);
 
-                // 2. Dust behind the globe
-                const dust = DUST.map((p) => {
-                    const v = rot(...vec(p.lon + t * p.sp, p.lat));
-                    return { x: cx + R * p.r * v[0], y: cy - R * p.r * v[1], z: v[2], a: 0.55 + 0.45 * Math.sin(t * 1.3 + p.ph), s: p.s };
-                });
-                for (const q of dust) if (q.z <= 0) dot('110, 150, 200', q.a * 0.25 * (1 + q.z), q.x, q.y, q.s);
-                flush();
-
-                // 3. The sphere, lit from the upper left
-                const shade = ctx.createRadialGradient(cx - R * 0.35, cy - R * 0.4, R * 0.1, cx, cy, R);
-                shade.addColorStop(0, sphereLight);
-                shade.addColorStop(1, sphereEdge);
-                ctx.fillStyle = shade;
-                ctx.beginPath();
-                ctx.arc(cx, cy, R, 0, TAU);
-                ctx.fill();
-
-                // 4. Land on the far side shows through faintly; the near side is darker and twinkles
-                for (let i = 0; i < land.length; i++) {
-                    const d = land[i];
-                    const lam = d.lon + yaw * RAD;
-                    const x = d.cl * Math.sin(lam), z0 = d.cl * Math.cos(lam);
-                    const y = d.sl * cP - z0 * sP, z = d.sl * sP + z0 * cP;
-                    if (z <= 0) {
-                        if (i % 2 === 0) dot('37, 99, 175', 0.05 + 0.06 * -z, cx + R * x, cy - R * y, 1);
-                    }
-                }
-                flush();
-
-                for (const p of RIM) {
-                    const th = p.ang + t * p.sp;
-                    const r = R * (1 - p.d);
-                    dot('96, 140, 196', p.a * Math.pow(1 - p.d / 0.4, 1.4) * 0.5, cx + r * Math.cos(th), cy + r * Math.sin(th), p.s);
-                }
-                flush();
-
-                for (const d of land) {
-                    const lam = d.lon + yaw * RAD;
-                    const x = d.cl * Math.sin(lam), z0 = d.cl * Math.cos(lam);
-                    const y = d.sl * cP - z0 * sP, z = d.sl * sP + z0 * cP;
-                    if (z <= 0) continue;
-                    const tw = reduceMotion ? 1 : 0.85 + 0.15 * Math.sin(t * 1.3 + d.tw);
-                    dot(d.light ? landLight : landColor, (0.34 + 0.66 * z) * tw,
-                        cx + R * x + d.jx, cy - R * y + d.jy, d.size * (0.6 + 0.65 * z));
-                }
-                flush();
-
-                // 5. Faint arcs from one conference to the next, fading out toward the edge of the globe
-                //    (red is kept for the pin in focus and its lines)
+                // Connections between conference locations fade toward the horizon.
                 ctx.lineWidth = 0.8;
                 for (const arc of arcs) {
                     let prev = null;
@@ -345,7 +305,7 @@
                         const v = rot(p[0], p[1], p[2]);
                         const cur = { x: cx + R * v[0], y: cy - R * v[1], z: v[2] };
                         if (prev && prev.z > 0 && cur.z > 0) {
-                            ctx.strokeStyle = `rgba(70, 100, 140, ${(0.24 * Math.min(1, (prev.z + cur.z) * 1.5)).toFixed(3)})`;
+                            ctx.strokeStyle = `rgba(${PIN}, ${(0.3 * Math.min(1, (prev.z + cur.z) * 1.5)).toFixed(3)})`;
                             ctx.beginPath();
                             ctx.moveTo(prev.x, prev.y);
                             ctx.lineTo(cur.x, cur.y);
@@ -355,47 +315,35 @@
                     }
                 }
 
-                // 6. Dust in front
-                for (const q of dust) if (q.z > 0) dot('110, 150, 200', q.a * (0.15 + 0.4 * q.z), q.x, q.y, q.s);
-                flush();
-
-                // 7. Conference pins: a glowing red point, with a ring pulsing out of the one in focus
+                // Offset the Honolulu marker into the ocean so it never hides the islands.
                 pins = shown.map((v, i) => {
                     const p = rot(...v.vec);
-                    const pin = { x: cx + R * p[0], y: cy - R * p[1], z: p[2] };
+                    const baseX = cx + R * p[0], baseY = cy - R * p[1];
+                    const island = v.key === 'ICCV 2025';
+                    const pin = { x: baseX + (island ? 22 : 0), y: baseY - (island ? 24 : 0), z: p[2] };
                     if (pin.z <= 0) return pin;
                     const fade = Math.min(1, pin.z * 4);
                     const on = i === focus;
-                    const wave = reduceMotion ? 0.5 : (Math.sin(t * 2.4 + i * 1.9) + 1) / 2;
-                    const glow = on ? 20 + 8 * wave : 9 + 4 * wave;
-                    const g = ctx.createRadialGradient(pin.x, pin.y, 0, pin.x, pin.y, glow);
-                    g.addColorStop(0, `rgba(${PIN}, ${0.55 * fade})`);
-                    g.addColorStop(0.4, `rgba(${PIN}, ${0.2 * fade})`);
-                    g.addColorStop(1, `rgba(${PIN}, 0)`);
-                    ctx.fillStyle = g;
-                    ctx.beginPath();
-                    ctx.arc(pin.x, pin.y, glow, 0, TAU);
-                    ctx.fill();
-                    if (on && !reduceMotion) {
-                        const k = (t * 0.7) % 1;
-                        ctx.strokeStyle = `rgba(${PIN}, ${0.6 * (1 - k) * fade})`;
-                        ctx.lineWidth = 1.2;
-                        ctx.beginPath();
-                        ctx.arc(pin.x, pin.y, 5 + 22 * k, 0, TAU);
-                        ctx.stroke();
+                    if (island) {
+                        ctx.strokeStyle = `rgba(${PIN}, ${fade * .8})`;
+                        ctx.lineWidth = .8;
+                        ctx.beginPath(); ctx.moveTo(baseX, baseY); ctx.lineTo(pin.x, pin.y); ctx.stroke();
                     }
-                    ctx.fillStyle = `rgba(${PIN}, ${fade})`;
-                    ctx.beginPath();
-                    ctx.arc(pin.x, pin.y, on ? 4 : 3, 0, TAU);
-                    ctx.fill();
-                    ctx.fillStyle = `rgba(255, 255, 255, ${0.95 * fade})`;
-                    ctx.beginPath();
-                    ctx.arc(pin.x, pin.y, on ? 1.6 : 1.1, 0, TAU);
-                    ctx.fill();
+                    ctx.fillStyle = `rgba(255, 255, 255, ${fade})`;
+                    ctx.strokeStyle = `rgba(${PIN}, ${fade})`;
+                    ctx.lineWidth = 1.5;
+                    ctx.beginPath(); ctx.arc(pin.x, pin.y, on ? 5.5 : 3.5, 0, TAU); ctx.fill(); ctx.stroke();
+                    if (on) {
+                        ctx.fillStyle = `rgba(${PIN}, ${fade})`;
+                        ctx.beginPath(); ctx.arc(pin.x, pin.y, 2, 0, TAU); ctx.fill();
+                        ctx.strokeStyle = `rgba(${PIN}, ${fade * .35})`;
+                        ctx.lineWidth = 1;
+                        ctx.beginPath(); ctx.arc(pin.x, pin.y, 11, 0, TAU); ctx.stroke();
+                    }
                     return pin;
                 });
 
-                // 8. Leader lines from the pin in focus out to its paper cards
+                // One leader connects the selected place to its heading.
                 const f = pins[focus];
                 const seen = !!f && f.z > 0.06;
                 panel.classList.toggle('detached', !!f && !seen);
@@ -405,9 +353,7 @@
                     ctx.strokeStyle = `rgba(${PIN}, 0.75)`;
                     ctx.fillStyle = `rgba(${PIN}, 0.9)`;
                     ctx.lineWidth = 1;
-                    if (narrow.matches) {
-                        leader([[f.x, f.y], [f.x, H]], grow, false);
-                    } else {
+                    if (!narrow.matches) {
                         for (const a of anchors) leader([[f.x, f.y], [a.x - 34, a.y], [a.x - 1, a.y]], grow, true);
                     }
                 }
@@ -437,8 +383,10 @@
             }
 
             // ---------------- Animation loop ----------------
-            let last = performance.now();
+            let last = performance.now(), lastPaint = 0;
             function frame(now) {
+                if (now - lastPaint < 32) { if (!document.hidden) requestAnimationFrame(frame); return; }
+                lastPaint = now;
                 const dt = Math.min(50, now - last);
                 last = now;
                 if (!dragging) {
