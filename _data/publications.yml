@@ -7,6 +7,32 @@ main:
     pdf: https://arxiv.org/abs/2607.01766
     image: ./assets/img/simworlds_preview.png
 
+  # Venue and author order verified against the official COLM 2026 proceedings:
+  # https://proceedings.colm.cc/paper_files/paper/2026/hash/b1ccad30cbede18aa76c8d5cf408fa4e-Abstract-Conference.html
+  - title: "Visual Aesthetic Benchmark: Can Frontier Models Judge Beauty?"
+    authors: Yichen Feng, Yuetai Li, <strong>Chunjiang Liu</strong>, Fengqing Jiang, Yue Huang, Yuanyuan Chen, Hang Hua, Zhengqing Yuan, Kaiyuan Zheng, Luyao Niu, Bhaskar Ramasubramanian, Basel Alomair, Xiangliang Zhang, Misha Sra, Zichen Chen, Radha Poovendran, Zhangchen Xu
+    atlas_venue: COLM 2026
+    atlas_badge: COLM 2026
+    conference_short: COLM
+    conference: Conference on Language Modeling <strong>(COLM)</strong>, 2026.
+    pdf: https://arxiv.org/abs/2605.12684
+    code: https://github.com/BakeLab/Visual-Aesthetic-Benchmark
+    page: https://vab.bakelab.ai/
+    image: ./assets/img/vab_preview.png
+
+  # Venue and authors: https://memobench-team.github.io/
+  # Also listed as ECCV 2026 by the coauthors at https://ccvl.jhu.edu/publication/
+  - title: "MemoBench: Benchmarking World Modeling in Dynamically Changing Environments"
+    authors: Haoyu Chen, Kaichen Zhou, Hang Hua, Kaile Zhang, Jingwen Qian, Wufei Ma, Haonan Chen, <strong>Chunjiang Liu</strong>, Yizhou Zhao, Xiaoyuan Wang, Weiyue Li, Alan Yuille, Paul Pu Liang, Yilun Du
+    atlas_venue: ECCV 2026
+    atlas_badge: ECCV 2026
+    conference_short: ECCV
+    conference: European Conference on Computer Vision <strong>(ECCV)</strong>, 2026.
+    pdf: https://arxiv.org/abs/2606.27537
+    code: https://github.com/MemoBench-Team/MemoBench
+    page: https://memobench-team.github.io/
+    image: ./assets/img/memobench_preview.jpg
+
   - title: "MOSIV: Multi-Object System Identification from Videos"
     authors: <strong>Chunjiang Liu</strong>, Xiaoyuan Wang, Qingran Lin, Albert Xiao, Haoyu Chen, Shizheng Wen, Hao Zhang, Lu Qi, Ming-Hsuan Yang, Laszlo A. Jeni, Min Xu, Yizhou Zhao
     atlas_venue: ICLR 2026
@@ -16,7 +42,7 @@ main:
     pdf: https://arxiv.org/abs/2603.06022
     image: ./assets/img/mosiv_preview.jpg
 
-  - title: "Toward Material-Agnostic System Identification from Videos"
+  - title: "MASIV: Toward Material-Agnostic System Identification from Videos"
     authors: Yizhou Zhao, Haoyu Chen, <strong>Chunjiang Liu</strong>, Zhenyang Li, Charles Herrmann, Junhwa Hur, Yinxiao Li, Ming-Hsuan Yang, Bhiksha Raj, Min Xu
     atlas_venue: ICCV 2025
     atlas_badge: ICCV 2025

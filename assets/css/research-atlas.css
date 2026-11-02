@@ -122,3 +122,10 @@
   .atlas-nav { flex-wrap: wrap; gap: 0; }
   .atlas-nav-links { width: 100%; }
 }
+
+.atlas-summary { color: var(--atlas-muted); font-size: 14px; margin: 0 0 12px; }
+.atlas-unmapped { margin-top: 20px; }
+.atlas-unmapped h2 { font-size: 22px; margin-bottom: 12px; }
+.paper-count { font-size: 16px; font-weight: 400; color: var(--atlas-muted); }
+.paper-status { font-size: 14px; color: var(--atlas-muted); }
+.card-badge.submission { background: #687384; }

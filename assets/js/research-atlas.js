@@ -3,10 +3,11 @@
         (function () {
             'use strict';
 
-            // Where each conference was held, newest first; the globe tours them in this order.
-            // A paper on index.html is pinned here when its venue badge starts with one of these
-            // keys (so "ICCV 2025 Workshop" goes to ICCV 2025). Preprints have no key and are skipped.
+            // Conferences with verified papers in _data/publications.yml.
+            // Locations: https://colm.cc/ and https://eccv.ecva.net/Conferences/2026/Venues
             const VENUES = [
+                { key: 'COLM 2026', city: 'San Francisco', place: 'San Francisco, California', when: 'Oct 2026', lon: -122.410, lat: 37.786 },
+                { key: 'ECCV 2026', city: 'Malmö', place: 'Malmö, Sweden', when: 'Sep 2026', lon: 12.976, lat: 55.565 },
                 { key: 'ICLR 2026', city: 'Rio de Janeiro', place: 'Rio de Janeiro, Brazil', when: 'Apr 2026', lon: -43.41, lat: -22.98 },
                 { key: 'ICCV 2025', city: 'Honolulu', place: 'Honolulu, Hawaiʻi', when: 'Oct 2025', lon: -157.84, lat: 21.29 },
             ];
@@ -202,7 +203,7 @@
                 nextAt = Math.max(now + DWELL, holdUntil);
                 lineT0 = now;
 
-                placeEl.textContent = `${v.place} · ${v.when}`;
+                placeEl.textContent = `${v.place} · ${v.when} · ${v.papers.length} ${v.papers.length === 1 ? 'paper' : 'papers'}`;
                 cardsEl.replaceChildren(...v.papers.map((p, k) => {
                     const card = document.createElement('a');
                     card.className = 'paper-card';
@@ -233,6 +234,7 @@
                     note.hidden = false;
                     return;
                 }
+                document.getElementById('atlas-summary').textContent = `${shown.reduce((sum, v) => sum + v.papers.length, 0)} papers · ${shown.length} conference locations`;
                 shown.forEach((v) => (v.vec = vec(v.lon * RAD, v.lat * RAD)));
                 arcs = [];
                 for (let i = 0; i + 1 < shown.length; i++) arcs.push(makeArc(shown[i], shown[i + 1]));
@@ -240,7 +242,7 @@
                     const chip = document.createElement('button');
                     chip.type = 'button';
                     chip.className = 'chip';
-                    chip.textContent = `${v.key} · ${v.city}`;
+                    chip.textContent = `${v.key} · ${v.city} · ${v.papers.length} ${v.papers.length === 1 ? 'paper' : 'papers'}`;
                     chip.addEventListener('click', () => setFocus(i, true));
                     return chip;
                 }));
