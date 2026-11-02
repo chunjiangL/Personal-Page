@@ -45,17 +45,6 @@ permalink: /world.html
     </div>
   </div>
   <p class="world-note" id="note" hidden>No mapped publications available. <a href="{{ '/' | relative_url }}#publications">View all publications</a>.</p>
-  {% assign unmapped = site.data.publications.main | where_exp: 'paper', 'paper.atlas_venue == nil' %}
-  {% if unmapped.size > 0 %}
-  <div class="atlas-unmapped" aria-labelledby="unmapped-title">
-    <h2 id="unmapped-title">Preprints &amp; submissions</h2>
-    {% for paper in unmapped %}
-    <a class="paper-card" href="{{ paper.pdf }}">
-      <span class="card-body"><span class="card-badge submission">{{ paper.conference_short }}</span><span class="card-title">{{ paper.title }}</span><span class="paper-status">{{ paper.conference | strip_html }}</span></span>
-    </a>
-    {% endfor %}
-  </div>
-  {% endif %}
   <p class="world-note"><a href="{{ '/' | relative_url }}#publications">All publications ↗</a></p>
   <noscript><p>Enable JavaScript to explore the globe, or <a href="{{ '/' | relative_url }}#publications">read all publications</a>.</p></noscript>
   <div class="atlas-credit">Globe interaction adapted from <a href="https://github.com/Tonychen050400/personal_page">Haoyu Chen</a>. Coastlines: <a href="https://www.naturalearthdata.com/">Natural Earth</a>.</div>

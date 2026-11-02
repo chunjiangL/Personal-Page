@@ -131,7 +131,3 @@
   .atlas-nav-links { width: 100%; }
 }
 
-.atlas-unmapped { margin-top: 20px; }
-.atlas-unmapped h2 { font-size: 22px; margin-bottom: 12px; }
-.paper-status { font-size: 14px; color: var(--atlas-muted); }
-.atlas-unmapped .card-title { font-size: 21px; }
