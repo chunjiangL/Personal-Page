@@ -19,7 +19,7 @@ I worked at an AI startup, where I built evaluation and sandbox infrastructure f
 ### Member of Technical Staff, Bake AI Inc.
 *2025-2026*
 
-<p class="experience-keywords">Agent Evaluation · Benchmarking · 1Bench · ArtArena</p>
+<p class="experience-keywords">Agent Evaluation · Benchmarking · ArtArena</p>
 
 ### Research Associate, Carnegie Mellon University, ECE
 *2024 — 2025*
