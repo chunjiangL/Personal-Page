@@ -10,7 +10,8 @@ main:
   # Venue and author order verified against the official COLM 2026 proceedings:
   # https://proceedings.colm.cc/paper_files/paper/2026/hash/b1ccad30cbede18aa76c8d5cf408fa4e-Abstract-Conference.html
   - title: "Visual Aesthetic Benchmark: Can Frontier Models Judge Beauty?"
-    authors: Yichen Feng, Yuetai Li, <strong>Chunjiang Liu</strong>, Fengqing Jiang, Yue Huang, Yuanyuan Chen, Hang Hua, Zhengqing Yuan, Kaiyuan Zheng, Luyao Niu, Bhaskar Ramasubramanian, Basel Alomair, Xiangliang Zhang, Misha Sra, Zichen Chen, Radha Poovendran, Zhangchen Xu
+    authors: Yichen Feng<sup>*</sup>, Yuetai Li<sup>*</sup>, <strong>Chunjiang Liu</strong><sup>*</sup>, Fengqing Jiang, Yue Huang, Yuanyuan Chen, Hang Hua, Zhengqing Yuan, Kaiyuan Zheng, Luyao Niu, Bhaskar Ramasubramanian, Basel Alomair, Xiangliang Zhang, Misha Sra, Zichen Chen, Radha Poovendran, Zhangchen Xu
+    equal_contribution: true
     atlas_venue: COLM 2026
     atlas_badge: COLM 2026
     conference_short: COLM
