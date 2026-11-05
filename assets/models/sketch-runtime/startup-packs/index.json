@@ -1,0 +1,290 @@
+{
+  "schema": "sketch.startup-packs.v1",
+  "format": "concatenated-gzip-members",
+  "scene": "neighborhood",
+  "memberCount": 44,
+  "totalBytes": 48691926,
+  "members": {
+    "contours/neighborhood-000-55f6b8d3ae03.bin.gz": {
+      "sha256": "55f6b8d3ae036a7d4f246c6fb770a42ce4200326c5ac58d01bbfd27834eb48c1",
+      "pack": "startup-packs/neighborhood-6f0c1aa0e7008d67f1c8b0626b25668eb57fea04a3dc8a1949320a7039d3d3ca.bin",
+      "offset": 0,
+      "length": 3595704
+    },
+    "contours/neighborhood-001-09de8c42a98c.bin.gz": {
+      "sha256": "09de8c42a98c6eddd25b09a0d579ace14494bd737a74b790982d10fc5f13ceae",
+      "pack": "startup-packs/neighborhood-35f716a6d62fd4bbaf12af0745728863ecc5354ac7b88ec91144628357a80271.bin",
+      "offset": 0,
+      "length": 1486634
+    },
+    "contours/neighborhood-manifest.json.gz": {
+      "sha256": "1712c9ded3d33d4006d6109ac74671d47c71c2b8323bae52fc51c64a8959b3aa",
+      "pack": "startup-packs/neighborhood-6f0c1aa0e7008d67f1c8b0626b25668eb57fea04a3dc8a1949320a7039d3d3ca.bin",
+      "offset": 3595704,
+      "length": 74516
+    },
+    "files/models/kitchenware/cups/teacup-saucer/versions/v0002/model.glb.gz": {
+      "sha256": "ef702ff9f2c2f7434cdae90b6ac65a7e44e0414f82f9e53149efd4caa5c1114c",
+      "pack": "startup-packs/neighborhood-f6ef94cd96e38e4370a336e0812fa7bbab31b3a218c9e35cc7e4539758c63657.bin",
+      "offset": 0,
+      "length": 32605
+    },
+    "files/models/personal/books/studio-clothbound-reading-book/versions/v0001/model.glb.gz": {
+      "sha256": "79f1be6aeff9a3cffcb8f73a6e2e91f50512644f2efa5725b435160096d18d62",
+      "pack": "startup-packs/neighborhood-35f716a6d62fd4bbaf12af0745728863ecc5354ac7b88ec91144628357a80271.bin",
+      "offset": 1486634,
+      "length": 165908
+    },
+    "files/models/street/buildings/street-corner-pediment/versions/v0001/model.glb.gz": {
+      "sha256": "9c5dd82bf56ffabfc00517524c8975e90533efe064df07b5e9ce5d2fc8d6cbf4",
+      "pack": "startup-packs/neighborhood-35f716a6d62fd4bbaf12af0745728863ecc5354ac7b88ec91144628357a80271.bin",
+      "offset": 1652542,
+      "length": 885624
+    },
+    "files/models/street/buildings/street-courtyard-house/versions/v0001/model.glb.gz": {
+      "sha256": "83e23b86b5319a66d2a81744a189f80792462990115d3de07bd05ac1aff7740d",
+      "pack": "startup-packs/neighborhood-f6ef94cd96e38e4370a336e0812fa7bbab31b3a218c9e35cc7e4539758c63657.bin",
+      "offset": 32605,
+      "length": 374991
+    },
+    "files/models/street/buildings/street-garden-terrace/versions/v0001/model.glb.gz": {
+      "sha256": "a90910fab5c7ac6194c21b236361ea56f518f26b19c23974013e83efd3bc74f8",
+      "pack": "startup-packs/neighborhood-f6ef94cd96e38e4370a336e0812fa7bbab31b3a218c9e35cc7e4539758c63657.bin",
+      "offset": 407596,
+      "length": 1015027
+    },
+    "files/models/street/buildings/street-market-gable/versions/v0002/model.glb.gz": {
+      "sha256": "bd6817d769b2817fc8db25b73ed795c07b7e4832a7dad61ef77e77f67efbbabe",
+      "pack": "startup-packs/neighborhood-6f0c1aa0e7008d67f1c8b0626b25668eb57fea04a3dc8a1949320a7039d3d3ca.bin",
+      "offset": 3670220,
+      "length": 728078
+    },
+    "files/models/street/buildings/street-narrow-courtyard/versions/v0001/model.glb.gz": {
+      "sha256": "50f133da15f2a17e218963c923d29378941058e3d69301b572b4563e45e0ed5f",
+      "pack": "startup-packs/neighborhood-f6ef94cd96e38e4370a336e0812fa7bbab31b3a218c9e35cc7e4539758c63657.bin",
+      "offset": 1422623,
+      "length": 487404
+    },
+    "files/models/street/buildings/street-reading-mansard/versions/v0002/model.glb.gz": {
+      "sha256": "de47a7bfcf854e92ce80173eba10a3fe99f666ff883f87f2a6912c34f6620e40",
+      "pack": "startup-packs/neighborhood-f6ef94cd96e38e4370a336e0812fa7bbab31b3a218c9e35cc7e4539758c63657.bin",
+      "offset": 1910027,
+      "length": 732529
+    },
+    "files/models/street/buildings/street-workshop-brick/versions/v0001/model.glb.gz": {
+      "sha256": "e48839001bcc54d4a6200b002a932d338c29b7c222b7e726876e23b12ec2c33f",
+      "pack": "startup-packs/neighborhood-35f716a6d62fd4bbaf12af0745728863ecc5354ac7b88ec91144628357a80271.bin",
+      "offset": 2538166,
+      "length": 580382
+    },
+    "files/models/street/fixtures/street-cast-drain-grate/versions/v0001/model.glb.gz": {
+      "sha256": "55eb09ed6a257c5ca76b1b071a1ee83316bdc0b43cd90bb83a6bc09d85bc47fd",
+      "pack": "startup-packs/neighborhood-35f716a6d62fd4bbaf12af0745728863ecc5354ac7b88ec91144628357a80271.bin",
+      "offset": 3118548,
+      "length": 65881
+    },
+    "files/models/street/fixtures/street-courtyard-gate/versions/v0001/model.glb.gz": {
+      "sha256": "443adc171240724a6bafe55ee26e89b1b637ad6e94c7774d0c0f7c54ce6cb4fe",
+      "pack": "startup-packs/neighborhood-f6ef94cd96e38e4370a336e0812fa7bbab31b3a218c9e35cc7e4539758c63657.bin",
+      "offset": 2642556,
+      "length": 168469
+    },
+    "files/models/street/fixtures/street-wall-lantern/versions/v0001/model.glb.gz": {
+      "sha256": "ffe07490f9e5f37835c2917eae28b4d09e54ebe84029ff4cdccfdcc7f6ce0c6c",
+      "pack": "startup-packs/neighborhood-6f0c1aa0e7008d67f1c8b0626b25668eb57fea04a3dc8a1949320a7039d3d3ca.bin",
+      "offset": 4398298,
+      "length": 39308
+    },
+    "files/models/street/furniture/street-city-bicycle/versions/v0001/model.glb.gz": {
+      "sha256": "73df15a3fdbee5d545813dcd847da2e76ef4a6b2ec0e5f2230c663330ff8e22d",
+      "pack": "startup-packs/neighborhood-6f0c1aa0e7008d67f1c8b0626b25668eb57fea04a3dc8a1949320a7039d3d3ca.bin",
+      "offset": 4437606,
+      "length": 223399
+    },
+    "files/models/street/furniture/street-cycle-stand/versions/v0002/model.glb.gz": {
+      "sha256": "20a520768b09a3e4c8dd675abcd3d209f16b581a5a43cfe321da24ec457880d4",
+      "pack": "startup-packs/neighborhood-6f0c1aa0e7008d67f1c8b0626b25668eb57fea04a3dc8a1949320a7039d3d3ca.bin",
+      "offset": 4661005,
+      "length": 22784
+    },
+    "files/models/street/furniture/street-heritage-bollard/versions/v0002/model.glb.gz": {
+      "sha256": "200dbd6636ff26143f18d0a67e9cbb752baa98d26217a11e11fcdae5430f7712",
+      "pack": "startup-packs/neighborhood-f6ef94cd96e38e4370a336e0812fa7bbab31b3a218c9e35cc7e4539758c63657.bin",
+      "offset": 2811025,
+      "length": 22298
+    },
+    "files/models/street/furniture/street-oak-cafe-chair/versions/v0001/model.glb.gz": {
+      "sha256": "12c520c435aa8b743a51510df1f1da3ef7d8ca0239c430dc421e57f022b509cc",
+      "pack": "startup-packs/neighborhood-f6ef94cd96e38e4370a336e0812fa7bbab31b3a218c9e35cc7e4539758c63657.bin",
+      "offset": 2833323,
+      "length": 232390
+    },
+    "files/models/street/furniture/street-oak-cafe-table/versions/v0001/model.glb.gz": {
+      "sha256": "53ab7e1d3915ba37ac4a88689793971ded909d8852b58952296f2a741203dcb6",
+      "pack": "startup-packs/neighborhood-6f0c1aa0e7008d67f1c8b0626b25668eb57fea04a3dc8a1949320a7039d3d3ca.bin",
+      "offset": 4683789,
+      "length": 168248
+    },
+    "files/models/street/furniture/street-oak-litter-bin/versions/v0002/model.glb.gz": {
+      "sha256": "052e8ff7a787718397154de43eda1dfddc00e542c875ae2db18b9ac6b5751827",
+      "pack": "startup-packs/neighborhood-f6ef94cd96e38e4370a336e0812fa7bbab31b3a218c9e35cc7e4539758c63657.bin",
+      "offset": 3065713,
+      "length": 146727
+    },
+    "files/models/street/furniture/street-oak-menu-board/versions/v0002/model.glb.gz": {
+      "sha256": "2d28ee0d279920ff2ac6c3506e861073581afe39213184a6396af280710efc81",
+      "pack": "startup-packs/neighborhood-35f716a6d62fd4bbaf12af0745728863ecc5354ac7b88ec91144628357a80271.bin",
+      "offset": 3184429,
+      "length": 472293
+    },
+    "files/models/street/furniture/street-oak-public-bench/versions/v0002/model.glb.gz": {
+      "sha256": "981d87a037d72990270c47da623f0e63031d3f29c9a1ff4456962cb0ed9977db",
+      "pack": "startup-packs/neighborhood-35f716a6d62fd4bbaf12af0745728863ecc5354ac7b88ec91144628357a80271.bin",
+      "offset": 3656722,
+      "length": 179500
+    },
+    "files/models/street/planters/street-terracotta-window-box/versions/v0001/model.glb.gz": {
+      "sha256": "c763ecaa04f40587e00b3ea718f61085256a49131a9eed22cf58b527e3f8f14b",
+      "pack": "startup-packs/neighborhood-6f0c1aa0e7008d67f1c8b0626b25668eb57fea04a3dc8a1949320a7039d3d3ca.bin",
+      "offset": 4852037,
+      "length": 404578
+    },
+    "files/models/street/shopfronts/street-bakery-bread-tray/versions/v0001/model.glb.gz": {
+      "sha256": "2aaaf5f64029ae6385a2e70b835914f47983976b281ebc90a0e4ce6953a34530",
+      "pack": "startup-packs/neighborhood-6f0c1aa0e7008d67f1c8b0626b25668eb57fea04a3dc8a1949320a7039d3d3ca.bin",
+      "offset": 5256615,
+      "length": 145437
+    },
+    "files/models/street/shopfronts/street-canvas-awning-2600/versions/v0001/model.glb.gz": {
+      "sha256": "dc298ae839fde7ab5d60778449bec3389c572d0a368bab8eaad192aeb9b4939b",
+      "pack": "startup-packs/neighborhood-6f0c1aa0e7008d67f1c8b0626b25668eb57fea04a3dc8a1949320a7039d3d3ca.bin",
+      "offset": 5402052,
+      "length": 79291
+    },
+    "files/models/street/shopfronts/street-canvas-awning-3000/versions/v0001/model.glb.gz": {
+      "sha256": "1d368e196e82507988c0fea072558df17f81b08d2679e9f632878d606624afec",
+      "pack": "startup-packs/neighborhood-35f716a6d62fd4bbaf12af0745728863ecc5354ac7b88ec91144628357a80271.bin",
+      "offset": 3836222,
+      "length": 76923
+    },
+    "files/models/street/shopfronts/street-canvas-awning-3700/versions/v0001/model.glb.gz": {
+      "sha256": "d43d5335f8b6a4b138b7a60a5b16c50a57f3ab412d8eb28d8424b63ec4b12eb9",
+      "pack": "startup-packs/neighborhood-35f716a6d62fd4bbaf12af0745728863ecc5354ac7b88ec91144628357a80271.bin",
+      "offset": 3913145,
+      "length": 80738
+    },
+    "files/models/street/shopfronts/street-projecting-sign-bakery/versions/v0002/model.glb.gz": {
+      "sha256": "04a9d64abf3696cc1df27bba0a79d6999b269489cb781161a8e4ae38237cc58c",
+      "pack": "startup-packs/neighborhood-35f716a6d62fd4bbaf12af0745728863ecc5354ac7b88ec91144628357a80271.bin",
+      "offset": 3993883,
+      "length": 238608
+    },
+    "files/models/street/shopfronts/street-projecting-sign-books/versions/v0002/model.glb.gz": {
+      "sha256": "d9d6dc66450c67abeace2704128a8bfb32bf460fdfad002e3d31229c132f8d3d",
+      "pack": "startup-packs/neighborhood-f6ef94cd96e38e4370a336e0812fa7bbab31b3a218c9e35cc7e4539758c63657.bin",
+      "offset": 3212440,
+      "length": 239458
+    },
+    "files/models/street/shopfronts/street-projecting-sign-cafe/versions/v0002/model.glb.gz": {
+      "sha256": "5928105932b8eae52a40205b7bab43b9ae81606034f4fca09ac432871b724d6e",
+      "pack": "startup-packs/neighborhood-6f0c1aa0e7008d67f1c8b0626b25668eb57fea04a3dc8a1949320a7039d3d3ca.bin",
+      "offset": 5481343,
+      "length": 238983
+    },
+    "files/models/street/shopfronts/street-projecting-sign-florist/versions/v0002/model.glb.gz": {
+      "sha256": "900bbdef0a10fe9198089b141f87ab810543ef7299e2c4745463d102a1e0417b",
+      "pack": "startup-packs/neighborhood-35f716a6d62fd4bbaf12af0745728863ecc5354ac7b88ec91144628357a80271.bin",
+      "offset": 4232491,
+      "length": 243090
+    },
+    "manifest.json.gz": {
+      "sha256": "c28413847912413dda48a41ca1809a9459e774b1880c767b5d64ab8d0b1f1dcd",
+      "pack": "startup-packs/neighborhood-f6ef94cd96e38e4370a336e0812fa7bbab31b3a218c9e35cc7e4539758c63657.bin",
+      "offset": 3451898,
+      "length": 67220
+    },
+    "prepared-compact/exterior-stable-coded-000.bin.gz": {
+      "sha256": "6b7f06da01dbcbf73ac13d73d38a4db922718bd459437b67d9865e09e2f4a50f",
+      "pack": "startup-packs/neighborhood-f6ef94cd96e38e4370a336e0812fa7bbab31b3a218c9e35cc7e4539758c63657.bin",
+      "offset": 3519118,
+      "length": 2727945
+    },
+    "prepared-compact/exterior-stable-coded-001.bin.gz": {
+      "sha256": "0274fb776f8b7311304b4eaefeb3fd90be8ee5bd059f64f5b9967a9d0b12d4be",
+      "pack": "startup-packs/neighborhood-35f716a6d62fd4bbaf12af0745728863ecc5354ac7b88ec91144628357a80271.bin",
+      "offset": 4475581,
+      "length": 1154063
+    },
+    "prepared-compact/exterior-stable-raw-000.bin.gz": {
+      "sha256": "be0703ed768194289c027a27ffa5f61cf04ace4df994af6cc2117b75cb693a2e",
+      "pack": "startup-packs/neighborhood-6f0c1aa0e7008d67f1c8b0626b25668eb57fea04a3dc8a1949320a7039d3d3ca.bin",
+      "offset": 5720326,
+      "length": 4358273
+    },
+    "prepared-compact/exterior-stable-raw-001.bin.gz": {
+      "sha256": "6bf3099650bfd15b113ddd72ba1f3eaf780676e5fcd4ed5510f08bba24da59cc",
+      "pack": "startup-packs/neighborhood-6f0c1aa0e7008d67f1c8b0626b25668eb57fea04a3dc8a1949320a7039d3d3ca.bin",
+      "offset": 10078599,
+      "length": 3928462
+    },
+    "prepared-compact/exterior-stable-raw-002.bin.gz": {
+      "sha256": "f95ebf6024bebc35c3304aaf0c806558d969d9931a59810e84dbe7d0621996ae",
+      "pack": "startup-packs/neighborhood-f6ef94cd96e38e4370a336e0812fa7bbab31b3a218c9e35cc7e4539758c63657.bin",
+      "offset": 6247063,
+      "length": 3793856
+    },
+    "prepared-compact/exterior-stable-raw-003.bin.gz": {
+      "sha256": "3d5ad67014cb10d2809fb9d0cd176d3a1ffc5e45bffe0532f475840336aefc7c",
+      "pack": "startup-packs/neighborhood-35f716a6d62fd4bbaf12af0745728863ecc5354ac7b88ec91144628357a80271.bin",
+      "offset": 5629644,
+      "length": 3787485
+    },
+    "prepared-compact/exterior-stable-raw-004.bin.gz": {
+      "sha256": "c0303eaacd14e5edf40fa1a971bca754da8132bcddffe334af5b29caf1c51dce",
+      "pack": "startup-packs/neighborhood-6f0c1aa0e7008d67f1c8b0626b25668eb57fea04a3dc8a1949320a7039d3d3ca.bin",
+      "offset": 14007061,
+      "length": 761106
+    },
+    "prepared-compact/exterior-transient-packed-000.bin.gz": {
+      "sha256": "d61c6ff20bea553c1b44010c39cb239c1794b324218b97705394da3df2b93d93",
+      "pack": "startup-packs/neighborhood-f6ef94cd96e38e4370a336e0812fa7bbab31b3a218c9e35cc7e4539758c63657.bin",
+      "offset": 10040919,
+      "length": 6074456
+    },
+    "prepared-compact/exterior-transient-packed-001.bin.gz": {
+      "sha256": "47abe692e1d2b29b756f6d711f6e05f7ca5200866e4997a8d6d76e1ed639d2bc",
+      "pack": "startup-packs/neighborhood-35f716a6d62fd4bbaf12af0745728863ecc5354ac7b88ec91144628357a80271.bin",
+      "offset": 9417129,
+      "length": 6806485
+    },
+    "prepared-compact/exterior-transient-packed-002.bin.gz": {
+      "sha256": "e400496f443a6f5d269fff6a3b4890e290657da07bd257b45d669113f7a904af",
+      "pack": "startup-packs/neighborhood-6f0c1aa0e7008d67f1c8b0626b25668eb57fea04a3dc8a1949320a7039d3d3ca.bin",
+      "offset": 14768167,
+      "length": 1459534
+    },
+    "prepared-compact/neighborhood-manifest.json.gz": {
+      "sha256": "4ac5040e0eacf8e66d418d7fa87b88a4883436511d1b034d8aa88a320f42a51c",
+      "pack": "startup-packs/neighborhood-f6ef94cd96e38e4370a336e0812fa7bbab31b3a218c9e35cc7e4539758c63657.bin",
+      "offset": 16115375,
+      "length": 125236
+    }
+  },
+  "packs": [
+    {
+      "file": "startup-packs/neighborhood-35f716a6d62fd4bbaf12af0745728863ecc5354ac7b88ec91144628357a80271.bin",
+      "sha256": "35f716a6d62fd4bbaf12af0745728863ecc5354ac7b88ec91144628357a80271",
+      "bytes": 16223614
+    },
+    {
+      "file": "startup-packs/neighborhood-f6ef94cd96e38e4370a336e0812fa7bbab31b3a218c9e35cc7e4539758c63657.bin",
+      "sha256": "f6ef94cd96e38e4370a336e0812fa7bbab31b3a218c9e35cc7e4539758c63657",
+      "bytes": 16240611
+    },
+    {
+      "file": "startup-packs/neighborhood-6f0c1aa0e7008d67f1c8b0626b25668eb57fea04a3dc8a1949320a7039d3d3ca.bin",
+      "sha256": "6f0c1aa0e7008d67f1c8b0626b25668eb57fea04a3dc8a1949320a7039d3d3ca",
+      "bytes": 16227701
+    }
+  ]
+}

@@ -4,6 +4,7 @@ import path from 'node:path';
 import {createHash} from 'node:crypto';
 import {adaptVehicleFleetSource} from './viewer/vehicle-fleet.mjs';
 import {adaptSceneLoaderSource} from './viewer/scene-loading.mjs';
+import {buildStartupPacks} from './pack-sketch-startup.mjs';
 const root=process.env.SKETCH_GAME_ROOT||'G:/Personal Projects/SketchGame';
 const adapter=path.resolve('scripts/viewer/static-assets.js');
 const prepared=JSON.parse(await fs.readFile('assets/models/sketch-runtime/prepared-compact/manifest.json','utf8'));
@@ -22,8 +23,9 @@ for(const [base,sources]of [[root,contours.algorithmSources],[process.cwd(),cont
  if(createHash('sha256').update(await fs.readFile(path.join(base,file))).digest('hex')!==expected)throw Error('Original contour algorithm changed. Regenerate contour cache: '+file);
 }
 const payloadHash=async file=>JSON.stringify(createHash('sha256').update(await fs.readFile('assets/models/sketch-runtime/'+file)).digest('hex'));
+const startupPacks=await buildStartupPacks();
 const result=await build({
- define:{__SKETCH_ASSET_MANIFEST__:await payloadHash('manifest.json.gz'),__SKETCH_PREPARED_MANIFEST__:await payloadHash('prepared-compact/manifest.json.gz'),__SKETCH_NEIGHBORHOOD_GEOMETRY__:await payloadHash('prepared-compact/neighborhood-manifest.json.gz'),__SKETCH_CONTOUR_MANIFEST__:await payloadHash('contours/manifest.json.gz'),__SKETCH_NEIGHBORHOOD_CONTOURS__:await payloadHash('contours/neighborhood-manifest.json.gz')},
+ define:{__SKETCH_STARTUP_PACKS__:JSON.stringify(startupPacks),__SKETCH_ASSET_MANIFEST__:await payloadHash('manifest.json.gz'),__SKETCH_PREPARED_MANIFEST__:await payloadHash('prepared-compact/manifest.json.gz'),__SKETCH_NEIGHBORHOOD_GEOMETRY__:await payloadHash('prepared-compact/neighborhood-manifest.json.gz'),__SKETCH_CONTOUR_MANIFEST__:await payloadHash('contours/manifest.json.gz'),__SKETCH_NEIGHBORHOOD_CONTOURS__:await payloadHash('contours/neighborhood-manifest.json.gz')},
  entryPoints:['scripts/viewer/sketch-viewer.js'],outfile:'assets/js/sketch-viewer.bundle.js',bundle:true,format:'esm',target:['es2022'],minify:true,legalComments:'eof',logLevel:'info',metafile:true,
  alias:{'@sketch':path.join(root,'src'),'@showcase-static':adapter},
  plugins:[{name:'static-original-runtime',setup(b){

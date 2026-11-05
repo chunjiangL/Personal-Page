@@ -1,5 +1,5 @@
 import {loadPreparedDisplayCache} from './prepared-geometry-cache.js';
-import {unpackAsset} from './asset-transfer.mjs';
+import {unpackAsset,releaseStartupPacks} from './asset-transfer.mjs';
 import {loadContourCache} from './contour-cache.mjs';
 const base=new URL('../models/sketch-runtime/',import.meta.url);
 let manifest,pending,pendingMode,preparedDisplayCache,sceneLoadMode='neighborhood';
@@ -18,8 +18,8 @@ export function prepareAssets(progress=()=>{},mode=sceneLoadMode){
   const cachePromise=Promise.all([loadPreparedDisplayCache(base,()=>{},mode).then(cache=>{preparedDisplayCache=cache;}),loadContourCache(base,()=>{},mode)]);
   const queue=Object.entries(manifest.transport).filter(([file])=>!urls.has(file)&&(mode==='full'||file.startsWith('files/models/'))),total=queue.length;let done=0;
   async function worker(){while(queue.length){const [file,entry]=queue.shift();const response=await unpack(entry.gzip);urls.set(file,URL.createObjectURL(await response.blob()));progress(++done,total);}}
-  await Promise.all([...Array.from({length:4},worker),cachePromise]);return manifest;
- })().catch(error=>{pending=undefined;throw error;});
+  await Promise.all([...Array.from({length:4},worker),cachePromise]);releaseStartupPacks();return manifest;
+ })().catch(error=>{releaseStartupPacks(true);pending=undefined;throw error;});
 }
 export async function api(route,body){
  const data=await prepareAssets();
