@@ -12,6 +12,8 @@ import {adaptVehicleFleetSource} from './viewer/vehicle-fleet.mjs';
 const site=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..'),game=process.env.SKETCH_GAME_ROOT||'G:/Personal Projects/SketchGame';
 const out=path.join(site,'assets/models/sketch-runtime'),folder=path.join(out,'contours');await fs.mkdir(folder,{recursive:true});
 const hash=bytes=>createHash('sha256').update(bytes).digest('hex'),algorithmSources={},runtimeSources={};
+// Repartition the already verified exact arrays without recomputing geometry.
+if(process.argv.includes('--split-neighborhood')){await splitNeighborhoodContours();process.exit(0);}
 for(const relative of ['src/rendering/asset/contours.ts','src/rendering/asset/appearance.ts','src/rendering/asset/settings.ts'])algorithmSources[relative]=hash(await fs.readFile(path.join(game,relative)));
 for(const relative of ['node_modules/three/src/geometries/EdgesGeometry.js','node_modules/three/src/math/Triangle.js','node_modules/three/src/math/Vector3.js','node_modules/three/src/math/MathUtils.js','node_modules/three/src/core/BufferAttribute.js']){
  const bytes=await fs.readFile(path.join(site,relative));runtimeSources[relative]=hash(bytes);
@@ -77,3 +79,32 @@ const cacheStarted=performance.now(),cached=await loadContourCache('https://sket
 for(const record of nodeRecords){record.geometry.userData.showcaseSourceKey=record.sourceKey;const start=performance.now(),edges=preparedEdges(record.geometry,record.angle);restoreMS+=performance.now()-start;if(!bytes(edges.getAttribute('position').array).equals(bytes(cachePositions.get(record.key))))throw Error('Restored runtime edge bytes differ: '+record.id);edges.dispose();}
 const report={status:'pass',sceneBuildMS,meshes:count,uniqueEntries:Object.keys(result.entries).length,angleCounts,segments,bytes:result.chunks.reduce((n,c)=>n+c.inflatedBytes,0),gzipBytes:result.chunks.reduce((n,c)=>n+c.bytes,0),edgesMS:Math.round(edgesMS),expandedVerificationMS:Math.round(expandedVerificationMS),partitionMS:Math.round(partitionMS),emptyOverrideMeshes:partitionFreeMeshes,fastPartitionMS:Math.round(fastPartitionMS),cacheLoadMS,restoreMS:Math.round(restoreMS),cache:contourCacheStats(),heavyMeshes:timings.sort((a,b)=>b.milliseconds-a.milliseconds).slice(0,15)};
 await fs.writeFile(path.join(folder,'report.json'),JSON.stringify(report,null,2));console.log(JSON.stringify(report));cached.dispose();await fs.unlink(temp);
+await splitNeighborhoodContours();
+
+async function splitNeighborhoodContours(){
+ const keyFile=path.join(site,'scripts/data/neighborhood-source-keys.json'),keyBytes=await fs.readFile(keyFile),keys=JSON.parse(keyBytes),source=JSON.parse(await fs.readFile(path.join(folder,'manifest.json'),'utf8'));
+ if(keys.schema!=='sketch.neighborhood.source-keys.v1'||keys.verification?.status!=='pass')throw Error('A verified neighborhood source key map is required');
+ if(source.schema!=='sketch.contours.v1')throw Error('Unexpected original contour manifest schema');
+ const exteriorKeys=new Set(Object.values(keys.meshes)),chunks=new Map();
+ for(const item of source.chunks){const compressed=await fs.readFile(path.join(out,item.file));if(hash(compressed)!==item.sha256)throw Error('Original contour chunk checksum mismatch: '+item.file);const raw=gunzipSync(compressed);if(raw.length!==item.inflatedBytes)throw Error('Original contour chunk length mismatch: '+item.file);chunks.set(item.file,raw);}
+ for(const [id,key]of Object.entries(keys.meshes)){const entry=source.entries[source.meshes[id]];if(!entry||entry.sourceKey!==key)throw Error('Neighborhood mesh does not match full contour cache: '+id);}
+ const entries={},generated=[],groups={neighborhood:[],home:[]};
+ for(const [key,entry]of Object.entries(source.entries))groups[exteriorKeys.has(entry.sourceKey)?'neighborhood':'home'].push([key,entry]);
+ for(const [group,rows]of Object.entries(groups)){
+  let parts=[],pending=[],length=0,index=0;
+  async function flush(){if(!pending.length)return;const raw=Buffer.concat(parts),compressed=gzipSync(raw,{level:9}),sha256=hash(compressed),file=`contours/${group}-${String(index++).padStart(3,'0')}-${sha256.slice(0,12)}.bin.gz`;if(!gunzipSync(compressed).equals(raw))throw Error('Contour repartition changed bytes');await fs.writeFile(path.join(out,file),compressed);for(const [key,entry]of pending)entries[key]={...entry,chunk:file};generated.push({file,bytes:compressed.length,inflatedBytes:raw.length,sha256});parts=[];pending=[];length=0;}
+  for(const [key,entry]of rows){const original=chunks.get(entry.chunk);if(!original||entry.byteOffset%4||entry.length%6||entry.byteOffset+entry.length*4>original.length)throw Error('Invalid original contour entry: '+key);const raw=original.subarray(entry.byteOffset,entry.byteOffset+entry.length*4);if(length&&length+raw.length>12*1024*1024)await flush();pending.push([key,{...entry,byteOffset:length}]);parts.push(raw);length+=raw.length;}
+  await flush();
+ }
+ // Independently read every new stream and compare every float byte in order.
+ const restored=new Map();for(const item of generated)restored.set(item.file,gunzipSync(await fs.readFile(path.join(out,item.file))));
+ for(const [key,entry]of Object.entries(entries)){const old=source.entries[key],before=chunks.get(old.chunk).subarray(old.byteOffset,old.byteOffset+old.length*4),after=restored.get(entry.chunk).subarray(entry.byteOffset,entry.byteOffset+entry.length*4);if(!before.equals(after))throw Error('Partitioned contour bytes differ: '+key);}
+ const partition={schema:'sketch.contours.partition.v1',sourceKeyManifest:'scripts/data/neighborhood-source-keys.json',sourceKeyManifestSHA256:hash(keyBytes)},full={...source,entries,chunks:generated,partition:{...partition,mode:'full'}};
+ const neighborhoodEntries=Object.fromEntries(Object.entries(entries).filter(([,entry])=>exteriorKeys.has(entry.sourceKey))),neighborhoodFiles=new Set(Object.values(neighborhoodEntries).map(entry=>entry.chunk));
+ const neighborhood={...source,entries:neighborhoodEntries,meshes:Object.fromEntries(Object.keys(keys.meshes).map(id=>[id,source.meshes[id]])),chunks:generated.filter(item=>neighborhoodFiles.has(item.file)),partition:{...partition,mode:'neighborhood'}};
+ for(const [name,manifest]of [['manifest',full],['full-manifest',full],['neighborhood-manifest',neighborhood]]){const json=Buffer.from(JSON.stringify(manifest));await fs.writeFile(path.join(folder,name+'.json'),json);await fs.writeFile(path.join(folder,name+'.json.gz'),gzipSync(json,{level:9}));}
+ const retained=new Set(generated.map(item=>path.basename(item.file)));
+ for(const name of await fs.readdir(folder))if(/^(?:chunk-\d+|(?:neighborhood|home)-\d+(?:-[a-f0-9]{12})?)\.bin\.gz$/.test(name)&&!retained.has(name))await fs.unlink(path.join(folder,name));
+ const summary={status:'pass',entries:Object.keys(entries).length,neighborhoodEntries:Object.keys(neighborhoodEntries).length,neighborhoodMeshes:Object.keys(neighborhood.meshes).length,neighborhoodGzipBytes:neighborhood.chunks.reduce((n,c)=>n+c.bytes,0),homeGzipBytes:generated.filter(item=>!neighborhoodFiles.has(item.file)).reduce((n,c)=>n+c.bytes,0),fullGzipBytes:generated.reduce((n,c)=>n+c.bytes,0),exactBytesVerified:generated.reduce((n,c)=>n+c.inflatedBytes,0)};
+ await fs.writeFile(path.join(folder,'partition-report.json'),JSON.stringify(summary,null,2));console.log(JSON.stringify(summary));
+}

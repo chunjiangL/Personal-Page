@@ -1,0 +1,10 @@
+{
+  "status": "pass",
+  "entries": 1076,
+  "neighborhoodEntries": 806,
+  "neighborhoodMeshes": 881,
+  "neighborhoodGzipBytes": 5082338,
+  "homeGzipBytes": 1773687,
+  "fullGzipBytes": 6856025,
+  "exactBytesVerified": 28093488
+}

@@ -2,16 +2,20 @@
 // The cache is an accelerator only: quota/private-mode failures use normal fetch.
 const cacheName='sketch-showcase-assets-v1';
 let cachePromise;
+const query=typeof location==='undefined'?null:new URL(location.href).searchParams;
+// QA-only cold-load measurement: do not confuse an already cached visit with
+// a first visit. This leaves ordinary visitors and their saved cache unchanged.
+const coldBenchmark=query?.has('qa')&&query?.get('cold')==='1';
 export const transferStats={hits:0,downloads:0,compressedBytes:0};
 async function cache(){return cachePromise??=(globalThis.caches?caches.open(cacheName).catch(()=>null):Promise.resolve(null));}
 export function assetURL(base,relative,hash){const url=new URL(relative,base);url.search=hash?'h='+hash:'';return url.href;}
 export async function unpackAsset(base,relative,hash){
  const url=assetURL(base,relative,hash),storage=hash?await cache():null;
- let response=await storage?.match(url).catch(()=>undefined);
+ let response=coldBenchmark?undefined:await storage?.match(url).catch(()=>undefined);
  const hit=!!response;
  if(hit)transferStats.hits++;
  else{
-  response=await fetch(url);if(!response.ok)throw Error('Could not load '+relative);
+  response=await fetch(url,coldBenchmark?{cache:'reload'}:undefined);if(!response.ok)throw Error('Could not load '+relative);
   transferStats.downloads++;transferStats.compressedBytes+=Number(response.headers.get('content-length'))||0;
  }
  const compressed=await response.arrayBuffer();

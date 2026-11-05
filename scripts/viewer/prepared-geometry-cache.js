@@ -16,10 +16,12 @@ export async function geometryFingerprint(geometry){
 }
 
 /** Exact display preparation cache; source meshes and authored materials survive. */
-export async function loadPreparedDisplayCache(base,progress=()=>{}){
+export async function loadPreparedDisplayCache(base,progress=()=>{},mode='full'){
  const baseURL=new URL(base,globalThis.location?.href||import.meta.url);
  const compact=typeof __SKETCH_PREPARED_MANIFEST__!=='undefined';
- const manifest=await(await unpackAsset(baseURL,compact?'prepared-compact/manifest.json.gz':'prepared/manifest.json.gz',compact?__SKETCH_PREPARED_MANIFEST__:undefined)).json();
+ const neighborhood=compact&&mode==='neighborhood';
+ const file=neighborhood?'prepared-compact/neighborhood-manifest.json.gz':compact?'prepared-compact/manifest.json.gz':'prepared/manifest.json.gz';
+ const manifest=await(await unpackAsset(baseURL,file,neighborhood?__SKETCH_NEIGHBORHOOD_GEOMETRY__:compact?__SKETCH_PREPARED_MANIFEST__:undefined)).json();
  if(manifest.schema!=='sketch.prepared.geometry.v1')throw Error('Unsupported prepared geometry cache');
  await geometryCodecReady;
  const chunks=new Map(),queue=[...manifest.chunks];let done=0;

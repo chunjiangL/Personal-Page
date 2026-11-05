@@ -67,3 +67,24 @@ test('every compact cache array equals its original, with fleet-safe key filteri
  }
  assert.equal(arrays,Object.keys(compact.entries).length*5);assert.equal(verifiedChunks.size,compact.chunks.length);
 });
+
+test('neighborhood downloads exactly the exterior partition and full bedroom reuses those exact chunks',async()=>{
+ const base=new URL('../assets/models/sketch-runtime/prepared-compact/',import.meta.url);
+ const full=JSON.parse(await fs.readFile(new URL('full-manifest.json',base),'utf8')),legacy=JSON.parse(await fs.readFile(new URL('manifest.json',base),'utf8')),exterior=JSON.parse(await fs.readFile(new URL('neighborhood-manifest.json',base),'utf8'));
+ const sourceBytes=await fs.readFile(new URL('../scripts/data/neighborhood-source-keys.json',import.meta.url)),source=JSON.parse(sourceBytes.toString()),keys=new Set(Object.values(source.meshes));
+ assert.deepEqual(full,legacy);assert.equal(full.scene,'full');assert.equal(exterior.scene,'neighborhood');assert.deepEqual(exterior.meshes,source.meshes);
+ assert.equal(full.sourceKeyManifestSHA256,createHash('sha256').update(sourceBytes).digest('hex'));assert.equal(exterior.sourceKeyManifestSHA256,full.sourceKeyManifestSHA256);
+ assert.deepEqual(new Set(Object.keys(exterior.entries)),keys);
+ const fullChunks=new Map(full.chunks.map(chunk=>[chunk.file,chunk])),exteriorChunks=new Map(exterior.chunks.map(chunk=>[chunk.file,chunk])),referenced=new Set();
+ for(const chunk of exterior.chunks){assert.equal(chunk.partition,'exterior');assert.deepEqual(chunk,fullChunks.get(chunk.file));}
+ for(const [key,entry]of Object.entries(full.entries)){
+  if(keys.has(key))assert.deepEqual(entry,exterior.entries[key]);
+  for(const view of [...Object.values(entry.attributes),entry.field]){
+   const chunk=fullChunks.get(view.chunk);assert.ok(chunk);
+   assert.equal(chunk.partition,keys.has(key)?'exterior':'home');
+   if(keys.has(key)){assert.ok(exteriorChunks.has(view.chunk));referenced.add(view.chunk);}
+  }
+ }
+ assert.deepEqual(referenced,new Set(exteriorChunks.keys()));
+ assert.ok(exterior.chunks.reduce((n,c)=>n+c.bytes,0)<full.chunks.reduce((n,c)=>n+c.bytes,0));
+});

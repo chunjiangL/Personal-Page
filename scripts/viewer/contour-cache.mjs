@@ -6,10 +6,12 @@ export const contourKey=(sourceKey,angle=1)=>sourceKey+':'+String(angle);
 export function contourCacheStats(){return {...statistics};}
 
 /** Exact immutable Three.js edge endpoints, loaded before AssetRenderCore.apply. */
-export async function loadContourCache(baseURL,progress=()=>{}){
+export async function loadContourCache(baseURL,progress=()=>{},mode='full'){
  const base=new URL(baseURL,globalThis.location?.href||import.meta.url);
  const unpack=(relative,hash)=>unpackAsset(base,relative,hash);
- const manifest=await(await unpack('contours/manifest.json.gz',typeof __SKETCH_CONTOUR_MANIFEST__!=='undefined'?__SKETCH_CONTOUR_MANIFEST__:undefined)).json();
+ const neighborhood=mode==='neighborhood',file=neighborhood?'contours/neighborhood-manifest.json.gz':'contours/manifest.json.gz';
+ const hash=neighborhood?(typeof __SKETCH_NEIGHBORHOOD_CONTOURS__!=='undefined'?__SKETCH_NEIGHBORHOOD_CONTOURS__:undefined):(typeof __SKETCH_CONTOUR_MANIFEST__!=='undefined'?__SKETCH_CONTOUR_MANIFEST__:undefined);
+ const manifest=await(await unpack(file,hash)).json();
  if(manifest.schema!=='sketch.contours.v1'||manifest.threeRevision!==T.REVISION)throw Error('Contour cache requires the matching original Three.js algorithm');
  const chunks=new Map(),queue=[...manifest.chunks];let done=0,bytes=0;
  async function worker(){while(queue.length){const item=queue.shift(),buffer=await(await unpack(item.file,item.sha256)).arrayBuffer();if(buffer.byteLength!==item.inflatedBytes)throw Error('Contour cache length mismatch: '+item.file);chunks.set(item.file,buffer);bytes+=buffer.byteLength;progress(++done,manifest.chunks.length);}}

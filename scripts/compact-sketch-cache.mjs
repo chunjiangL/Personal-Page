@@ -13,23 +13,36 @@ const output=path.join(base,'prepared-compact');await fs.mkdir(output,{recursive
 const encoderPath=path.join(process.env.SKETCH_EXPORT_DEPS||path.join(os.tmpdir(),'sketch-showcase-export-deps'),'node_modules/meshoptimizer/meshopt_encoder.js');
 const {MeshoptEncoder}=await import(pathToFileURL(encoderPath));await Promise.all([geometryCodecReady,MeshoptEncoder.ready]);
 const original=JSON.parse(await fs.readFile(path.join(base,'prepared/manifest.json'),'utf8'));
-const repack=process.argv.includes('--repack-stable')?JSON.parse(await fs.readFile(path.join(output,'manifest.json'),'utf8')):undefined;
+const neighborhoodPath=path.join(site,'scripts/data/neighborhood-source-keys.json');
+const splitScenes=process.argv.includes('--split-scenes')||await fs.access(neighborhoodPath).then(()=>true,()=>false);
+const repack=process.argv.includes('--repack-stable')||process.argv.includes('--split-scenes')?JSON.parse(await fs.readFile(path.join(output,'manifest.json'),'utf8')):undefined;
 const hash=bytes=>createHash('sha256').update(bytes).digest('hex');
 const meshes=Object.fromEntries(Object.entries(original.meshes).filter(([id])=>!isRemovedVehicleMesh(id))),used=new Set(Object.values(meshes));
+const keyInput=splitScenes?await fs.readFile(neighborhoodPath):undefined;
+const neighborhood=keyInput?JSON.parse(keyInput.toString()):undefined,exteriorKeys=new Set(Object.values(neighborhood?.meshes||{}));
+if(neighborhood){
+ if(neighborhood.schema!=='sketch.neighborhood.source-keys.v1'||!exteriorKeys.size)throw Error('Expected exact neighborhood source key manifest');
+ for(const [id,key]of Object.entries(neighborhood.meshes)){
+  if(isRemovedVehicleMesh(id))throw Error('Neighborhood still includes removed vehicle: '+id);
+  if(!used.has(key)||!original.entries[key])throw Error('Neighborhood source key is missing from exact full cache: '+id+' '+key);
+ }
+}
 const manifest={...original,schema:'sketch.prepared.geometry.v1',storage:'lossless-compact-v1',codec:'float32-exact-v1',entries:{},meshes,chunks:[]};
+if(neighborhood){manifest.scene='full';manifest.sourceKeyManifestSHA256=hash(keyInput);}
 const report={status:'pending',originalEntries:Object.keys(original.entries).length,entries:used.size,removedMeshes:Object.keys(original.meshes).length-Object.keys(meshes).length,removedEntries:Object.keys(original.entries).length-used.size,verifiedArrays:0,originalBytes:0,retainedBytes:0,compactBytes:0,gzipBytes:0,encodingCounts:{},attributes:{}};
 const sourceChunks=new Map(),compactChunks=new Map();
 async function sourceChunk(file,cache=sourceChunks){
  let result=cache.get(file);if(result){cache.delete(file);cache.set(file,result);return result;}
  result=gunzipSync(await fs.readFile(path.join(base,file)));cache.set(file,result);if(cache.size>3)cache.delete(cache.keys().next().value);return result;
 }
-const streams=Object.fromEntries(['stable-raw','stable-coded','transient-packed'].map(kind=>[kind,{kind,parts:[],length:0,index:0}]));
+const kinds=['stable-raw','stable-coded','transient-packed'];
+const streams=Object.fromEntries((neighborhood?['exterior','home'].flatMap(partition=>kinds.map(kind=>partition+'-'+kind)):kinds).map(kind=>[kind,{kind,parts:[],length:0,index:0}]));
 async function flush(stream){
  if(!stream.length)return;
  const bytes=Buffer.concat(stream.parts),packed=gzipSync(bytes,{level:9}),file='prepared-compact/'+stream.kind+'-'+String(stream.index).padStart(3,'0')+'.bin.gz';
  if(!gunzipSync(packed).equals(bytes))throw Error('Compact chunk gzip mismatch');
  await fs.writeFile(path.join(base,file),packed);
- manifest.chunks.push({file,bytes:packed.length,inflatedBytes:bytes.length,transient:stream.kind==='transient-packed',sha256:hash(packed)});
+ manifest.chunks.push({file,bytes:packed.length,inflatedBytes:bytes.length,transient:stream.kind.endsWith('transient-packed'),...(neighborhood?{partition:stream.kind.startsWith('exterior-')?'exterior':'home'}:{}),sha256:hash(packed)});
  report.compactBytes+=bytes.length;report.gzipBytes+=packed.length;stream.parts=[];stream.length=0;stream.index++;
  console.log('Wrote '+file+' '+(packed.length/1e6).toFixed(2)+' MB');
 }
@@ -74,7 +87,8 @@ for(const [key,entry]of Object.entries(original.entries)){
    const decoded=decodeGeometryArray(choice.bytes,{...metadata,byteOffset:0,encodedLength:choice.bytes.length,length});
    if(!source.equals(new Uint8Array(decoded.buffer,decoded.byteOffset,decoded.byteLength)))throw Error('Repacking changed source bits: '+key+' '+name);
   }else choice=compact(source,name,stride);
-  const {bytes,...codec}=choice,location=await append(name==='field'||name==='labStructureEdges'?'transient-packed':codec.encoding==='raw'?'stable-raw':'stable-coded',bytes);
+  const {bytes,...codec}=choice,kind=name==='field'||name==='labStructureEdges'?'transient-packed':codec.encoding==='raw'?'stable-raw':'stable-coded';
+  const location=await append((neighborhood?(exteriorKeys.has(key)?'exterior-':'home-'):'')+kind,bytes);
   const compactView={...location,length:view.length,...(view.itemSize?{itemSize:view.itemSize}:{}),...codec};
   if(name==='field')next.field=compactView;else next.attributes[name]=compactView;
   report.verifiedArrays++;report.encodingCounts[codec.encoding]=(report.encodingCounts[codec.encoding]||0)+1;
@@ -86,11 +100,20 @@ for(const stream of Object.values(streams))await flush(stream);
 const manifestBytes=Buffer.from(JSON.stringify(manifest)),manifestGzip=gzipSync(manifestBytes,{level:9});
 await fs.writeFile(path.join(output,'manifest.json'),manifestBytes);await fs.writeFile(path.join(output,'manifest.json.gz'),manifestGzip);
 report.status='pass';report.chunks=manifest.chunks.length;report.manifestBytes=manifestBytes.length;report.manifestGzipBytes=manifestGzip.length;report.originalGzipBytes=original.chunks.reduce((n,c)=>n+c.bytes,0);report.totalGzipBytes=report.gzipBytes+manifestGzip.length;
+if(neighborhood){
+ await fs.writeFile(path.join(output,'full-manifest.json'),manifestBytes);await fs.writeFile(path.join(output,'full-manifest.json.gz'),manifestGzip);
+ const neighborhoodManifest={...manifest,scene:'neighborhood',meshes:neighborhood.meshes,entries:Object.fromEntries(Object.entries(manifest.entries).filter(([key])=>exteriorKeys.has(key))),chunks:manifest.chunks.filter(chunk=>chunk.partition==='exterior')};
+ const neighborhoodBytes=Buffer.from(JSON.stringify(neighborhoodManifest)),neighborhoodGzip=gzipSync(neighborhoodBytes,{level:9});
+ await fs.writeFile(path.join(output,'neighborhood-manifest.json'),neighborhoodBytes);await fs.writeFile(path.join(output,'neighborhood-manifest.json.gz'),neighborhoodGzip);
+ report.neighborhood={entries:exteriorKeys.size,meshes:Object.keys(neighborhood.meshes).length,chunks:neighborhoodManifest.chunks.length,chunkGzipBytes:neighborhoodManifest.chunks.reduce((n,c)=>n+c.bytes,0),inflatedBytes:neighborhoodManifest.chunks.reduce((n,c)=>n+c.inflatedBytes,0),manifestGzipBytes:neighborhoodGzip.length};
+ report.neighborhood.totalGzipBytes=report.neighborhood.chunkGzipBytes+neighborhoodGzip.length;
+ report.homeAdditionalGzipBytes=manifest.chunks.filter(chunk=>chunk.partition==='home').reduce((n,c)=>n+c.bytes,0);
+}
 await fs.writeFile(path.join(output,'validation.json'),JSON.stringify(report,null,2));console.log(JSON.stringify(report));
 if(repack){
  const retained=new Set(manifest.chunks.map(chunk=>chunk.file));
  for(const chunk of repack.chunks){if(retained.has(chunk.file))continue;const target=path.resolve(base,chunk.file);
-  if(path.dirname(target)!==path.resolve(output)||!/^((stable|transient)-\d{3}|stable-(raw|coded)-\d{3}|transient-packed-\d{3})\.bin\.gz$/.test(path.basename(target)))throw Error('Unexpected obsolete compact chunk');
+  if(path.dirname(target)!==path.resolve(output)||!/^((stable|transient)-\d{3}|((exterior|home)-)?(stable-(raw|coded)|transient-packed)-\d{3})\.bin\.gz$/.test(path.basename(target)))throw Error('Unexpected obsolete compact chunk');
   await fs.unlink(target);
  }
 }

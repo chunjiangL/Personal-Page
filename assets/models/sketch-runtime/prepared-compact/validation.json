@@ -8,7 +8,7 @@
   "originalBytes": 643578664,
   "retainedBytes": 624921856,
   "compactBytes": 335288240,
-  "gzipBytes": 61053804,
+  "gzipBytes": 61057060,
   "encodingCounts": {
     "raw": 1846,
     "meshopt": 630,
@@ -43,9 +43,19 @@
       "arrays": 1076
     }
   },
-  "chunks": 15,
-  "manifestBytes": 1296607,
-  "manifestGzipBytes": 166858,
+  "chunks": 17,
+  "manifestBytes": 1340425,
+  "manifestGzipBytes": 167271,
   "originalGzipBytes": 79588091,
-  "totalGzipBytes": 61220662
+  "totalGzipBytes": 61224331,
+  "neighborhood": {
+    "entries": 806,
+    "meshes": 881,
+    "chunks": 10,
+    "chunkGzipBytes": 34851665,
+    "inflatedBytes": 197931936,
+    "manifestGzipBytes": 125236,
+    "totalGzipBytes": 34976901
+  },
+  "homeAdditionalGzipBytes": 26205395
 }

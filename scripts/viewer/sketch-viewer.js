@@ -11,19 +11,20 @@ import {contourCacheStats} from './contour-cache.mjs';
 
 const $=id=>document.getElementById(id),host=$('sketch-canvas'),viewer=$('sketch-viewer'),overlay=$('inspection-canvas');
 const names={neighborhood:'Neighborhood',bedroom:'Bedroom'},homeOffset=new T.Vector3(-2.05,1.55,1.58);
-let stage,current='neighborhood',desk,bedroomRecord,deskPromise,detail,detailRenderer,busy=false,inView=true,backgroundPending=false,frame=0,startupMS,firstFrameMS;
+let stage,current='neighborhood',desk,bedroomRecord,deskPromise,detail,detailRenderer,busy=false,inView=true,backgroundPending=false,frame=0,startupMS,firstFrameMS,loadedMode,resizeObserver;
+const sceneLoads={};
 const loadTimings={};let phaseAt=performance.now(),phase='download';
-function loadPhase(next){const now=performance.now();loadTimings[phase]=Math.round((loadTimings[phase]||0)+now-phaseAt);phase=next;phaseAt=now;}
+function loadPhase(next){if(phase==='ready')return;const now=performance.now();loadTimings[phase]=Math.round((loadTimings[phase]||0)+now-phaseAt);phase=next;phaseAt=now;}
 const startupAt=performance.now(),reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
 const diagnostic=new URLSearchParams(location.search).has('qa')?document.createElement('output'):null;
 if(diagnostic){diagnostic.id='viewer-diagnostics';diagnostic.hidden=true;viewer.append(diagnostic);}
 const status=text=>{$('viewer-status').textContent=text;};
 const loading=(show,text)=>{$('viewer-loading').hidden=!show;if(text)$('viewer-loading').querySelector('p').textContent=text;};
 const syncSuspension=()=>stage?.suspend(document.hidden||!inView||busy||!!detail&&!backgroundPending);
-function setBusy(value){busy=value;for(const button of viewer.querySelectorAll('[data-scene], [data-object], #weather-select, #explode-object, #clear-selection'))button.disabled=value;syncSuspension();}
+function setBusy(value){busy=value;for(const button of viewer.querySelectorAll('[data-scene], [data-object], #weather-select, #explode-object, #clear-selection'))button.disabled=value||!stage?.ready;syncSuspension();}
 function report(){
  if(!diagnostic||!stage?.ready)return;
- diagnostic.textContent=JSON.stringify({ready:true,startupMS,firstFrameMS,loadTimings,transfer:transferStats,contours:contourCacheStats(),vehicles:stage.loaded.building.streetLife.vehicles.map(v=>v.id),scene:current,weather:stage.weather,camera:stage.camera.position.toArray(),target:stage.viewTarget.toArray(),mode:'fixed',windowView:stage.seated,objects:desk?.objects.map(o=>o.id),selection:detail?.object.id,detailParts:detail?.geometry.parts.size,exploded:detail?.goal===1,blurred:viewer.classList.contains('is-inspecting'),frames:stage.renderedFrames,resources:performance.getEntriesByType('resource').filter(r=>r.name.includes('/sketch-runtime/')).map(r=>({file:r.name.split('/sketch-runtime/')[1],bytes:r.transferSize,ms:Math.round(r.duration)}))});
+ diagnostic.textContent=JSON.stringify({ready:true,startupMS,firstFrameMS,loadTimings,loadedMode,sceneLoads,transfer:transferStats,contours:contourCacheStats(),vehicles:stage.loaded.building.streetLife.vehicles.map(v=>v.id),scene:current,weather:stage.weather,camera:stage.camera.position.toArray(),target:stage.viewTarget.toArray(),mode:'fixed',windowView:stage.seated,objects:desk?.objects.map(o=>o.id),selection:detail?.object.id,detailParts:detail?.geometry.parts.size,exploded:detail?.goal===1,blurred:viewer.classList.contains('is-inspecting'),frames:stage.renderedFrames,resources:performance.getEntriesByType('resource').filter(r=>r.name.includes('/sketch-runtime/')).map(r=>({file:r.name.split('/sketch-runtime/')[1],bytes:r.transferSize,ms:Math.round(r.duration)}))});
 }
 function bedroomPose(){
  // Inside 302, facing the real window. Both chair feet and the whole desk
@@ -39,7 +40,9 @@ function sceneCopy(){
  $('desk-objects').hidden=current!=='bedroom'||!!detail;status(names[current]);
 }
 function chooseScene(id){
- if(!stage?.ready||busy)return;closeDetail();current=id==='bedroom'?'bedroom':'neighborhood';stage.setFreeCamera(false);
+ if(!stage?.ready||busy)return;
+ if(id==='bedroom'&&loadedMode==='neighborhood'){void start('bedroom');return;}
+ closeDetail();current=id==='bedroom'?'bedroom':'neighborhood';stage.setFreeCamera(false);
  if(current==='bedroom'){stage.focusBedroomDetail('seated',false);bedroomPose();ensureDesk().catch(error=>{console.error(error);status('The desk objects could not be loaded.');});}
  else stage.focusBuilding('exterior','all',false);
  document.querySelectorAll('[data-scene]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.scene===current)));
@@ -102,28 +105,31 @@ function pick(event){
  if(!hit||occluder&&hit.distance>occluder.distance+.01)return;
  return desk.objects.find(o=>o.pickMeshes.includes(hit.object));
 }
-async function start(){
+async function start(requested=new URLSearchParams(location.search).get('scene')){
+ const desired=requested==='bedroom'?'bedroom':'neighborhood',mode=desired==='bedroom'?'full':'neighborhood',loadAt=performance.now(),weather=$('weather-select').value;
+ if(busy)return;setBusy(true);
  try{
-  loading(true,'Loading the neighborhood');$('viewer-error').hidden=true;
-  await prepareAssets((done,total)=>{$('viewer-progress').max=total;$('viewer-progress').value=done;});$('viewer-progress').removeAttribute('value');
+  loading(true,desired==='bedroom'?'Loading the bedroom':'Loading the neighborhood');$('viewer-error').hidden=true;
+  await prepareAssets((done,total)=>{$('viewer-progress').max=total;$('viewer-progress').value=done;},mode);$('viewer-progress').removeAttribute('value');
+  resizeObserver?.disconnect();stage?.dispose();
   loadPhase('renderer');stage=new ApartmentStage(host);stage.renderer.domElement.setAttribute('aria-label','Fixed view of Sketch Game. In Bedroom, click a desk object to explore its parts.');
-  await stage.initialize(label=>{loadPhase(label.replace(/\d+%/,'geometry'));const percentage=label.match(/\d+%/);loading(true,percentage?'Preparing original materials · '+percentage[0]:'Preparing the neighborhood and bedroom');});loadPhase('first-render');
-  let lastReport=0;stage.onRender=()=>{if(!firstFrameMS){firstFrameMS=Math.round(performance.now()-startupAt);loadPhase('ready');}if(backgroundPending){backgroundPending=false;syncSuspension();}if(performance.now()-lastReport>500){report();lastReport=performance.now();}};
+  await stage.initialize(label=>{loadPhase(label.replace(/\d+%/,'geometry'));const percentage=label.match(/\d+%/);loading(true,percentage?'Preparing original materials · '+percentage[0]:'Preparing the '+desired);});loadPhase('first-render');
+  loadedMode=mode;let lastReport=0,viewRendered=false;stage.onRender=()=>{if(!viewRendered){viewRendered=true;sceneLoads[desired]=Math.round(performance.now()-loadAt);loading(false);}if(!firstFrameMS){firstFrameMS=Math.round(performance.now()-startupAt);loadPhase('ready');}if(backgroundPending){backgroundPending=false;syncSuspension();}if(performance.now()-lastReport>500){report();lastReport=performance.now();}};
   const canvas=stage.renderer.domElement,pointers=new Set();let down,multi=false;
   canvas.addEventListener('pointerdown',event=>{if(!pointers.size)multi=false;pointers.add(event.pointerId);multi||=pointers.size>1;down={x:event.clientX,y:event.clientY,button:event.button};});
   canvas.addEventListener('pointerup',event=>{pointers.delete(event.pointerId);const origin=down;down=undefined;if(!origin||multi||origin.button!==0||Math.hypot(event.clientX-origin.x,event.clientY-origin.y)>5)return;const object=pick(event);if(object)inspect(object);});
   for(const event of ['pointercancel','lostpointercapture'])canvas.addEventListener(event,e=>{pointers.delete(e.pointerId);down=undefined;});
   let lastHover=0;canvas.addEventListener('pointermove',event=>{if(!down&&event.pointerType!=='touch'&&performance.now()-lastHover>100){lastHover=performance.now();canvas.style.cursor=pick(event)?'pointer':'default';}});
-  new ResizeObserver(()=>{
+  resizeObserver=new ResizeObserver(()=>{
    if(current==='bedroom')bedroomPose();
    if(detail){detailRenderer.setSize(host.clientWidth,host.clientHeight);detail.camera.aspect=host.clientWidth/host.clientHeight;detail.camera.updateProjectionMatrix();fitDetail();backgroundPending=true;syncSuspension();}
-  }).observe(host);
-  $('weather-select').disabled=false;$('viewer-fullscreen').disabled=false;startupMS=Math.round(performance.now()-startupAt);loading(false);
-  chooseScene(new URLSearchParams(location.search).get('scene'));report();
- }catch(error){console.error(error);loading(false);$('viewer-error').hidden=false;status('Scene loading failed.');if(diagnostic)diagnostic.textContent=JSON.stringify({error:error.message});}
+  });resizeObserver.observe(host);
+  setBusy(false);$('viewer-fullscreen').disabled=false;startupMS??=Math.round(performance.now()-startupAt);loading(true,'Rendering the '+desired);
+  chooseScene(desired);if(weather!=='sunny')stage.setWeather(weather);report();
+ }catch(error){console.error(error);setBusy(false);loading(false);$('viewer-error').hidden=false;status('Scene loading failed.');if(diagnostic)diagnostic.textContent=JSON.stringify({error:error.message});}
 }
 document.querySelectorAll('[data-scene]').forEach(button=>button.addEventListener('click',()=>chooseScene(button.dataset.scene)));
-$('weather-select').addEventListener('change',()=>{if(busy)return;closeDetail();stage.setWeather($('weather-select').value);status(names[current]+' · '+$('weather-select').selectedOptions[0].text);report();});
+$('weather-select').addEventListener('change',()=>{if(busy||!stage?.ready)return;closeDetail();stage.setWeather($('weather-select').value);status(names[current]+' · '+$('weather-select').selectedOptions[0].text);report();});
 $('explode-object').addEventListener('click',()=>{if(!detail||busy)return;detail.goal=1-detail.goal;detail.settings.inspection.layout=detail.goal?'exploded':'assembled';applyDetail();fitDetail();$('explode-object').textContent=detail.goal?'Assemble':'Explode';$('explode-object').setAttribute('aria-pressed',String(!!detail.goal));report();});
 $('clear-selection').addEventListener('click',closeDetail);
 document.addEventListener('keydown',event=>{if(event.key==='Escape'&&detail&&!busy)closeDetail();});
@@ -132,6 +138,6 @@ $('viewer-fullscreen').addEventListener('click',async()=>{try{if(document.fullsc
 document.addEventListener('fullscreenchange',()=>{const full=!!document.fullscreenElement;$('viewer-fullscreen').setAttribute('aria-label',full?'Exit fullscreen':'Enter fullscreen');$('viewer-fullscreen').querySelector('span').textContent=full?'Exit fullscreen':'Fullscreen';});
 new IntersectionObserver(entries=>{inView=entries[0].isIntersecting;syncSuspension();if(detail&&inView)detail.dirty=true;},{rootMargin:'120px'}).observe(host);
 document.addEventListener('visibilitychange',()=>{syncSuspension();if(detail&&!document.hidden)detail.dirty=true;});
-window.addEventListener('pagehide',event=>{if(event.persisted)stage?.suspend(true);else{closeDetail();desk?.dispose();stage?.dispose();detailRenderer?.dispose();}});
+window.addEventListener('pagehide',event=>{if(event.persisted)stage?.suspend(true);else{resizeObserver?.disconnect();closeDetail();desk?.dispose();stage?.dispose();detailRenderer?.dispose();}});
 window.addEventListener('pageshow',event=>{if(event.persisted){syncSuspension();if(detail)detail.dirty=true;}});
 start();

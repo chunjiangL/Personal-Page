@@ -2,6 +2,8 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {gzipSync} from 'node:zlib';
 import {createHash} from 'node:crypto';
+import fs from 'node:fs/promises';
+import {gunzipSync} from 'node:zlib';
 import * as T from 'three';
 import {contourKey,loadContourCache,preparedEdges,contourCacheStats} from '../scripts/viewer/contour-cache.mjs';
 
@@ -39,4 +41,26 @@ test('compressed content checksum and Three revision prevent stale or damaged ca
  const geometry=new T.BoxGeometry(1,1,1),fixture={geometry,angle:35,key:'box'};
  const mismatch=transport([fixture],'different-revision');mockTransfer(t,mismatch.files);await assert.rejects(loadContourCache('https://cache.test/'),/matching original Three/);
  const damaged=transport([fixture]);damaged.manifest.chunks[0].sha256='0'.repeat(64);damaged.files.set('/contours/manifest.json.gz',gzipSync(Buffer.from(JSON.stringify(damaged.manifest))));t.mock.restoreAll();mockTransfer(t,damaged.files);await assert.rejects(loadContourCache('https://cache.test/'),/checksum mismatch/);geometry.dispose();
+});
+
+test('neighborhood mode requests only its manifest and full mode remains the default',async t=>{
+ const geometry=new T.BoxGeometry(1,1,1),fixture={geometry,angle:35,key:'box'},full=transport([fixture]),neighborhood=transport([fixture]);
+ neighborhood.manifest.partition={mode:'neighborhood'};
+ full.files.set('/contours/neighborhood-manifest.json.gz',gzipSync(Buffer.from(JSON.stringify(neighborhood.manifest))));
+ const requests=[];t.mock.method(globalThis,'fetch',async url=>{const pathname=new URL(url).pathname;requests.push(pathname);const value=full.files.get(pathname);return value?new Response(value):new Response('missing',{status:404});});
+ const first=await loadContourCache('https://cache.test/',()=>{},'neighborhood');assert.equal(first.manifest.partition.mode,'neighborhood');assert.ok(requests.includes('/contours/neighborhood-manifest.json.gz'));assert.ok(!requests.includes('/contours/manifest.json.gz'));
+ requests.length=0;const second=await loadContourCache('https://cache.test/');assert.ok(requests.includes('/contours/manifest.json.gz'));assert.ok(!requests.includes('/contours/neighborhood-manifest.json.gz'));first.dispose();geometry.userData.showcaseSourceKey='box';preparedEdges(geometry,35).dispose();assert.equal(contourCacheStats().hits,1);second.dispose();geometry.dispose();
+});
+
+test('published contour partitions share exact city entries and never include a home-only stream',async()=>{
+ const base=new URL('../assets/models/sketch-runtime/',import.meta.url),read=name=>fs.readFile(new URL('contours/'+name+'.json',base),'utf8').then(JSON.parse);
+ const full=await read('manifest'),alias=await read('full-manifest'),neighborhood=await read('neighborhood-manifest'),keyBytes=await fs.readFile(new URL('../scripts/data/neighborhood-source-keys.json',import.meta.url)),keys=JSON.parse(keyBytes),sourceKeys=new Set(Object.values(keys.meshes));
+ assert.deepEqual(alias,full);assert.equal(neighborhood.partition.sourceKeyManifestSHA256,hash(keyBytes));assert.equal(full.partition.sourceKeyManifestSHA256,hash(keyBytes));
+ const cityEntries=Object.fromEntries(Object.entries(full.entries).filter(([,entry])=>sourceKeys.has(entry.sourceKey)));assert.deepEqual(neighborhood.entries,cityEntries);
+ assert.deepEqual(new Set(Object.keys(neighborhood.meshes)),new Set(Object.keys(keys.meshes)));
+ for(const [id,key]of Object.entries(keys.meshes))assert.equal(neighborhood.entries[neighborhood.meshes[id]].sourceKey,key,id);
+ const cityFiles=new Set(Object.values(neighborhood.entries).map(entry=>entry.chunk));assert.deepEqual(new Set(neighborhood.chunks.map(item=>item.file)),cityFiles);
+ for(const entry of Object.values(full.entries))assert.equal(cityFiles.has(entry.chunk),sourceKeys.has(entry.sourceKey));
+ const rawChunks=new Map();for(const item of full.chunks){const bytes=await fs.readFile(new URL(item.file,base));assert.equal(hash(bytes),item.sha256,item.file);const raw=gunzipSync(bytes);assert.equal(raw.length,item.inflatedBytes,item.file);rawChunks.set(item.file,raw);}
+ for(const [key,entry]of Object.entries(full.entries)){assert.equal(entry.byteOffset%4,0,key);assert.equal(entry.length%6,0,key);assert.ok(entry.byteOffset+entry.length*4<=rawChunks.get(entry.chunk).length,key);}
 });
