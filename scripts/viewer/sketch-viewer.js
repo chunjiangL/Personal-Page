@@ -8,6 +8,7 @@ import {createDeskObjects,makeDetailRoot} from './desk-inspection.mjs';
 import {framedCamera} from './scene-math.mjs';
 import {transferStats} from './asset-transfer.mjs';
 import {contourCacheStats} from './contour-cache.mjs';
+import {applyNightTraffic} from './night-traffic.mjs';
 
 const $=id=>document.getElementById(id),host=$('sketch-canvas'),viewer=$('sketch-viewer'),overlay=$('inspection-canvas');
 const names={neighborhood:'Neighborhood',bedroom:'Bedroom'},homeOffset=new T.Vector3(-2.05,1.55,1.58);
@@ -24,7 +25,7 @@ const syncSuspension=()=>stage?.suspend(document.hidden||!inView||busy||!!detail
 function setBusy(value){busy=value;for(const button of viewer.querySelectorAll('[data-scene], [data-object], #weather-select, #explode-object, #clear-selection'))button.disabled=value||!stage?.ready;syncSuspension();}
 function report(){
  if(!diagnostic||!stage?.ready)return;
- diagnostic.textContent=JSON.stringify({ready:true,startupMS,firstFrameMS,loadTimings,loadedMode,sceneLoads,transfer:transferStats,contours:contourCacheStats(),vehicles:stage.loaded.building.streetLife.vehicles.map(v=>v.id),scene:current,weather:stage.weather,camera:stage.camera.position.toArray(),target:stage.viewTarget.toArray(),mode:'fixed',windowView:stage.seated,objects:desk?.objects.map(o=>o.id),selection:detail?.object.id,detailParts:detail?.geometry.parts.size,exploded:detail?.goal===1,blurred:viewer.classList.contains('is-inspecting'),frames:stage.renderedFrames,resources:performance.getEntriesByType('resource').filter(r=>r.name.includes('/sketch-runtime/')).map(r=>({file:r.name.split('/sketch-runtime/')[1],bytes:r.transferSize,ms:Math.round(r.duration)}))});
+ diagnostic.textContent=JSON.stringify({ready:true,startupMS,firstFrameMS,loadTimings,loadedMode,sceneLoads,transfer:transferStats,contours:contourCacheStats(),vehicles:stage.loaded.building.streetLife.vehicles.map(v=>v.id),visibleVehicles:[...new Set([...stage.loaded.geometry.parts.values()].filter(p=>p.userData.street_vehicle&&p.visible).map(p=>p.userData.street_vehicle))],trafficPaused:stage.trafficPaused,scene:current,weather:stage.weather,camera:stage.camera.position.toArray(),target:stage.viewTarget.toArray(),mode:'fixed',windowView:stage.seated,objects:desk?.objects.map(o=>o.id),selection:detail?.object.id,detailParts:detail?.geometry.parts.size,exploded:detail?.goal===1,blurred:viewer.classList.contains('is-inspecting'),frames:stage.renderedFrames,resources:performance.getEntriesByType('resource').filter(r=>r.name.includes('/sketch-runtime/')).map(r=>({file:r.name.split('/sketch-runtime/')[1],bytes:r.transferSize,ms:Math.round(r.duration)}))});
 }
 function bedroomPose(){
  // Inside 302, facing the real window. Both chair feet and the whole desk
@@ -45,7 +46,7 @@ function chooseScene(id){
  closeDetail();current=id==='bedroom'?'bedroom':'neighborhood';stage.setFreeCamera(false);
  if(current==='bedroom'){stage.focusBedroomDetail('seated',false);bedroomPose();ensureDesk().catch(error=>{console.error(error);status('The desk objects could not be loaded.');});}
  else stage.focusBuilding('exterior','all',false);
- document.querySelectorAll('[data-scene]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.scene===current)));
+ applyNightTraffic(stage);document.querySelectorAll('[data-scene]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.scene===current)));
  sceneCopy();const url=new URL(location);url.searchParams.set('scene',current);history.replaceState(null,'',url);syncSuspension();report();
 }
 async function ensureDesk(){
@@ -112,7 +113,7 @@ async function start(requested=new URLSearchParams(location.search).get('scene')
   loading(true,desired==='bedroom'?'Loading the bedroom':'Loading the neighborhood');$('viewer-error').hidden=true;
   await prepareAssets((done,total)=>{$('viewer-progress').max=total;$('viewer-progress').value=done;},mode);$('viewer-progress').removeAttribute('value');
   resizeObserver?.disconnect();stage?.dispose();
-  loadPhase('renderer');stage=new ApartmentStage(host);stage.renderer.domElement.setAttribute('aria-label','Fixed view of Sketch Game. In Bedroom, click a desk object to explore its parts.');
+  loadPhase('renderer');stage=new ApartmentStage(host);stage.onBeforeFrame=()=>applyNightTraffic(stage);stage.renderer.domElement.setAttribute('aria-label','Fixed view of Sketch Game. In Bedroom, click a desk object to explore its parts.');
   await stage.initialize(label=>{loadPhase(label.replace(/\d+%/,'geometry'));const percentage=label.match(/\d+%/);loading(true,percentage?'Preparing original materials · '+percentage[0]:'Preparing the '+desired);});loadPhase('first-render');
   loadedMode=mode;let lastReport=0,viewRendered=false;stage.onRender=()=>{if(!viewRendered){viewRendered=true;sceneLoads[desired]=Math.round(performance.now()-loadAt);loading(false);}if(!firstFrameMS){firstFrameMS=Math.round(performance.now()-startupAt);loadPhase('ready');}if(backgroundPending){backgroundPending=false;syncSuspension();}if(performance.now()-lastReport>500){report();lastReport=performance.now();}};
   const canvas=stage.renderer.domElement,pointers=new Set();let down,multi=false;
@@ -125,11 +126,11 @@ async function start(requested=new URLSearchParams(location.search).get('scene')
    if(detail){detailRenderer.setSize(host.clientWidth,host.clientHeight);detail.camera.aspect=host.clientWidth/host.clientHeight;detail.camera.updateProjectionMatrix();fitDetail();backgroundPending=true;syncSuspension();}
   });resizeObserver.observe(host);
   setBusy(false);$('viewer-fullscreen').disabled=false;startupMS??=Math.round(performance.now()-startupAt);loading(true,'Rendering the '+desired);
-  chooseScene(desired);if(weather!=='sunny')stage.setWeather(weather);report();
+  chooseScene(desired);if(weather!=='sunny')stage.setWeather(weather);applyNightTraffic(stage);report();
  }catch(error){console.error(error);setBusy(false);loading(false);$('viewer-error').hidden=false;status('Scene loading failed.');if(diagnostic)diagnostic.textContent=JSON.stringify({error:error.message});}
 }
 document.querySelectorAll('[data-scene]').forEach(button=>button.addEventListener('click',()=>chooseScene(button.dataset.scene)));
-$('weather-select').addEventListener('change',()=>{if(busy||!stage?.ready)return;closeDetail();stage.setWeather($('weather-select').value);status(names[current]+' · '+$('weather-select').selectedOptions[0].text);report();});
+$('weather-select').addEventListener('change',()=>{if(busy||!stage?.ready)return;closeDetail();stage.setWeather($('weather-select').value);applyNightTraffic(stage);status(names[current]+' · '+$('weather-select').selectedOptions[0].text);report();});
 $('explode-object').addEventListener('click',()=>{if(!detail||busy)return;detail.goal=1-detail.goal;detail.settings.inspection.layout=detail.goal?'exploded':'assembled';applyDetail();fitDetail();$('explode-object').textContent=detail.goal?'Assemble':'Explode';$('explode-object').setAttribute('aria-pressed',String(!!detail.goal));report();});
 $('clear-selection').addEventListener('click',closeDetail);
 document.addEventListener('keydown',event=>{if(event.key==='Escape'&&detail&&!busy)closeDetail();});

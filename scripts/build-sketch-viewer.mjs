@@ -65,7 +65,10 @@ const result=await build({
    let source=await fs.readFile(args.path,'utf8');
    const residentStart="    progress('正在迎接小家的主人…');",residentEnd='this.scene.add(resident.root);';
    if(source.split(residentStart).length!==2||source.split(residentEnd).length!==2)throw Error('Original resident loading changed');
-   source="import {getSceneLoadMode} from '@showcase-static';\n"+source.replace(residentStart,"    if(getSceneLoadMode()==='full'){\n"+residentStart).replace(residentEnd,residentEnd+'\n    }');
+   source="import {getSceneLoadMode} from '@showcase-static';\nimport {prepareNearFoliage,applyNearFoliageWeather} from "+JSON.stringify(path.resolve('scripts/viewer/foliage-treatment.mjs'))+";\n"+source.replace(residentStart,"    if(getSceneLoadMode()==='full'){\n"+residentStart).replace(residentEnd,residentEnd+'\n    }');
+   const sceneStart='this.loaded=loaded;this.scene.add(loaded.geometry.wrapper);',environmentEnd='this.updateLightingBounds();this.core.ground.visible=false;this.renderer.shadowMap.needsUpdate=true;this.dirty=true;';
+   if(source.split(sceneStart).length!==2||source.split(environmentEnd).length!==2)throw Error('Original scene treatment hooks changed');
+   source=source.replace(sceneStart,sceneStart+'prepareNearFoliage(loaded);').replace(environmentEnd,environmentEnd+'applyNearFoliageWeather(this.loaded.geometry.wrapper,this.weather);');
    return {contents:source.replace('this.freeCamera.update(dt);','this.onBeforeFrame?.(dt);this.freeCamera.update(dt);')
    .replace('this.core=new AssetRenderCore','progress("render-core construction");this.core=new AssetRenderCore')
    .replace('this.core.apply(loaded.settings);await this.core.surface.prepare(loaded.settings);','progress("initial material styling");this.core.apply(loaded.settings);progress("surface textures");await this.core.surface.prepare(loaded.settings);progress("final material styling");')

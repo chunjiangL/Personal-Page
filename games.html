@@ -7,7 +7,7 @@ permalink: /games.html
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Games &amp; Experiments | {{ site.title }}</title>
+  <title>Computational Arts | {{ site.title }}</title>
   <meta name="description" content="Sketch Game, Mirror World, and Ink Game — game projects and visual experiments by Chunjiang Liu.">
   <link rel="canonical" href="{{ site.canonical }}games.html">
   {% include favicon.html %}
@@ -29,11 +29,11 @@ permalink: /games.html
 <body class="atlas-page games-page{% if site.auto_dark_mode %} atlas-auto-dark games-auto-dark{% endif %}">
   <nav class="atlas-nav" aria-label="Main navigation">
     <a class="atlas-name" href="{{ '/' | relative_url }}">{{ site.title }}</a>
-    <div class="atlas-nav-links"><a href="{{ '/' | relative_url }}">Home</a><a href="{{ '/' | relative_url }}#publications">Publications</a><a href="{{ '/world.html' | relative_url }}">Atlas</a><a href="{{ '/games.html' | relative_url }}" aria-current="page">Games</a></div>
+    <div class="atlas-nav-links"><a href="{{ '/' | relative_url }}">Home</a><a href="{{ '/' | relative_url }}#publications">Publications</a><a href="{{ '/world.html' | relative_url }}">Atlas</a><a href="{{ '/games.html' | relative_url }}" aria-current="page">Gallery</a></div>
   </nav>
   <main class="games" aria-labelledby="games-title">
     <div class="games-heading">
-      <div><h1 id="games-title">Games &amp; Experiments</h1><p>Personal projects in interactive worlds and stylized graphics.</p></div>
+      <div><h1 id="games-title">Computational Arts</h1><p>Personal projects in interactive worlds and stylized graphics.</p></div>
       <nav class="games-index" aria-label="Projects">
         {% for game in site.data.games %}<a href="#{{ game.id }}">{{ game.name }}</a>{% endfor %}
       </nav>
