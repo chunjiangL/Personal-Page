@@ -11,9 +11,14 @@ Install this repository's package dependencies with `npm ci`. Set `SKETCH_GAME_R
 1. From the original game checkout, run `node --import tsx <website>/scripts/export-sketch-runtime.mjs` — export pinned assemblies and street assets, preserving metadata and verifying lossless compression and original loader compatibility.
 2. `node scripts/export-sketch-prepared-geometry.mjs` — compute the original stroke charts and structure fields offline.
 3. `node scripts/export-sketch-prepared-geometry.mjs --verify-only` — validate the cache against freshly generated source geometry.
-4. `npm run build:viewer` and `npm run test:viewer`.
+4. `node scripts/deduplicate-sketch-models.mjs` — deduplicate exact physical GLB ranges and stamp compressed content hashes, preserving every referenced byte.
+5. `node scripts/compact-sketch-cache.mjs` — retain the requested fleet and encode prepared arrays without quantization. Every decoded array is compared bit-for-bit with the original. Original `prepared/` files remain offline rebuild/test inputs.
+6. `node scripts/export-sketch-contours.mjs` — cache the original Three.js edge algorithm for every resolved mesh/angle pair. Compare endpoint order and bytes with expanded source geometry. Shader code is unchanged.
+7. `npm run build:viewer` and `npm run test:viewer`.
 
-The runtime loads gzip payloads using DecompressionStream. Large, uncompressed intermediate GLBs are ignored. The prepared geometry cache checks source geometry fingerprints before reuse; regenerate it after scene or asset changes. The source game is never modified by the website build.
+The runtime loads gzip payloads using DecompressionStream. Compressed files use SHA-256 content URLs and CacheStorage, independent of page versions; unavailable persistent storage falls back to ordinary fetch. Cached geometry and contours check source fingerprints before reuse, with original-algorithm fallback. The build guards the algorithm source hashes. Regenerate after scene or algorithm changes. Large, uncompressed intermediate GLBs are ignored; the source game is never modified by the website build.
+
+The fleet adapter keeps the original orange bus, yellow hatchback and pickup. Only the pickup body pigment changes to the source sage green. Other vehicle specifications are removed before construction, so no invisible traffic agents remain. Weather, shaders, motion, bus-stop dwell, glass and wheels retain their original implementation.
 
 ## Integration checks
 

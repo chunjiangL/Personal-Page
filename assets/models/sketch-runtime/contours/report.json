@@ -1,0 +1,125 @@
+{
+  "status": "pass",
+  "sceneBuildMS": 6509,
+  "meshes": 1154,
+  "uniqueEntries": 1076,
+  "angleCounts": {
+    "14": 3,
+    "35": 613,
+    "40": 108,
+    "42": 177,
+    "43": 81,
+    "45": 31,
+    "48": 108,
+    "50": 5,
+    "52": 28
+  },
+  "segments": 1170562,
+  "bytes": 28093488,
+  "gzipBytes": 6854636,
+  "edgesMS": 24718,
+  "expandedVerificationMS": 23981,
+  "partitionMS": 1774,
+  "emptyOverrideMeshes": 977,
+  "fastPartitionMS": 185,
+  "cacheLoadMS": 212,
+  "restoreMS": 29,
+  "cache": {
+    "hits": 1154,
+    "misses": 0,
+    "entries": 1076,
+    "bytes": 28093488
+  },
+  "heavyMeshes": [
+    {
+      "id": "scene_kitchen_42",
+      "vertices": 388992,
+      "segments": 65464,
+      "milliseconds": 1016
+    },
+    {
+      "id": "street_life_trees_4",
+      "vertices": 347904,
+      "segments": 115968,
+      "milliseconds": 895
+    },
+    {
+      "id": "scene_bedroom_72",
+      "vertices": 298440,
+      "segments": 1294,
+      "milliseconds": 853
+    },
+    {
+      "id": "scene_bedroom_94",
+      "vertices": 319584,
+      "segments": 2088,
+      "milliseconds": 825
+    },
+    {
+      "id": "scene_bedroom_88",
+      "vertices": 319584,
+      "segments": 8183,
+      "milliseconds": 764
+    },
+    {
+      "id": "street_life_trees_3",
+      "vertices": 278640,
+      "segments": 8696,
+      "milliseconds": 634
+    },
+    {
+      "id": "scene_bedroom_67",
+      "vertices": 167136,
+      "segments": 728,
+      "milliseconds": 418
+    },
+    {
+      "id": "scene_bedroom_17",
+      "vertices": 193884,
+      "segments": 11719,
+      "milliseconds": 384
+    },
+    {
+      "id": "scene_bedroom_75",
+      "vertices": 151308,
+      "segments": 292,
+      "milliseconds": 355
+    },
+    {
+      "id": "scene_bedroom_24",
+      "vertices": 140400,
+      "segments": 24480,
+      "milliseconds": 322
+    },
+    {
+      "id": "scene_bedroom_20",
+      "vertices": 143070,
+      "segments": 6239,
+      "milliseconds": 320
+    },
+    {
+      "id": "scene_bedroom_27",
+      "vertices": 128502,
+      "segments": 4199,
+      "milliseconds": 319
+    },
+    {
+      "id": "street_life_car_mustard_0",
+      "vertices": 93528,
+      "segments": 1398,
+      "milliseconds": 298
+    },
+    {
+      "id": "scene_bedroom_107",
+      "vertices": 113352,
+      "segments": 824,
+      "milliseconds": 291
+    },
+    {
+      "id": "building_interior_unit_301_furniture_18",
+      "vertices": 159300,
+      "segments": 0,
+      "milliseconds": 288
+    }
+  ]
+}

@@ -6,10 +6,14 @@ import {setDaylight} from '@sketch/apps/apartment/load-scene';
 import {prepareAssets,assemblyData} from './static-assets.js';
 import {createDeskObjects,makeDetailRoot} from './desk-inspection.mjs';
 import {framedCamera} from './scene-math.mjs';
+import {transferStats} from './asset-transfer.mjs';
+import {contourCacheStats} from './contour-cache.mjs';
 
 const $=id=>document.getElementById(id),host=$('sketch-canvas'),viewer=$('sketch-viewer'),overlay=$('inspection-canvas');
 const names={neighborhood:'Neighborhood',bedroom:'Bedroom'},homeOffset=new T.Vector3(-2.05,1.55,1.58);
-let stage,current='neighborhood',desk,bedroomRecord,deskPromise,detail,detailRenderer,busy=false,inView=true,backgroundPending=false,frame=0,startupMS;
+let stage,current='neighborhood',desk,bedroomRecord,deskPromise,detail,detailRenderer,busy=false,inView=true,backgroundPending=false,frame=0,startupMS,firstFrameMS;
+const loadTimings={};let phaseAt=performance.now(),phase='download';
+function loadPhase(next){const now=performance.now();loadTimings[phase]=Math.round((loadTimings[phase]||0)+now-phaseAt);phase=next;phaseAt=now;}
 const startupAt=performance.now(),reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
 const diagnostic=new URLSearchParams(location.search).has('qa')?document.createElement('output'):null;
 if(diagnostic){diagnostic.id='viewer-diagnostics';diagnostic.hidden=true;viewer.append(diagnostic);}
@@ -19,7 +23,7 @@ const syncSuspension=()=>stage?.suspend(document.hidden||!inView||busy||!!detail
 function setBusy(value){busy=value;for(const button of viewer.querySelectorAll('[data-scene], [data-object], #weather-select, #explode-object, #clear-selection'))button.disabled=value;syncSuspension();}
 function report(){
  if(!diagnostic||!stage?.ready)return;
- diagnostic.textContent=JSON.stringify({ready:true,startupMS,scene:current,weather:stage.weather,camera:stage.camera.position.toArray(),target:stage.viewTarget.toArray(),mode:'fixed',windowView:stage.seated,objects:desk?.objects.map(o=>o.id),selection:detail?.object.id,detailParts:detail?.geometry.parts.size,exploded:detail?.goal===1,blurred:viewer.classList.contains('is-inspecting'),frames:stage.renderedFrames});
+ diagnostic.textContent=JSON.stringify({ready:true,startupMS,firstFrameMS,loadTimings,transfer:transferStats,contours:contourCacheStats(),vehicles:stage.loaded.building.streetLife.vehicles.map(v=>v.id),scene:current,weather:stage.weather,camera:stage.camera.position.toArray(),target:stage.viewTarget.toArray(),mode:'fixed',windowView:stage.seated,objects:desk?.objects.map(o=>o.id),selection:detail?.object.id,detailParts:detail?.geometry.parts.size,exploded:detail?.goal===1,blurred:viewer.classList.contains('is-inspecting'),frames:stage.renderedFrames,resources:performance.getEntriesByType('resource').filter(r=>r.name.includes('/sketch-runtime/')).map(r=>({file:r.name.split('/sketch-runtime/')[1],bytes:r.transferSize,ms:Math.round(r.duration)}))});
 }
 function bedroomPose(){
  // Inside 302, facing the real window. Both chair feet and the whole desk
@@ -102,9 +106,9 @@ async function start(){
  try{
   loading(true,'Loading the neighborhood');$('viewer-error').hidden=true;
   await prepareAssets((done,total)=>{$('viewer-progress').max=total;$('viewer-progress').value=done;});$('viewer-progress').removeAttribute('value');
-  stage=new ApartmentStage(host);stage.renderer.domElement.setAttribute('aria-label','Fixed view of Sketch Game. In Bedroom, click a desk object to explore its parts.');
-  await stage.initialize(label=>{const percentage=label.match(/\d+%/);loading(true,percentage?'Preparing original materials · '+percentage[0]:'Preparing the neighborhood and bedroom');});
-  let lastReport=0;stage.onRender=()=>{if(backgroundPending){backgroundPending=false;syncSuspension();}if(performance.now()-lastReport>500){report();lastReport=performance.now();}};
+  loadPhase('renderer');stage=new ApartmentStage(host);stage.renderer.domElement.setAttribute('aria-label','Fixed view of Sketch Game. In Bedroom, click a desk object to explore its parts.');
+  await stage.initialize(label=>{loadPhase(label.replace(/\d+%/,'geometry'));const percentage=label.match(/\d+%/);loading(true,percentage?'Preparing original materials · '+percentage[0]:'Preparing the neighborhood and bedroom');});loadPhase('first-render');
+  let lastReport=0;stage.onRender=()=>{if(!firstFrameMS){firstFrameMS=Math.round(performance.now()-startupAt);loadPhase('ready');}if(backgroundPending){backgroundPending=false;syncSuspension();}if(performance.now()-lastReport>500){report();lastReport=performance.now();}};
   const canvas=stage.renderer.domElement,pointers=new Set();let down,multi=false;
   canvas.addEventListener('pointerdown',event=>{if(!pointers.size)multi=false;pointers.add(event.pointerId);multi||=pointers.size>1;down={x:event.clientX,y:event.clientY,button:event.button};});
   canvas.addEventListener('pointerup',event=>{pointers.delete(event.pointerId);const origin=down;down=undefined;if(!origin||multi||origin.button!==0||Math.hypot(event.clientX-origin.x,event.clientY-origin.y)>5)return;const object=pick(event);if(object)inspect(object);});

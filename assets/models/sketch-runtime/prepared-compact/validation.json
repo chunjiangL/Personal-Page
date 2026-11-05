@@ -1,0 +1,51 @@
+{
+  "status": "pass",
+  "originalEntries": 1125,
+  "entries": 1076,
+  "removedMeshes": 91,
+  "removedEntries": 49,
+  "verifiedArrays": 5380,
+  "originalBytes": 643578664,
+  "retainedBytes": 624921856,
+  "compactBytes": 335288240,
+  "gzipBytes": 61053804,
+  "encodingCounts": {
+    "raw": 1846,
+    "meshopt": 630,
+    "triangle-meshopt": 961,
+    "dictionary": 1829,
+    "triangle-raw": 114
+  },
+  "attributes": {
+    "labStrokeUV": {
+      "originalBytes": 95605248,
+      "encodedBytes": 81536215,
+      "arrays": 1076
+    },
+    "labStrokeSeam": {
+      "originalBytes": 143407872,
+      "encodedBytes": 95035714,
+      "arrays": 1076
+    },
+    "labStructureDistance": {
+      "originalBytes": 143407872,
+      "encodedBytes": 77962393,
+      "arrays": 1076
+    },
+    "labStructureEdges": {
+      "originalBytes": 143407872,
+      "encodedBytes": 20138584,
+      "arrays": 1076
+    },
+    "field": {
+      "originalBytes": 99092992,
+      "encodedBytes": 60612361,
+      "arrays": 1076
+    }
+  },
+  "chunks": 15,
+  "manifestBytes": 1296607,
+  "manifestGzipBytes": 166858,
+  "originalGzipBytes": 79588091,
+  "totalGzipBytes": 61220662
+}

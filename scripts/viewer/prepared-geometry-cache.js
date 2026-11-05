@@ -1,5 +1,7 @@
 import * as T from 'three';
 import {addLodBounds} from '@sketch/rendering/asset/sketch-lod';
+import {unpackAsset} from './asset-transfer.mjs';
+import {geometryCodecReady,decodeGeometryArray} from './geometry-codec.mjs';
 
 // Shared between the offline exporter and browser. All source attributes,
 // index bytes and material groups participate in the SHA-256 identity.
@@ -16,12 +18,12 @@ export async function geometryFingerprint(geometry){
 /** Exact display preparation cache; source meshes and authored materials survive. */
 export async function loadPreparedDisplayCache(base,progress=()=>{}){
  const baseURL=new URL(base,globalThis.location?.href||import.meta.url);
- const resolve=file=>{const result=new URL(file,baseURL);result.search=baseURL.search;return result;};
- async function unpack(file){const response=await fetch(resolve(file));if(!response.ok)throw Error('Prepared geometry download failed: '+file);return new Response(response.body.pipeThrough(new DecompressionStream('gzip')));}
- const manifest=await(await unpack('prepared/manifest.json.gz')).json();
+ const compact=typeof __SKETCH_PREPARED_MANIFEST__!=='undefined';
+ const manifest=await(await unpackAsset(baseURL,compact?'prepared-compact/manifest.json.gz':'prepared/manifest.json.gz',compact?__SKETCH_PREPARED_MANIFEST__:undefined)).json();
  if(manifest.schema!=='sketch.prepared.geometry.v1')throw Error('Unsupported prepared geometry cache');
+ await geometryCodecReady;
  const chunks=new Map(),queue=[...manifest.chunks];let done=0;
- async function worker(){while(queue.length){const item=queue.shift();const bytes=await(await unpack(item.file)).arrayBuffer();if(bytes.byteLength!==item.inflatedBytes)throw Error('Prepared geometry byte length differs: '+item.file);chunks.set(item.file,bytes);progress(++done,manifest.chunks.length);}}
+ async function worker(){while(queue.length){const item=queue.shift();const bytes=await(await unpackAsset(baseURL,item.file,item.sha256)).arrayBuffer();if(bytes.byteLength!==item.inflatedBytes)throw Error('Prepared geometry byte length differs: '+item.file);chunks.set(item.file,bytes);progress(++done,manifest.chunks.length);}}
  await Promise.all(Array.from({length:4},worker));
  const keys=new WeakMap(),sources=new Map(),views=new Map();
  const stats={hits:0,misses:0,sourceGeometries:0,entries:Object.keys(manifest.entries).length};
@@ -29,8 +31,8 @@ export async function loadPreparedDisplayCache(base,progress=()=>{}){
   if(views.has(key))return views.get(key);
   const entry=manifest.entries[key];if(!entry)return;
   const attributes={};
-  for(const [name,a]of Object.entries(entry.attributes))attributes[name]={array:new Float32Array(chunks.get(a.chunk||entry.chunk),a.byteOffset,a.length),itemSize:a.itemSize};
-  const value={attributes,field:{offset:0,data:new Float32Array(chunks.get(entry.field.chunk||entry.chunk),entry.field.byteOffset,entry.field.length)},userData:entry.userData};views.set(key,value);return value;
+  for(const [name,a]of Object.entries(entry.attributes))attributes[name]={array:decodeGeometryArray(chunks.get(a.chunk||entry.chunk),a),itemSize:a.itemSize};
+  const value={attributes,field:{offset:0,data:decodeGeometryArray(chunks.get(entry.field.chunk||entry.chunk),entry.field)},userData:entry.userData};views.set(key,value);return value;
  }
  return {stats,manifest,
   async prepare(root,onProgress=()=>{}){
@@ -50,10 +52,10 @@ export async function loadPreparedDisplayCache(base,progress=()=>{}){
    // there is no second copy of the large expanded position/normal buffers.
    return {geometry:{clone(){const geometry=source.index?source.toNonIndexed():source.clone();
     for(const [name,a]of Object.entries(value.attributes))geometry.setAttribute(name,new T.BufferAttribute(name==='labStructureEdges'?a.array.slice():a.array,a.itemSize));
-    geometry.userData={...geometry.userData,labStrokeCharts:value.userData.labStrokeCharts};return addLodBounds(geometry);
+    geometry.userData={...geometry.userData,labStrokeCharts:value.userData.labStrokeCharts,showcaseSourceKey:key};return addLodBounds(geometry);
    }},field:value.field};
   },
-  put(){},
+  put(key,geometry){geometry.userData.showcaseSourceKey=key;},
   dispose(){chunks.clear();sources.clear();views.clear();}
  };
 }
