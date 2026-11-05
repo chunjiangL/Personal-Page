@@ -7,8 +7,8 @@ permalink: /games.html
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Computational Arts | {{ site.title }}</title>
-  <meta name="description" content="Sketch Game, Mirror World, and Ink Game — game projects and visual experiments by Chunjiang Liu.">
+  <title>Gallery | {{ site.title }}</title>
+  <meta name="description" content="Sketch Studies, Mirror World, and Ink Game — visual experiments by Chunjiang Liu.">
   <link rel="canonical" href="{{ site.canonical }}games.html">
   {% include favicon.html %}
   {% assign asset_version = site.github.build_revision | default: site.time %}
@@ -31,9 +31,8 @@ permalink: /games.html
     <a class="atlas-name" href="{{ '/' | relative_url }}">{{ site.title }}</a>
     <div class="atlas-nav-links"><a href="{{ '/' | relative_url }}">Home</a><a href="{{ '/' | relative_url }}#publications">Publications</a><a href="{{ '/world.html' | relative_url }}">Atlas</a><a href="{{ '/games.html' | relative_url }}" aria-current="page">Gallery</a></div>
   </nav>
-  <main class="games" aria-labelledby="games-title">
-    <div class="games-heading">
-      <div><h1 id="games-title">Computational Arts</h1><p>Personal projects in interactive worlds and stylized graphics.</p></div>
+  <main class="games" aria-label="Gallery">
+    <div class="games-heading" id="games-title">
       <nav class="games-index" aria-label="Projects">
         {% for game in site.data.games %}<a href="#{{ game.id }}">{{ game.name }}</a>{% endfor %}
       </nav>
@@ -45,7 +44,7 @@ permalink: /games.html
         <p class="game-description">A neighborhood in changing weather, and a quiet bedroom. Take a closer look at the objects on the desk and explore their modeled parts.</p>
       </div>
 
-      <div class="sketch-viewer" id="sketch-viewer" aria-label="Interactive Sketch Game scenes">
+      <div class="sketch-viewer" id="sketch-viewer" aria-label="Interactive Sketch Studies scenes">
         <div class="viewer-toolbar">
           <div class="viewer-scenes" role="group" aria-label="Choose a scene">
             <button type="button" data-scene="neighborhood" aria-pressed="true">Neighborhood</button>

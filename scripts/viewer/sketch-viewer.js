@@ -113,7 +113,7 @@ async function start(requested=new URLSearchParams(location.search).get('scene')
   loading(true,desired==='bedroom'?'Loading the bedroom':'Loading the neighborhood');$('viewer-error').hidden=true;
   await prepareAssets((done,total)=>{$('viewer-progress').max=total;$('viewer-progress').value=done;},mode);$('viewer-progress').removeAttribute('value');
   resizeObserver?.disconnect();stage?.dispose();
-  loadPhase('renderer');stage=new ApartmentStage(host);stage.onBeforeFrame=()=>applyNightTraffic(stage);stage.renderer.domElement.setAttribute('aria-label','Fixed view of Sketch Game. In Bedroom, click a desk object to explore its parts.');
+  loadPhase('renderer');stage=new ApartmentStage(host);stage.onBeforeFrame=()=>applyNightTraffic(stage);stage.renderer.domElement.setAttribute('aria-label','Fixed view of Sketch Studies. In Bedroom, click a desk object to explore its parts.');
   await stage.initialize(label=>{loadPhase(label.replace(/\d+%/,'geometry'));const percentage=label.match(/\d+%/);loading(true,percentage?'Preparing original materials · '+percentage[0]:'Preparing the '+desired);});loadPhase('first-render');
   loadedMode=mode;let lastReport=0,viewRendered=false;stage.onRender=()=>{if(!viewRendered){viewRendered=true;sceneLoads[desired]=Math.round(performance.now()-loadAt);loading(false);}if(!firstFrameMS){firstFrameMS=Math.round(performance.now()-startupAt);loadPhase('ready');}if(backgroundPending){backgroundPending=false;syncSuspension();}if(performance.now()-lastReport>500){report();lastReport=performance.now();}};
   const canvas=stage.renderer.domElement,pointers=new Set();let down,multi=false;

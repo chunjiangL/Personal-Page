@@ -1,12 +1,12 @@
 - id: sketch-game
-  name: Sketch Game
+  name: Sketch Studies
   field: Everyday worlds · Sketch rendering
   description: A neighborhood in changing weather, and a quiet bedroom facing the window. Take a closer look at the modeled objects on the desk.
   focus: Fixed views, changing weather, and individual object studies.
   images:
     - file: sketch-neighborhood
       label: The neighborhood
-      alt: A sunlit corner block with outlined shopfronts, trees, and a street crossing in Sketch Game.
+      alt: A sunlit corner block with outlined shopfronts, trees, and a street crossing in Sketch Studies.
       width: 1440
       height: 742
     - file: sketch-kitchen
