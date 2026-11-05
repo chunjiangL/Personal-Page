@@ -1,0 +1,6085 @@
+{
+  "schema": "sketch.workstation.inspection.v1",
+  "assembly": "apartment_302_bedroom",
+  "linkedSource": "workstation",
+  "homeOffset": [
+    -2.05,
+    1.55,
+    1.58
+  ],
+  "window": {
+    "center": [
+      2.4,
+      1.65,
+      3.27
+    ],
+    "size": [
+      1.7,
+      1.4
+    ]
+  },
+  "workstationBounds": {
+    "min": [
+      1,
+      0,
+      1.442111
+    ],
+    "max": [
+      2.6,
+      1.205,
+      2.950406
+    ],
+    "center": [
+      1.8,
+      0.6025,
+      2.196259
+    ],
+    "size": [
+      1.6,
+      1.205,
+      1.508295
+    ]
+  },
+  "objects": [
+    {
+      "id": "desk",
+      "label": "Desk",
+      "prefix": "workstation_desk_",
+      "asset": "models/furniture/desks/studio-computer-desk-160",
+      "version": "v0002",
+      "bounds": {
+        "min": [
+          1,
+          0,
+          2.125
+        ],
+        "max": [
+          2.6,
+          0.7405,
+          2.875
+        ],
+        "center": [
+          1.8,
+          0.37025,
+          2.5
+        ],
+        "size": [
+          1.6,
+          0.7405,
+          0.75
+        ]
+      },
+      "partIds": [
+        "workstation_desk_cable_tray",
+        "workstation_desk_desktop",
+        "workstation_desk_handset",
+        "workstation_desk_left_base",
+        "workstation_desk_left_hook",
+        "workstation_desk_left_inner_column",
+        "workstation_desk_right_base",
+        "workstation_desk_right_hook",
+        "workstation_desk_right_inner_column",
+        "workstation_desk_upper_frame"
+      ],
+      "meshIds": [
+        "workstation_desk_folded_cable_channel",
+        "workstation_desk_tray_mount_0",
+        "workstation_desk_tray_mount_1",
+        "workstation_desk_tray_mount_screw_0_head",
+        "workstation_desk_tray_mount_screw_0_shank",
+        "workstation_desk_tray_mount_screw_1_head",
+        "workstation_desk_tray_mount_screw_1_shank",
+        "workstation_desk_continuous_desktop",
+        "workstation_desk_left_grommet",
+        "workstation_desk_left_grommet_liner",
+        "workstation_desk_right_grommet",
+        "workstation_desk_right_grommet_liner",
+        "workstation_desk_handset_arrow_0",
+        "workstation_desk_handset_arrow_1",
+        "workstation_desk_handset_button_0",
+        "workstation_desk_handset_button_1",
+        "workstation_desk_handset_button_2",
+        "workstation_desk_handset_button_3",
+        "workstation_desk_handset_cable",
+        "workstation_desk_handset_display",
+        "workstation_desk_handset_mount_0_head",
+        "workstation_desk_handset_mount_0_shank",
+        "workstation_desk_handset_mount_1_head",
+        "workstation_desk_handset_mount_1_shank",
+        "workstation_desk_handset_preset_2",
+        "workstation_desk_handset_preset_3",
+        "workstation_desk_handset_shell",
+        "workstation_desk_handset_tab_0",
+        "workstation_desk_handset_tab_1",
+        "workstation_desk_left_column_guide",
+        "workstation_desk_left_foot_bolt_0_head",
+        "workstation_desk_left_foot_bolt_0_shank",
+        "workstation_desk_left_foot_bolt_1_head",
+        "workstation_desk_left_foot_bolt_1_shank",
+        "workstation_desk_left_foot_bolt_2_head",
+        "workstation_desk_left_foot_bolt_2_shank",
+        "workstation_desk_left_foot_bolt_3_head",
+        "workstation_desk_left_foot_bolt_3_shank",
+        "workstation_desk_left_foot_mount_plate",
+        "workstation_desk_left_leveling_pad_0",
+        "workstation_desk_left_leveling_pad_1",
+        "workstation_desk_left_outer_column",
+        "workstation_desk_left_pad_stud_0",
+        "workstation_desk_left_pad_stud_1",
+        "workstation_desk_left_t_foot",
+        "workstation_desk_left_bent_hook",
+        "workstation_desk_left_hook_screw_0_head",
+        "workstation_desk_left_hook_screw_0_shank",
+        "workstation_desk_left_hook_screw_1_head",
+        "workstation_desk_left_hook_screw_1_shank",
+        "workstation_desk_left_inner_column_tube",
+        "workstation_desk_left_inner_head_plate",
+        "workstation_desk_right_column_guide",
+        "workstation_desk_right_foot_bolt_0_head",
+        "workstation_desk_right_foot_bolt_0_shank",
+        "workstation_desk_right_foot_bolt_1_head",
+        "workstation_desk_right_foot_bolt_1_shank",
+        "workstation_desk_right_foot_bolt_2_head",
+        "workstation_desk_right_foot_bolt_2_shank",
+        "workstation_desk_right_foot_bolt_3_head",
+        "workstation_desk_right_foot_bolt_3_shank",
+        "workstation_desk_right_foot_mount_plate",
+        "workstation_desk_right_leveling_pad_0",
+        "workstation_desk_right_leveling_pad_1",
+        "workstation_desk_right_outer_column",
+        "workstation_desk_right_pad_stud_0",
+        "workstation_desk_right_pad_stud_1",
+        "workstation_desk_right_t_foot",
+        "workstation_desk_right_bent_hook",
+        "workstation_desk_right_hook_screw_0_head",
+        "workstation_desk_right_hook_screw_0_shank",
+        "workstation_desk_right_hook_screw_1_head",
+        "workstation_desk_right_hook_screw_1_shank",
+        "workstation_desk_right_inner_column_tube",
+        "workstation_desk_right_inner_head_plate",
+        "workstation_desk_cable_clip_l",
+        "workstation_desk_cable_clip_r",
+        "workstation_desk_control_box",
+        "workstation_desk_control_mount_l",
+        "workstation_desk_control_mount_r",
+        "workstation_desk_control_screw_90_164_head",
+        "workstation_desk_control_screw_90_164_shank",
+        "workstation_desk_control_screw_90_96_head",
+        "workstation_desk_control_screw_90_96_shank",
+        "workstation_desk_control_screw_m90_164_head",
+        "workstation_desk_control_screw_m90_164_shank",
+        "workstation_desk_control_screw_m90_96_head",
+        "workstation_desk_control_screw_m90_96_shank",
+        "workstation_desk_cross_rail_front",
+        "workstation_desk_cross_rail_rear",
+        "workstation_desk_left_desktop_bolt_0_head",
+        "workstation_desk_left_desktop_bolt_0_shank",
+        "workstation_desk_left_desktop_bolt_1_head",
+        "workstation_desk_left_desktop_bolt_1_shank",
+        "workstation_desk_left_desktop_support",
+        "workstation_desk_left_head_bolt_0_head",
+        "workstation_desk_left_head_bolt_0_shank",
+        "workstation_desk_left_head_bolt_1_head",
+        "workstation_desk_left_head_bolt_1_shank",
+        "workstation_desk_left_head_spacer_0",
+        "workstation_desk_left_head_spacer_1",
+        "workstation_desk_left_motor_cable",
+        "workstation_desk_left_motor_head",
+        "workstation_desk_left_motor_socket",
+        "workstation_desk_left_mount_pad_0",
+        "workstation_desk_left_mount_pad_1",
+        "workstation_desk_right_desktop_bolt_0_head",
+        "workstation_desk_right_desktop_bolt_0_shank",
+        "workstation_desk_right_desktop_bolt_1_head",
+        "workstation_desk_right_desktop_bolt_1_shank",
+        "workstation_desk_right_desktop_support",
+        "workstation_desk_right_head_bolt_0_head",
+        "workstation_desk_right_head_bolt_0_shank",
+        "workstation_desk_right_head_bolt_1_head",
+        "workstation_desk_right_head_bolt_1_shank",
+        "workstation_desk_right_head_spacer_0",
+        "workstation_desk_right_head_spacer_1",
+        "workstation_desk_right_motor_cable",
+        "workstation_desk_right_motor_head",
+        "workstation_desk_right_motor_socket",
+        "workstation_desk_right_mount_pad_0",
+        "workstation_desk_right_mount_pad_1"
+      ],
+      "materialNames": [
+        "mat_metal_workstation_desk_desk_powder_coat",
+        "mat_metal_workstation_desk_desk_fasteners",
+        "mat_wood_workstation_desk_desk_graphite_laminate",
+        "mat_plastic_workstation_desk_desk_polymer",
+        "mat_plastic_workstation_desk_desk_legend",
+        "mat_glass_workstation_desk_desk_display",
+        "mat_plastic_workstation_desk_desk_pads",
+        "mat_metal_workstation_desk_desk_sliding_column"
+      ],
+      "parts": [
+        {
+          "id": "workstation_desk_cable_tray",
+          "sourceId": "desk_cable_tray",
+          "bounds": {
+            "min": [
+              1.44,
+              0.616,
+              2.676
+            ],
+            "max": [
+              2.16,
+              0.7245,
+              2.812
+            ],
+            "center": [
+              1.8,
+              0.67025,
+              2.744
+            ],
+            "size": [
+              0.72,
+              0.1085,
+              0.136
+            ]
+          }
+        },
+        {
+          "id": "workstation_desk_desktop",
+          "sourceId": "desk_desktop",
+          "bounds": {
+            "min": [
+              1,
+              0.7135,
+              2.125
+            ],
+            "max": [
+              2.6,
+              0.7405,
+              2.875
+            ],
+            "center": [
+              1.8,
+              0.727,
+              2.5
+            ],
+            "size": [
+              1.6,
+              0.027,
+              0.75
+            ]
+          }
+        },
+        {
+          "id": "workstation_desk_handset",
+          "sourceId": "desk_handset",
+          "bounds": {
+            "min": [
+              1.237,
+              0.6835,
+              2.1286
+            ],
+            "max": [
+              1.690594,
+              0.7255,
+              2.652014
+            ],
+            "center": [
+              1.463797,
+              0.7045,
+              2.390307
+            ],
+            "size": [
+              0.453594,
+              0.042,
+              0.523414
+            ]
+          }
+        },
+        {
+          "id": "workstation_desk_left_base",
+          "sourceId": "desk_left_base",
+          "bounds": {
+            "min": [
+              2.348,
+              0,
+              2.16
+            ],
+            "max": [
+              2.452,
+              0.552,
+              2.84
+            ],
+            "center": [
+              2.4,
+              0.276,
+              2.5
+            ],
+            "size": [
+              0.104,
+              0.552,
+              0.68
+            ]
+          }
+        },
+        {
+          "id": "workstation_desk_left_hook",
+          "sourceId": "desk_left_hook",
+          "bounds": {
+            "min": [
+              2.5,
+              0.634,
+              2.352
+            ],
+            "max": [
+              2.588,
+              0.726,
+              2.388
+            ],
+            "center": [
+              2.544,
+              0.68,
+              2.37
+            ],
+            "size": [
+              0.088,
+              0.092,
+              0.036
+            ]
+          }
+        },
+        {
+          "id": "workstation_desk_left_inner_column",
+          "sourceId": "desk_left_inner_column",
+          "bounds": {
+            "min": [
+              2.338,
+              0.1,
+              2.458
+            ],
+            "max": [
+              2.462,
+              0.69,
+              2.542
+            ],
+            "center": [
+              2.4,
+              0.395,
+              2.5
+            ],
+            "size": [
+              0.124,
+              0.59,
+              0.084
+            ]
+          }
+        },
+        {
+          "id": "workstation_desk_right_base",
+          "sourceId": "desk_right_base",
+          "bounds": {
+            "min": [
+              1.148,
+              0,
+              2.16
+            ],
+            "max": [
+              1.252,
+              0.552,
+              2.84
+            ],
+            "center": [
+              1.2,
+              0.276,
+              2.5
+            ],
+            "size": [
+              0.104,
+              0.552,
+              0.68
+            ]
+          }
+        },
+        {
+          "id": "workstation_desk_right_hook",
+          "sourceId": "desk_right_hook",
+          "bounds": {
+            "min": [
+              1.012,
+              0.634,
+              2.352
+            ],
+            "max": [
+              1.1,
+              0.726,
+              2.388
+            ],
+            "center": [
+              1.056,
+              0.68,
+              2.37
+            ],
+            "size": [
+              0.088,
+              0.092,
+              0.036
+            ]
+          }
+        },
+        {
+          "id": "workstation_desk_right_inner_column",
+          "sourceId": "desk_right_inner_column",
+          "bounds": {
+            "min": [
+              1.138,
+              0.1,
+              2.458
+            ],
+            "max": [
+              1.262,
+              0.69,
+              2.542
+            ],
+            "center": [
+              1.2,
+              0.395,
+              2.5
+            ],
+            "size": [
+              0.124,
+              0.59,
+              0.084
+            ]
+          }
+        },
+        {
+          "id": "workstation_desk_upper_frame",
+          "sourceId": "desk_upper_frame",
+          "bounds": {
+            "min": [
+              1.131,
+              0.659,
+              2.215
+            ],
+            "max": [
+              2.469,
+              0.724,
+              2.785
+            ],
+            "center": [
+              1.8,
+              0.6915,
+              2.5
+            ],
+            "size": [
+              1.338,
+              0.065,
+              0.57
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "monitor",
+      "label": "Monitor",
+      "prefix": "workstation_monitor_",
+      "asset": "models/electronics/displays/studio-monitor-27",
+      "version": "v0002",
+      "bounds": {
+        "min": [
+          1.495,
+          0.74,
+          2.485
+        ],
+        "max": [
+          2.105,
+          1.205,
+          2.695
+        ],
+        "center": [
+          1.8,
+          0.9725,
+          2.59
+        ],
+        "size": [
+          0.61,
+          0.465,
+          0.21
+        ]
+      },
+      "partIds": [
+        "workstation_monitor_base",
+        "workstation_monitor_display",
+        "workstation_monitor_stand"
+      ],
+      "meshIds": [
+        "workstation_monitor_base_casting",
+        "workstation_monitor_base_fastener",
+        "workstation_monitor_base_screw_shank",
+        "workstation_monitor_foot_l_front",
+        "workstation_monitor_foot_l_rear",
+        "workstation_monitor_foot_r_front",
+        "workstation_monitor_foot_r_rear",
+        "workstation_monitor_display_surface",
+        "workstation_monitor_displayport_interior",
+        "workstation_monitor_displayport_socket",
+        "workstation_monitor_front_bezel",
+        "workstation_monitor_hdmi_interior",
+        "workstation_monitor_hdmi_socket",
+        "workstation_monitor_internal_display_pack",
+        "workstation_monitor_io_well",
+        "workstation_monitor_mount_screw_l_hi",
+        "workstation_monitor_mount_screw_l_lo",
+        "workstation_monitor_mount_screw_r_hi",
+        "workstation_monitor_mount_screw_r_lo",
+        "workstation_monitor_osd_joystick",
+        "workstation_monitor_power_contact_left",
+        "workstation_monitor_power_contact_right",
+        "workstation_monitor_power_indicator",
+        "workstation_monitor_power_interior",
+        "workstation_monitor_power_socket",
+        "workstation_monitor_rear_mount_saddle",
+        "workstation_monitor_sculpted_rear_shell",
+        "workstation_monitor_tilt_barrel",
+        "workstation_monitor_usb_c_interior",
+        "workstation_monitor_usb_c_socket",
+        "workstation_monitor_pivot_axle",
+        "workstation_monitor_pivot_cap_left",
+        "workstation_monitor_pivot_cap_right",
+        "workstation_monitor_swept_stand_column"
+      ],
+      "materialNames": [
+        "mat_metal_workstation_monitor_monitor_satin_alloy",
+        "mat_metal_workstation_monitor_monitor_hardware",
+        "mat_plastic_workstation_monitor_monitor_rubber",
+        "mat_glass_workstation_monitor_monitor_display",
+        "mat_plastic_workstation_monitor_monitor_socket",
+        "mat_plastic_workstation_monitor_monitor_graphite",
+        "mat_plastic_workstation_monitor_monitor_indicator",
+        "mat_plastic_workstation_monitor_monitor_pearl_shell"
+      ],
+      "parts": [
+        {
+          "id": "workstation_monitor_base",
+          "sourceId": "monitor_base",
+          "bounds": {
+            "min": [
+              1.67,
+              0.74,
+              2.485
+            ],
+            "max": [
+              1.93,
+              0.761,
+              2.695
+            ],
+            "center": [
+              1.8,
+              0.7505,
+              2.59
+            ],
+            "size": [
+              0.26,
+              0.021,
+              0.21
+            ]
+          }
+        },
+        {
+          "id": "workstation_monitor_display",
+          "sourceId": "monitor_display",
+          "bounds": {
+            "min": [
+              1.495,
+              0.851,
+              2.53555
+            ],
+            "max": [
+              2.105,
+              1.205,
+              2.609
+            ],
+            "center": [
+              1.8,
+              1.028,
+              2.572275
+            ],
+            "size": [
+              0.61,
+              0.354,
+              0.07345
+            ]
+          }
+        },
+        {
+          "id": "workstation_monitor_stand",
+          "sourceId": "monitor_stand",
+          "bounds": {
+            "min": [
+              1.7656,
+              0.755,
+              2.588
+            ],
+            "max": [
+              1.8344,
+              1.047,
+              2.6585
+            ],
+            "center": [
+              1.8,
+              0.901,
+              2.62325
+            ],
+            "size": [
+              0.0688,
+              0.292,
+              0.0705
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "keyboard",
+      "label": "Keyboard",
+      "prefix": "workstation_keyboard_",
+      "asset": "models/electronics/keyboards/office-keyboard-104-black",
+      "version": "v0003",
+      "bounds": {
+        "min": [
+          1.57,
+          0.74,
+          2.21
+        ],
+        "max": [
+          2.03,
+          0.76394,
+          2.36115
+        ],
+        "center": [
+          1.8,
+          0.75197,
+          2.285575
+        ],
+        "size": [
+          0.46,
+          0.02394,
+          0.15115
+        ]
+      },
+      "partIds": [
+        "workstation_keyboard_key_a",
+        "workstation_keyboard_key_alt_l",
+        "workstation_keyboard_key_alt_r",
+        "workstation_keyboard_key_b",
+        "workstation_keyboard_key_backslash",
+        "workstation_keyboard_key_backspace",
+        "workstation_keyboard_key_bracket_l",
+        "workstation_keyboard_key_bracket_r",
+        "workstation_keyboard_key_c",
+        "workstation_keyboard_key_caps",
+        "workstation_keyboard_key_comma",
+        "workstation_keyboard_key_ctrl_l",
+        "workstation_keyboard_key_ctrl_r",
+        "workstation_keyboard_key_d",
+        "workstation_keyboard_key_delete",
+        "workstation_keyboard_key_digit_0",
+        "workstation_keyboard_key_digit_1",
+        "workstation_keyboard_key_digit_2",
+        "workstation_keyboard_key_digit_3",
+        "workstation_keyboard_key_digit_4",
+        "workstation_keyboard_key_digit_5",
+        "workstation_keyboard_key_digit_6",
+        "workstation_keyboard_key_digit_7",
+        "workstation_keyboard_key_digit_8",
+        "workstation_keyboard_key_digit_9",
+        "workstation_keyboard_key_down",
+        "workstation_keyboard_key_e",
+        "workstation_keyboard_key_end",
+        "workstation_keyboard_key_enter",
+        "workstation_keyboard_key_equal",
+        "workstation_keyboard_key_esc",
+        "workstation_keyboard_key_f",
+        "workstation_keyboard_key_f1",
+        "workstation_keyboard_key_f10",
+        "workstation_keyboard_key_f11",
+        "workstation_keyboard_key_f12",
+        "workstation_keyboard_key_f2",
+        "workstation_keyboard_key_f3",
+        "workstation_keyboard_key_f4",
+        "workstation_keyboard_key_f5",
+        "workstation_keyboard_key_f6",
+        "workstation_keyboard_key_f7",
+        "workstation_keyboard_key_f8",
+        "workstation_keyboard_key_f9",
+        "workstation_keyboard_key_g",
+        "workstation_keyboard_key_grave",
+        "workstation_keyboard_key_h",
+        "workstation_keyboard_key_home",
+        "workstation_keyboard_key_i",
+        "workstation_keyboard_key_insert",
+        "workstation_keyboard_key_j",
+        "workstation_keyboard_key_k",
+        "workstation_keyboard_key_l",
+        "workstation_keyboard_key_left",
+        "workstation_keyboard_key_m",
+        "workstation_keyboard_key_menu",
+        "workstation_keyboard_key_minus",
+        "workstation_keyboard_key_n",
+        "workstation_keyboard_key_num_0",
+        "workstation_keyboard_key_num_1",
+        "workstation_keyboard_key_num_2",
+        "workstation_keyboard_key_num_3",
+        "workstation_keyboard_key_num_4",
+        "workstation_keyboard_key_num_5",
+        "workstation_keyboard_key_num_6",
+        "workstation_keyboard_key_num_7",
+        "workstation_keyboard_key_num_8",
+        "workstation_keyboard_key_num_9",
+        "workstation_keyboard_key_num_decimal",
+        "workstation_keyboard_key_num_divide",
+        "workstation_keyboard_key_num_enter",
+        "workstation_keyboard_key_num_lock",
+        "workstation_keyboard_key_num_minus",
+        "workstation_keyboard_key_num_multiply",
+        "workstation_keyboard_key_num_plus",
+        "workstation_keyboard_key_o",
+        "workstation_keyboard_key_p",
+        "workstation_keyboard_key_page_down",
+        "workstation_keyboard_key_page_up",
+        "workstation_keyboard_key_pause",
+        "workstation_keyboard_key_period",
+        "workstation_keyboard_key_print",
+        "workstation_keyboard_key_q",
+        "workstation_keyboard_key_quote",
+        "workstation_keyboard_key_r",
+        "workstation_keyboard_key_right",
+        "workstation_keyboard_key_s",
+        "workstation_keyboard_key_scroll",
+        "workstation_keyboard_key_semicolon",
+        "workstation_keyboard_key_shift_l",
+        "workstation_keyboard_key_shift_r",
+        "workstation_keyboard_key_slash",
+        "workstation_keyboard_key_space",
+        "workstation_keyboard_key_super_l",
+        "workstation_keyboard_key_super_r",
+        "workstation_keyboard_key_t",
+        "workstation_keyboard_key_tab",
+        "workstation_keyboard_key_u",
+        "workstation_keyboard_key_up",
+        "workstation_keyboard_key_v",
+        "workstation_keyboard_key_w",
+        "workstation_keyboard_key_x",
+        "workstation_keyboard_key_y",
+        "workstation_keyboard_key_z",
+        "workstation_keyboard_lower_case",
+        "workstation_keyboard_switch_plate",
+        "workstation_keyboard_upper_case"
+      ],
+      "meshIds": [
+        "workstation_keyboard_keycap_a",
+        "workstation_keyboard_stem_a",
+        "workstation_keyboard_keycap_alt_l",
+        "workstation_keyboard_stem_alt_l",
+        "workstation_keyboard_keycap_alt_r",
+        "workstation_keyboard_stem_alt_r",
+        "workstation_keyboard_keycap_b",
+        "workstation_keyboard_stem_b",
+        "workstation_keyboard_keycap_backslash",
+        "workstation_keyboard_stem_backslash",
+        "workstation_keyboard_keycap_backspace",
+        "workstation_keyboard_stabilizer_post_backspace_left",
+        "workstation_keyboard_stabilizer_post_backspace_right",
+        "workstation_keyboard_stem_backspace",
+        "workstation_keyboard_keycap_bracket_l",
+        "workstation_keyboard_stem_bracket_l",
+        "workstation_keyboard_keycap_bracket_r",
+        "workstation_keyboard_stem_bracket_r",
+        "workstation_keyboard_keycap_c",
+        "workstation_keyboard_stem_c",
+        "workstation_keyboard_keycap_caps",
+        "workstation_keyboard_stem_caps",
+        "workstation_keyboard_keycap_comma",
+        "workstation_keyboard_stem_comma",
+        "workstation_keyboard_keycap_ctrl_l",
+        "workstation_keyboard_stem_ctrl_l",
+        "workstation_keyboard_keycap_ctrl_r",
+        "workstation_keyboard_stem_ctrl_r",
+        "workstation_keyboard_keycap_d",
+        "workstation_keyboard_stem_d",
+        "workstation_keyboard_keycap_delete",
+        "workstation_keyboard_stem_delete",
+        "workstation_keyboard_keycap_digit_0",
+        "workstation_keyboard_stem_digit_0",
+        "workstation_keyboard_keycap_digit_1",
+        "workstation_keyboard_stem_digit_1",
+        "workstation_keyboard_keycap_digit_2",
+        "workstation_keyboard_stem_digit_2",
+        "workstation_keyboard_keycap_digit_3",
+        "workstation_keyboard_stem_digit_3",
+        "workstation_keyboard_keycap_digit_4",
+        "workstation_keyboard_stem_digit_4",
+        "workstation_keyboard_keycap_digit_5",
+        "workstation_keyboard_stem_digit_5",
+        "workstation_keyboard_keycap_digit_6",
+        "workstation_keyboard_stem_digit_6",
+        "workstation_keyboard_keycap_digit_7",
+        "workstation_keyboard_stem_digit_7",
+        "workstation_keyboard_keycap_digit_8",
+        "workstation_keyboard_stem_digit_8",
+        "workstation_keyboard_keycap_digit_9",
+        "workstation_keyboard_stem_digit_9",
+        "workstation_keyboard_keycap_down",
+        "workstation_keyboard_stem_down",
+        "workstation_keyboard_keycap_e",
+        "workstation_keyboard_stem_e",
+        "workstation_keyboard_keycap_end",
+        "workstation_keyboard_stem_end",
+        "workstation_keyboard_keycap_enter",
+        "workstation_keyboard_stabilizer_post_enter_left",
+        "workstation_keyboard_stabilizer_post_enter_right",
+        "workstation_keyboard_stem_enter",
+        "workstation_keyboard_keycap_equal",
+        "workstation_keyboard_stem_equal",
+        "workstation_keyboard_keycap_esc",
+        "workstation_keyboard_stem_esc",
+        "workstation_keyboard_homing_f",
+        "workstation_keyboard_keycap_f",
+        "workstation_keyboard_stem_f",
+        "workstation_keyboard_keycap_f1",
+        "workstation_keyboard_stem_f1",
+        "workstation_keyboard_keycap_f10",
+        "workstation_keyboard_stem_f10",
+        "workstation_keyboard_keycap_f11",
+        "workstation_keyboard_stem_f11",
+        "workstation_keyboard_keycap_f12",
+        "workstation_keyboard_stem_f12",
+        "workstation_keyboard_keycap_f2",
+        "workstation_keyboard_stem_f2",
+        "workstation_keyboard_keycap_f3",
+        "workstation_keyboard_stem_f3",
+        "workstation_keyboard_keycap_f4",
+        "workstation_keyboard_stem_f4",
+        "workstation_keyboard_keycap_f5",
+        "workstation_keyboard_stem_f5",
+        "workstation_keyboard_keycap_f6",
+        "workstation_keyboard_stem_f6",
+        "workstation_keyboard_keycap_f7",
+        "workstation_keyboard_stem_f7",
+        "workstation_keyboard_keycap_f8",
+        "workstation_keyboard_stem_f8",
+        "workstation_keyboard_keycap_f9",
+        "workstation_keyboard_stem_f9",
+        "workstation_keyboard_keycap_g",
+        "workstation_keyboard_stem_g",
+        "workstation_keyboard_keycap_grave",
+        "workstation_keyboard_stem_grave",
+        "workstation_keyboard_keycap_h",
+        "workstation_keyboard_stem_h",
+        "workstation_keyboard_keycap_home",
+        "workstation_keyboard_stem_home",
+        "workstation_keyboard_keycap_i",
+        "workstation_keyboard_stem_i",
+        "workstation_keyboard_keycap_insert",
+        "workstation_keyboard_stem_insert",
+        "workstation_keyboard_homing_j",
+        "workstation_keyboard_keycap_j",
+        "workstation_keyboard_stem_j",
+        "workstation_keyboard_keycap_k",
+        "workstation_keyboard_stem_k",
+        "workstation_keyboard_keycap_l",
+        "workstation_keyboard_stem_l",
+        "workstation_keyboard_keycap_left",
+        "workstation_keyboard_stem_left",
+        "workstation_keyboard_keycap_m",
+        "workstation_keyboard_stem_m",
+        "workstation_keyboard_keycap_menu",
+        "workstation_keyboard_stem_menu",
+        "workstation_keyboard_keycap_minus",
+        "workstation_keyboard_stem_minus",
+        "workstation_keyboard_keycap_n",
+        "workstation_keyboard_stem_n",
+        "workstation_keyboard_keycap_num_0",
+        "workstation_keyboard_stabilizer_post_num_0_left",
+        "workstation_keyboard_stabilizer_post_num_0_right",
+        "workstation_keyboard_stem_num_0",
+        "workstation_keyboard_keycap_num_1",
+        "workstation_keyboard_stem_num_1",
+        "workstation_keyboard_keycap_num_2",
+        "workstation_keyboard_stem_num_2",
+        "workstation_keyboard_keycap_num_3",
+        "workstation_keyboard_stem_num_3",
+        "workstation_keyboard_keycap_num_4",
+        "workstation_keyboard_stem_num_4",
+        "workstation_keyboard_homing_num_5",
+        "workstation_keyboard_keycap_num_5",
+        "workstation_keyboard_stem_num_5",
+        "workstation_keyboard_keycap_num_6",
+        "workstation_keyboard_stem_num_6",
+        "workstation_keyboard_keycap_num_7",
+        "workstation_keyboard_stem_num_7",
+        "workstation_keyboard_keycap_num_8",
+        "workstation_keyboard_stem_num_8",
+        "workstation_keyboard_keycap_num_9",
+        "workstation_keyboard_stem_num_9",
+        "workstation_keyboard_keycap_num_decimal",
+        "workstation_keyboard_stem_num_decimal",
+        "workstation_keyboard_keycap_num_divide",
+        "workstation_keyboard_stem_num_divide",
+        "workstation_keyboard_keycap_num_enter",
+        "workstation_keyboard_stabilizer_post_num_enter_left",
+        "workstation_keyboard_stabilizer_post_num_enter_right",
+        "workstation_keyboard_stem_num_enter",
+        "workstation_keyboard_keycap_num_lock",
+        "workstation_keyboard_stem_num_lock",
+        "workstation_keyboard_keycap_num_minus",
+        "workstation_keyboard_stem_num_minus",
+        "workstation_keyboard_keycap_num_multiply",
+        "workstation_keyboard_stem_num_multiply",
+        "workstation_keyboard_keycap_num_plus",
+        "workstation_keyboard_stabilizer_post_num_plus_left",
+        "workstation_keyboard_stabilizer_post_num_plus_right",
+        "workstation_keyboard_stem_num_plus",
+        "workstation_keyboard_keycap_o",
+        "workstation_keyboard_stem_o",
+        "workstation_keyboard_keycap_p",
+        "workstation_keyboard_stem_p",
+        "workstation_keyboard_keycap_page_down",
+        "workstation_keyboard_stem_page_down",
+        "workstation_keyboard_keycap_page_up",
+        "workstation_keyboard_stem_page_up",
+        "workstation_keyboard_keycap_pause",
+        "workstation_keyboard_stem_pause",
+        "workstation_keyboard_keycap_period",
+        "workstation_keyboard_stem_period",
+        "workstation_keyboard_keycap_print",
+        "workstation_keyboard_stem_print",
+        "workstation_keyboard_keycap_q",
+        "workstation_keyboard_stem_q",
+        "workstation_keyboard_keycap_quote",
+        "workstation_keyboard_stem_quote",
+        "workstation_keyboard_keycap_r",
+        "workstation_keyboard_stem_r",
+        "workstation_keyboard_keycap_right",
+        "workstation_keyboard_stem_right",
+        "workstation_keyboard_keycap_s",
+        "workstation_keyboard_stem_s",
+        "workstation_keyboard_keycap_scroll",
+        "workstation_keyboard_stem_scroll",
+        "workstation_keyboard_keycap_semicolon",
+        "workstation_keyboard_stem_semicolon",
+        "workstation_keyboard_keycap_shift_l",
+        "workstation_keyboard_stabilizer_post_shift_l_left",
+        "workstation_keyboard_stabilizer_post_shift_l_right",
+        "workstation_keyboard_stem_shift_l",
+        "workstation_keyboard_keycap_shift_r",
+        "workstation_keyboard_stabilizer_post_shift_r_left",
+        "workstation_keyboard_stabilizer_post_shift_r_right",
+        "workstation_keyboard_stem_shift_r",
+        "workstation_keyboard_keycap_slash",
+        "workstation_keyboard_stem_slash",
+        "workstation_keyboard_keycap_space",
+        "workstation_keyboard_stabilizer_post_space_left",
+        "workstation_keyboard_stabilizer_post_space_right",
+        "workstation_keyboard_stem_space",
+        "workstation_keyboard_keycap_super_l",
+        "workstation_keyboard_stem_super_l",
+        "workstation_keyboard_keycap_super_r",
+        "workstation_keyboard_stem_super_r",
+        "workstation_keyboard_keycap_t",
+        "workstation_keyboard_stem_t",
+        "workstation_keyboard_keycap_tab",
+        "workstation_keyboard_stem_tab",
+        "workstation_keyboard_keycap_u",
+        "workstation_keyboard_stem_u",
+        "workstation_keyboard_keycap_up",
+        "workstation_keyboard_stem_up",
+        "workstation_keyboard_keycap_v",
+        "workstation_keyboard_stem_v",
+        "workstation_keyboard_keycap_w",
+        "workstation_keyboard_stem_w",
+        "workstation_keyboard_keycap_x",
+        "workstation_keyboard_stem_x",
+        "workstation_keyboard_keycap_y",
+        "workstation_keyboard_stem_y",
+        "workstation_keyboard_keycap_z",
+        "workstation_keyboard_stem_z",
+        "workstation_keyboard_formed_lower_shell",
+        "workstation_keyboard_mode_slider",
+        "workstation_keyboard_pad_l_front",
+        "workstation_keyboard_pad_l_rear",
+        "workstation_keyboard_pad_r_front",
+        "workstation_keyboard_pad_r_rear",
+        "workstation_keyboard_underside_label",
+        "workstation_keyboard_underside_screw_0",
+        "workstation_keyboard_underside_screw_1",
+        "workstation_keyboard_underside_screw_2",
+        "workstation_keyboard_underside_screw_3",
+        "workstation_keyboard_underside_screw_4",
+        "workstation_keyboard_underside_screw_5",
+        "workstation_keyboard_usb_c_shell",
+        "workstation_keyboard_usb_c_tongue",
+        "workstation_keyboard_perforated_switch_plate",
+        "workstation_keyboard_stabilizer_backspace_left",
+        "workstation_keyboard_stabilizer_backspace_right",
+        "workstation_keyboard_stabilizer_enter_left",
+        "workstation_keyboard_stabilizer_enter_right",
+        "workstation_keyboard_stabilizer_num_0_left",
+        "workstation_keyboard_stabilizer_num_0_right",
+        "workstation_keyboard_stabilizer_num_enter_left",
+        "workstation_keyboard_stabilizer_num_enter_right",
+        "workstation_keyboard_stabilizer_num_plus_left",
+        "workstation_keyboard_stabilizer_num_plus_right",
+        "workstation_keyboard_stabilizer_shift_l_left",
+        "workstation_keyboard_stabilizer_shift_l_right",
+        "workstation_keyboard_stabilizer_shift_r_left",
+        "workstation_keyboard_stabilizer_shift_r_right",
+        "workstation_keyboard_stabilizer_space_left",
+        "workstation_keyboard_stabilizer_space_right",
+        "workstation_keyboard_switch_a",
+        "workstation_keyboard_switch_alt_l",
+        "workstation_keyboard_switch_alt_r",
+        "workstation_keyboard_switch_b",
+        "workstation_keyboard_switch_backslash",
+        "workstation_keyboard_switch_backspace",
+        "workstation_keyboard_switch_bracket_l",
+        "workstation_keyboard_switch_bracket_r",
+        "workstation_keyboard_switch_c",
+        "workstation_keyboard_switch_caps",
+        "workstation_keyboard_switch_comma",
+        "workstation_keyboard_switch_ctrl_l",
+        "workstation_keyboard_switch_ctrl_r",
+        "workstation_keyboard_switch_d",
+        "workstation_keyboard_switch_delete",
+        "workstation_keyboard_switch_digit_0",
+        "workstation_keyboard_switch_digit_1",
+        "workstation_keyboard_switch_digit_2",
+        "workstation_keyboard_switch_digit_3",
+        "workstation_keyboard_switch_digit_4",
+        "workstation_keyboard_switch_digit_5",
+        "workstation_keyboard_switch_digit_6",
+        "workstation_keyboard_switch_digit_7",
+        "workstation_keyboard_switch_digit_8",
+        "workstation_keyboard_switch_digit_9",
+        "workstation_keyboard_switch_down",
+        "workstation_keyboard_switch_e",
+        "workstation_keyboard_switch_end",
+        "workstation_keyboard_switch_enter",
+        "workstation_keyboard_switch_equal",
+        "workstation_keyboard_switch_esc",
+        "workstation_keyboard_switch_f",
+        "workstation_keyboard_switch_f1",
+        "workstation_keyboard_switch_f10",
+        "workstation_keyboard_switch_f11",
+        "workstation_keyboard_switch_f12",
+        "workstation_keyboard_switch_f2",
+        "workstation_keyboard_switch_f3",
+        "workstation_keyboard_switch_f4",
+        "workstation_keyboard_switch_f5",
+        "workstation_keyboard_switch_f6",
+        "workstation_keyboard_switch_f7",
+        "workstation_keyboard_switch_f8",
+        "workstation_keyboard_switch_f9",
+        "workstation_keyboard_switch_g",
+        "workstation_keyboard_switch_grave",
+        "workstation_keyboard_switch_h",
+        "workstation_keyboard_switch_home",
+        "workstation_keyboard_switch_i",
+        "workstation_keyboard_switch_insert",
+        "workstation_keyboard_switch_j",
+        "workstation_keyboard_switch_k",
+        "workstation_keyboard_switch_l",
+        "workstation_keyboard_switch_left",
+        "workstation_keyboard_switch_m",
+        "workstation_keyboard_switch_menu",
+        "workstation_keyboard_switch_minus",
+        "workstation_keyboard_switch_n",
+        "workstation_keyboard_switch_num_0",
+        "workstation_keyboard_switch_num_1",
+        "workstation_keyboard_switch_num_2",
+        "workstation_keyboard_switch_num_3",
+        "workstation_keyboard_switch_num_4",
+        "workstation_keyboard_switch_num_5",
+        "workstation_keyboard_switch_num_6",
+        "workstation_keyboard_switch_num_7",
+        "workstation_keyboard_switch_num_8",
+        "workstation_keyboard_switch_num_9",
+        "workstation_keyboard_switch_num_decimal",
+        "workstation_keyboard_switch_num_divide",
+        "workstation_keyboard_switch_num_enter",
+        "workstation_keyboard_switch_num_lock",
+        "workstation_keyboard_switch_num_minus",
+        "workstation_keyboard_switch_num_multiply",
+        "workstation_keyboard_switch_num_plus",
+        "workstation_keyboard_switch_o",
+        "workstation_keyboard_switch_p",
+        "workstation_keyboard_switch_page_down",
+        "workstation_keyboard_switch_page_up",
+        "workstation_keyboard_switch_pause",
+        "workstation_keyboard_switch_period",
+        "workstation_keyboard_switch_print",
+        "workstation_keyboard_switch_q",
+        "workstation_keyboard_switch_quote",
+        "workstation_keyboard_switch_r",
+        "workstation_keyboard_switch_right",
+        "workstation_keyboard_switch_s",
+        "workstation_keyboard_switch_scroll",
+        "workstation_keyboard_switch_semicolon",
+        "workstation_keyboard_switch_shift_l",
+        "workstation_keyboard_switch_shift_r",
+        "workstation_keyboard_switch_slash",
+        "workstation_keyboard_switch_space",
+        "workstation_keyboard_switch_super_l",
+        "workstation_keyboard_switch_super_r",
+        "workstation_keyboard_switch_t",
+        "workstation_keyboard_switch_tab",
+        "workstation_keyboard_switch_u",
+        "workstation_keyboard_switch_up",
+        "workstation_keyboard_switch_v",
+        "workstation_keyboard_switch_w",
+        "workstation_keyboard_switch_x",
+        "workstation_keyboard_switch_y",
+        "workstation_keyboard_switch_z",
+        "workstation_keyboard_continuous_top_frame"
+      ],
+      "materialNames": [
+        "mat_plastic_workstation_keyboard_keyboard_black_pbt",
+        "mat_plastic_workstation_keyboard_keyboard_slider",
+        "mat_plastic_workstation_keyboard_keyboard_black_lower_abs",
+        "mat_plastic_workstation_keyboard_keyboard_switch",
+        "mat_plastic_workstation_keyboard_keyboard_rubber",
+        "mat_metal_workstation_keyboard_keyboard_hardware",
+        "mat_plastic_workstation_keyboard_keyboard_black_abs"
+      ],
+      "parts": [
+        {
+          "id": "workstation_keyboard_key_a",
+          "sourceId": "keyboard_key_a",
+          "bounds": {
+            "min": [
+              1.967313,
+              0.752,
+              2.2602
+            ],
+            "max": [
+              1.985113,
+              0.7638,
+              2.278
+            ],
+            "center": [
+              1.976213,
+              0.7579,
+              2.2691
+            ],
+            "size": [
+              0.0178,
+              0.0118,
+              0.0178
+            ]
+          }
+        },
+        {
+          "id": "workstation_keyboard_key_alt_l",
+          "sourceId": "keyboard_key_alt_l",
+          "bounds": {
+            "min": [
+              1.948263,
+              0.752,
+              2.2221
+            ],
+            "max": [
+              1.970825,
+              0.7638,
+              2.2399
+            ],
+            "center": [
+              1.959544,
+              0.7579,
+              2.231
+            ],
+            "size": [
+              0.022563,
+              0.0118,
+              0.0178
+            ]
+          }
+        },
+        {
+          "id": "workstation_keyboard_key_alt_r",
+          "sourceId": "keyboard_key_alt_r",
+          "bounds": {
+            "min": [
+              1.805387,
+              0.752,
+              2.2221
+            ],
+            "max": [
+              1.82795,
+              0.7638,
+              2.2399
+            ],
+            "center": [
+              1.816669,
+              0.7579,
+              2.231
+            ],
+            "size": [
+              0.022563,
+              0.0118,
+              0.0178
+            ]
+          }
+        },
+        {
+          "id": "workstation_keyboard_key_b",
+          "sourceId": "keyboard_key_b",
+          "bounds": {
+            "min": [
+              1.881588,
+              0.752,
+              2.24115
+            ],
+            "max": [
+              1.899388,
+              0.7638,
+              2.25895
+            ],
+            "center": [
+              1.890488,
+              0.7579,
+              2.25005
+            ],
+            "size": [
+              0.0178,
+              0.0118,
+              0.0178
+            ]
+          }
+        },
+        {
+          "id": "workstation_keyboard_key_backslash",
+          "sourceId": "keyboard_key_backslash",
+          "bounds": {
+            "min": [
+              1.73395,
+              0.752,
+              2.27925
+            ],
+            "max": [
+              1.761275,
+              0.7638,
+              2.29705
+            ],
+            "center": [
+              1.747612,
+              0.7579,
+              2.28815
+            ],
+            "size": [
+              0.027325,
+              0.0118,
+              0.0178
+            ]
+          }
+        },
+        {
+          "id": "workstation_keyboard_key_backspace",
+          "sourceId": "keyboard_key_backspace",
+          "bounds": {
+            "min": [
+              1.73395,
+              0.752,
+              2.2983
+            ],
+            "max": [
+              1.7708,
+              0.7638,
+              2.3161
+            ],
+            "center": [
+              1.752375,
+              0.7579,
+              2.3072
+            ],
+            "size": [
+              0.03685,
+              0.0118,
+              0.0178
+            ]
+          }
+        },
+        {
+          "id": "workstation_keyboard_key_bracket_l",
+          "sourceId": "keyboard_key_bracket_l",
+          "bounds": {
+            "min": [
+              1.781575,
+              0.752,
+              2.27925
+            ],
+            "max": [
+              1.799375,
+              0.7638,
+              2.29705
+            ],
+            "center": [
+              1.790475,
+              0.7579,
+              2.28815
+            ],
+            "size": [
+              0.0178,
+              0.0118,
+              0.0178
+            ]
+          }
+        },
+        {
+          "id": "workstation_keyboard_key_bracket_r",
+          "sourceId": "keyboard_key_bracket_r",
+          "bounds": {
+            "min": [
+              1.762525,
+              0.752,
+              2.27925
+            ],
+            "max": [
+              1.780325,
+              0.7638,
+              2.29705
+            ],
+            "center": [
+              1.771425,
+              0.7579,
+              2.28815
+            ],
+            "size": [
+              0.0178,
+              0.0118,
+              0.0178
+            ]
+          }
+        },
+        {
+          "id": "workstation_keyboard_key_c",
+          "sourceId": "keyboard_key_c",
+          "bounds": {
+            "min": [
+              1.919688,
+              0.752,
+              2.24115
+            ],
+            "max": [
+              1.937488,
+              0.7638,
+              2.25895
+            ],
+            "center": [
+              1.928588,
+              0.7579,
+              2.25005
+            ],
+            "size": [
+              0.0178,
+              0.0118,
+              0.0178
+            ]
+          }
+        },
+        {
+          "id": "workstation_keyboard_key_caps",
+          "sourceId": "keyboard_key_caps",
+          "bounds": {
+            "min": [
+              1.986363,
+              0.752,
+              2.2602
+            ],
+            "max": [
+              2.01845,
+              0.7638,
+              2.278
+            ],
+            "center": [
+              2.002406,
+              0.7579,
+              2.2691
+            ],
+            "size": [
+              0.032088,
+              0.0118,
+              0.0178
+            ]
+          }
+        },
+        {
+          "id": "workstation_keyboard_key_comma",
+          "sourceId": "keyboard_key_comma",
+          "bounds": {
+            "min": [
+              1.824438,
+              0.752,
+              2.24115
+            ],
+            "max": [
+              1.842238,
+              0.7638,
+              2.25895
+            ],
+            "center": [
+              1.833338,
+              0.7579,
+              2.25005
+            ],
+            "size": [
+              0.0178,
+              0.0118,
+              0.0178
+            ]
+          }
+        },
+        {
+          "id": "workstation_keyboard_key_ctrl_l",
+          "sourceId": "keyboard_key_ctrl_l",
+          "bounds": {
+            "min": [
+              1.995888,
+              0.752,
+              2.2221
+            ],
+            "max": [
+              2.01845,
+              0.7638,
+              2.2399
+            ],
+            "center": [
+              2.007169,
+              0.7579,
+              2.231
+            ],
+            "size": [
+              0.022563,
+              0.0118,
+              0.0178
+            ]
+          }
+        },
+        {
+          "id": "workstation_keyboard_key_ctrl_r",
+          "sourceId": "keyboard_key_ctrl_r",
+          "bounds": {
+            "min": [
+              1.73395,
+              0.752,
+              2.2221
+            ],
+            "max": [
+              1.756512,
+              0.7638,
+              2.2399
+            ],
+            "center": [
+              1.745231,
+              0.7579,
+              2.231
+            ],
+            "size": [
+              0.022563,
+              0.0118,
+              0.0178
+            ]
+          }
+        },
+        {
+          "id": "workstation_keyboard_key_d",
+          "sourceId": "keyboard_key_d",
+          "bounds": {
+            "min": [
+              1.929212,
+              0.752,
+              2.2602
+            ],
+            "max": [
+              1.947013,
+              0.7638,
+              2.278
+            ],
+            "center": [
+              1.938113,
+              0.7579,
+              2.2691
+            ],
+            "size": [
+              0.0178,
+              0.0118,
+              0.0178
+            ]
+          }
+        },
+        {
+          "id": "workstation_keyboard_key_delete",
+          "sourceId": "keyboard_key_delete",
+          "bounds": {
+            "min": [
+              1.705375,
+              0.752,
+              2.27925
+            ],
+            "max": [
+              1.723175,
+              0.7638,
+              2.29705
+            ],
+            "center": [
+              1.714275,
+              0.7579,
+              2.28815
+            ],
+            "size": [
+              0.0178,
+              0.0118,
+              0.0178
+            ]
+          }
+        },
+        {
+          "id": "workstation_keyboard_key_digit_0",
+          "sourceId": "keyboard_key_digit_0",
+          "bounds": {
+            "min": [
+              1.81015,
+              0.752,
+              2.2983
+            ],
+            "max": [
+              1.82795,
+              0.7638,
+              2.3161
+            ],
+            "center": [
+              1.81905,
+              0.7579,
+              2.3072
+            ],
+            "size": [
+              0.0178,
+              0.0118,
+              0.0178
+            ]
+          }
+        },
+        {
+          "id": "workstation_keyboard_key_digit_1",
+          "sourceId": "keyboard_key_digit_1",
+          "bounds": {
+            "min": [
+              1.9816,
+              0.752,
+              2.2983
+            ],
+            "max": [
+              1.9994,
+              0.7638,
+              2.3161
+            ],
+            "center": [
+              1.9905,
+              0.7579,
+              2.3072
+            ],
+            "size": [
+              0.0178,
+              0.0118,
+              0.0178
+            ]
+          }
+        },
+        {
+          "id": "workstation_keyboard_key_digit_2",
+          "sourceId": "keyboard_key_digit_2",
+          "bounds": {
+            "min": [
+              1.96255,
+              0.752,
+              2.2983
+            ],
+            "max": [
+              1.98035,
+              0.7638,
+              2.3161
+            ],
+            "center": [
+              1.97145,
+              0.7579,
+              2.3072
+            ],
+            "size": [
+              0.0178,
+              0.0118,
+              0.0178
+            ]
+          }
+        },
+        {
+          "id": "workstation_keyboard_key_digit_3",
+          "sourceId": "keyboard_key_digit_3",
+          "bounds": {
+            "min": [
+              1.9435,
+              0.752,
+              2.2983
+            ],
+            "max": [
+              1.9613,
+              0.7638,
+              2.3161
+            ],
+            "center": [
+              1.9524,
+              0.7579,
+              2.3072
+            ],
+            "size": [
+              0.0178,
+              0.0118,
+              0.0178
+            ]
+          }
+        },
+        {
+          "id": "workstation_keyboard_key_digit_4",
+          "sourceId": "keyboard_key_digit_4",
+          "bounds": {
+            "min": [
+              1.92445,
+              0.752,
+              2.2983
+            ],
+            "max": [
+              1.94225,
+              0.7638,
+              2.3161
+            ],
+            "center": [
+              1.93335,
+              0.7579,
+              2.3072
+            ],
+            "size": [
+              0.0178,
+              0.0118,
+              0.0178
+            ]
+          }
+        },
+        {
+          "id": "workstation_keyboard_key_digit_5",
+          "sourceId": "keyboard_key_digit_5",
+          "bounds": {
+            "min": [
+              1.9054,
+              0.752,
+              2.2983
+            ],
+            "max": [
+              1.9232,
+              0.7638,
+              2.3161
+            ],
+            "center": [
+              1.9143,
+              0.7579,
+              2.3072
+            ],
+            "size": [
+              0.0178,
+              0.0118,
+              0.0178
+            ]
+          }
+        },
+        {
+          "id": "workstation_keyboard_key_digit_6",
+          "sourceId": "keyboard_key_digit_6",
+          "bounds": {
+            "min": [
+              1.88635,
+              0.752,
+              2.2983
+            ],
+            "max": [
+              1.90415,
+              0.7638,
+              2.3161
+            ],
+            "center": [
+              1.89525,
+              0.7579,
+              2.3072
+            ],
+            "size": [
+              0.0178,
+              0.0118,
+              0.0178
+            ]
+          }
+        },
+        {
+          "id": "workstation_keyboard_key_digit_7",
+          "sourceId": "keyboard_key_digit_7",
+          "bounds": {
+            "min": [
+              1.8673,
+              0.752,
+              2.2983
+            ],
+            "max": [
+              1.8851,
+              0.7638,
+              2.3161
+            ],
+            "center": [
+              1.8762,
+              0.7579,
+              2.3072
+            ],
+            "size": [
+              0.0178,
+              0.0118,
+              0.0178
+            ]
+          }
+        },
+        {
+          "id": "workstation_keyboard_key_digit_8",
+          "sourceId": "keyboard_key_digit_8",
+          "bounds": {
+            "min": [
+              1.84825,
+              0.752,
+              2.2983
+            ],
+            "max": [
+              1.86605,
+              0.7638,
+              2.3161
+            ],
+            "center": [
+              1.85715,
+              0.7579,
+              2.3072
+            ],
+            "size": [
+              0.0178,
+              0.0118,
+              0.0178
+            ]
+          }
+        },
+        {
+          "id": "workstation_keyboard_key_digit_9",
+          "sourceId": "keyboard_key_digit_9",
+          "bounds": {
+            "min": [
+              1.8292,
+              0.752,
+              2.2983
+            ],
+            "max": [
+              1.847,
+              0.7638,
+              2.3161
+            ],
+            "center": [
+              1.8381,
+              0.7579,
+              2.3072
+            ],
+            "size": [
+              0.0178,
+              0.0118,
+              0.0178
+            ]
+          }
+        },
+        {
+          "id": "workstation_keyboard_key_down",
+          "sourceId": "keyboard_key_down",
+          "bounds": {
+            "min": [
+              1.686325,
+              0.752,
+              2.2221
+            ],
+            "max": [
+              1.704125,
+              0.7638,
+              2.2399
+            ],
+            "center": [
+              1.695225,
+              0.7579,
+              2.231
+            ],
+            "size": [
+              0.0178,
+              0.0118,
+              0.0178
+            ]
+          }
+        },
+        {
+          "id": "workstation_keyboard_key_e",
+          "sourceId": "keyboard_key_e",
+          "bounds": {
+            "min": [
+              1.933975,
+              0.752,
+              2.27925
+            ],
+            "max": [
+              1.951775,
+              0.7638,
+              2.29705
+            ],
+            "center": [
+              1.942875,
+              0.7579,
+              2.28815
+            ],
+            "size": [
+              0.0178,
+              0.0118,
+              0.0178
+            ]
+          }
+        },
+        {
+          "id": "workstation_keyboard_key_end",
+          "sourceId": "keyboard_key_end",
+          "bounds": {
+            "min": [
+              1.686325,
+              0.752,
+              2.27925
+            ],
+            "max": [
+              1.704125,
+              0.7638,
+              2.29705
+            ],
+            "center": [
+              1.695225,
+              0.7579,
+              2.28815
+            ],
+            "size": [
+              0.0178,
+              0.0118,
+              0.0178
+            ]
+          }
+        },
+        {
+          "id": "workstation_keyboard_key_enter",
+          "sourceId": "keyboard_key_enter",
+          "bounds": {
+            "min": [
+              1.73395,
+              0.752,
+              2.2602
+            ],
+            "max": [
+              1.775562,
+              0.7638,
+              2.278
+            ],
+            "center": [
+              1.754756,
+              0.7579,
+              2.2691
+            ],
+            "size": [
+              0.041613,
+              0.0118,
+              0.0178
+            ]
+          }
+        },
+        {
+          "id": "workstation_keyboard_key_equal",
+          "sourceId": "keyboard_key_equal",
+          "bounds": {
+            "min": [
+              1.77205,
+              0.752,
+              2.2983
+            ],
+            "max": [
+              1.78985,
+              0.7638,
+              2.3161
+            ],
+            "center": [
+              1.78095,
+              0.7579,
+              2.3072
+            ],
+            "size": [
+              0.0178,
+              0.0118,
+              0.0178
+            ]
+          }
+        },
+        {
+          "id": "workstation_keyboard_key_esc",
+          "sourceId": "keyboard_key_esc",
+          "bounds": {
+            "min": [
+              2.00065,
+              0.752,
+              2.326875
+            ],
+            "max": [
+              2.01845,
+              0.7638,
+              2.344675
+            ],
+            "center": [
+              2.00955,
+              0.7579,
+              2.335775
+            ],
+            "size": [
+              0.0178,
+              0.0118,
+              0.0178
+            ]
+          }
+        },
+        {
+          "id": "workstation_keyboard_key_f",
+          "sourceId": "keyboard_key_f",
+          "bounds": {
+            "min": [
+              1.910163,
+              0.752,
+              2.2602
+            ],
+            "max": [
+              1.927963,
+              0.76394,
+              2.278
+            ],
+            "center": [
+              1.919063,
+              0.75797,
+              2.2691
+            ],
+            "size": [
+              0.0178,
+              0.01194,
+              0.0178
+            ]
+          }
+        },
+        {
+          "id": "workstation_keyboard_key_f1",
+          "sourceId": "keyboard_key_f1",
+          "bounds": {
+            "min": [
+              1.96255,
+              0.752,
+              2.326875
+            ],
+            "max": [
+              1.98035,
+              0.7638,
+              2.344675
+            ],
+            "center": [
+              1.97145,
+              0.7579,
+              2.335775
+            ],
+            "size": [
+              0.0178,
+              0.0118,
+              0.0178
+            ]
+          }
+        },
+        {
+          "id": "workstation_keyboard_key_f10",
+          "sourceId": "keyboard_key_f10",
+          "bounds": {
+            "min": [
+              1.77205,
+              0.752,
+              2.326875
+            ],
+            "max": [
+              1.78985,
+              0.7638,
+              2.344675
+            ],
+            "center": [
+              1.78095,
+              0.7579,
+              2.335775
+            ],
+            "size": [
+              0.0178,
+              0.0118,
+              0.0178
+            ]
+          }
+        },
+        {
+          "id": "workstation_keyboard_key_f11",
+          "sourceId": "keyboard_key_f11",
+          "bounds": {
+            "min": [
+              1.753,
+              0.752,
+              2.326875
+            ],
+            "max": [
+              1.7708,
+              0.7638,
+              2.344675
+            ],
+            "center": [
+              1.7619,
+              0.7579,
+              2.335775
+            ],
+            "size": [
+              0.0178,
+              0.0118,
+              0.0178
+            ]
+          }
+        },
+        {
+          "id": "workstation_keyboard_key_f12",
+          "sourceId": "keyboard_key_f12",
+          "bounds": {
+            "min": [
+              1.73395,
+              0.752,
+              2.326875
+            ],
+            "max": [
+              1.75175,
+              0.7638,
+              2.344675
+            ],
+            "center": [
+              1.74285,
+              0.7579,
+              2.335775
+            ],
+            "size": [
+              0.0178,
+              0.0118,
+              0.0178
+            ]
+          }
+        },
+        {
+          "id": "workstation_keyboard_key_f2",
+          "sourceId": "keyboard_key_f2",
+          "bounds": {
+            "min": [
+              1.9435,
+              0.752,
+              2.326875
+            ],
+            "max": [
+              1.9613,
+              0.7638,
+              2.344675
+            ],
+            "center": [
+              1.9524,
+              0.7579,
+              2.335775
+            ],
+            "size": [
+              0.0178,
+              0.0118,
+              0.0178
+            ]
+          }
+        },
+        {
+          "id": "workstation_keyboard_key_f3",
+          "sourceId": "keyboard_key_f3",
+          "bounds": {
+            "min": [
+              1.92445,
+              0.752,
+              2.326875
+            ],
+            "max": [
+              1.94225,
+              0.7638,
+              2.344675
+            ],
+            "center": [
+              1.93335,
+              0.7579,
+              2.335775
+            ],
+            "size": [
+              0.0178,
+              0.0118,
+              0.0178
+            ]
+          }
+        },
+        {
+          "id": "workstation_keyboard_key_f4",
+          "sourceId": "keyboard_key_f4",
+          "bounds": {
+            "min": [
+              1.9054,
+              0.752,
+              2.326875
+            ],
+            "max": [
+              1.9232,
+              0.7638,
+              2.344675
+            ],
+            "center": [
+              1.9143,
+              0.7579,
+              2.335775
+            ],
+            "size": [
+              0.0178,
+              0.0118,
+              0.0178
+            ]
+          }
+        },
+        {
+          "id": "workstation_keyboard_key_f5",
+          "sourceId": "keyboard_key_f5",
+          "bounds": {
+            "min": [
+              1.876825,
+              0.752,
+              2.326875
+            ],
+            "max": [
+              1.894625,
+              0.7638,
+              2.344675
+            ],
+            "center": [
+              1.885725,
+              0.7579,
+              2.335775
+            ],
+            "size": [
+              0.0178,
+              0.0118,
+              0.0178
+            ]
+          }
+        },
+        {
+          "id": "workstation_keyboard_key_f6",
+          "sourceId": "keyboard_key_f6",
+          "bounds": {
+            "min": [
+              1.857775,
+              0.752,
+              2.326875
+            ],
+            "max": [
+              1.875575,
+              0.7638,
+              2.344675
+            ],
+            "center": [
+              1.866675,
+              0.7579,
+              2.335775
+            ],
+            "size": [
+              0.0178,
+              0.0118,
+              0.0178
+            ]
+          }
+        },
+        {
+          "id": "workstation_keyboard_key_f7",
+          "sourceId": "keyboard_key_f7",
+          "bounds": {
+            "min": [
+              1.838725,
+              0.752,
+              2.326875
+            ],
+            "max": [
+              1.856525,
+              0.7638,
+              2.344675
+            ],
+            "center": [
+              1.847625,
+              0.7579,
+              2.335775
+            ],
+            "size": [
+              0.0178,
+              0.0118,
+              0.0178
+            ]
+          }
+        },
+        {
+          "id": "workstation_keyboard_key_f8",
+          "sourceId": "keyboard_key_f8",
+          "bounds": {
+            "min": [
+              1.819675,
+              0.752,
+              2.326875
+            ],
+            "max": [
+              1.837475,
+              0.7638,
+              2.344675
+            ],
+            "center": [
+              1.828575,
+              0.7579,
+              2.335775
+            ],
+            "size": [
+              0.0178,
+              0.0118,
+              0.0178
+            ]
+          }
+        },
+        {
+          "id": "workstation_keyboard_key_f9",
+          "sourceId": "keyboard_key_f9",
+          "bounds": {
+            "min": [
+              1.7911,
+              0.752,
+              2.326875
+            ],
+            "max": [
+              1.8089,
+              0.7638,
+              2.344675
+            ],
+            "center": [
+              1.8,
+              0.7579,
+              2.335775
+            ],
+            "size": [
+              0.0178,
+              0.0118,
+              0.0178
+            ]
+          }
+        },
+        {
+          "id": "workstation_keyboard_key_g",
+          "sourceId": "keyboard_key_g",
+          "bounds": {
+            "min": [
+              1.891113,
+              0.752,
+              2.2602
+            ],
+            "max": [
+              1.908913,
+              0.7638,
+              2.278
+            ],
+            "center": [
+              1.900013,
+              0.7579,
+              2.2691
+            ],
+            "size": [
+              0.0178,
+              0.0118,
+              0.0178
+            ]
+          }
+        },
+        {
+          "id": "workstation_keyboard_key_grave",
+          "sourceId": "keyboard_key_grave",
+          "bounds": {
+            "min": [
+              2.00065,
+              0.752,
+              2.2983
+            ],
+            "max": [
+              2.01845,
+              0.7638,
+              2.3161
+            ],
+            "center": [
+              2.00955,
+              0.7579,
+              2.3072
+            ],
+            "size": [
+              0.0178,
+              0.0118,
+              0.0178
+            ]
+          }
+        },
+        {
+          "id": "workstation_keyboard_key_h",
+          "sourceId": "keyboard_key_h",
+          "bounds": {
+            "min": [
+              1.872062,
+              0.752,
+              2.2602
+            ],
+            "max": [
+              1.889863,
+              0.7638,
+              2.278
+            ],
+            "center": [
+              1.880963,
+              0.7579,
+              2.2691
+            ],
+            "size": [
+              0.0178,
+              0.0118,
+              0.0178
+            ]
+          }
+        },
+        {
+          "id": "workstation_keyboard_key_home",
+          "sourceId": "keyboard_key_home",
+          "bounds": {
+            "min": [
+              1.686325,
+              0.752,
+              2.2983
+            ],
+            "max": [
+              1.704125,
+              0.7638,
+              2.3161
+            ],
+            "center": [
+              1.695225,
+              0.7579,
+              2.3072
+            ],
+            "size": [
+              0.0178,
+              0.0118,
+              0.0178
+            ]
+          }
+        },
+        {
+          "id": "workstation_keyboard_key_i",
+          "sourceId": "keyboard_key_i",
+          "bounds": {
+            "min": [
+              1.838725,
+              0.752,
+              2.27925
+            ],
+            "max": [
+              1.856525,
+              0.7638,
+              2.29705
+            ],
+            "center": [
+              1.847625,
+              0.7579,
+              2.28815
+            ],
+            "size": [
+              0.0178,
+              0.0118,
+              0.0178
+            ]
+          }
+        },
+        {
+          "id": "workstation_keyboard_key_insert",
+          "sourceId": "keyboard_key_insert",
+          "bounds": {
+            "min": [
+              1.705375,
+              0.752,
+              2.2983
+            ],
+            "max": [
+              1.723175,
+              0.7638,
+              2.3161
+            ],
+            "center": [
+              1.714275,
+              0.7579,
+              2.3072
+            ],
+            "size": [
+              0.0178,
+              0.0118,
+              0.0178
+            ]
+          }
+        },
+        {
+          "id": "workstation_keyboard_key_j",
+          "sourceId": "keyboard_key_j",
+          "bounds": {
+            "min": [
+              1.853013,
+              0.752,
+              2.2602
+            ],
+            "max": [
+              1.870813,
+              0.76394,
+              2.278
+            ],
+            "center": [
+              1.861913,
+              0.75797,
+              2.2691
+            ],
+            "size": [
+              0.0178,
+              0.01194,
+              0.0178
+            ]
+          }
+        },
+        {
+          "id": "workstation_keyboard_key_k",
+          "sourceId": "keyboard_key_k",
+          "bounds": {
+            "min": [
+              1.833963,
+              0.752,
+              2.2602
+            ],
+            "max": [
+              1.851763,
+              0.7638,
+              2.278
+            ],
+            "center": [
+              1.842863,
+              0.7579,
+              2.2691
+            ],
+            "size": [
+              0.0178,
+              0.0118,
+              0.0178
+            ]
+          }
+        },
+        {
+          "id": "workstation_keyboard_key_l",
+          "sourceId": "keyboard_key_l",
+          "bounds": {
+            "min": [
+              1.814913,
+              0.752,
+              2.2602
+            ],
+            "max": [
+              1.832713,
+              0.7638,
+              2.278
+            ],
+            "center": [
+              1.823813,
+              0.7579,
+              2.2691
+            ],
+            "size": [
+              0.0178,
+              0.0118,
+              0.0178
+            ]
+          }
+        },
+        {
+          "id": "workstation_keyboard_key_left",
+          "sourceId": "keyboard_key_left",
+          "bounds": {
+            "min": [
+              1.705375,
+              0.752,
+              2.2221
+            ],
+            "max": [
+              1.723175,
+              0.7638,
+              2.2399
+            ],
+            "center": [
+              1.714275,
+              0.7579,
+              2.231
+            ],
+            "size": [
+              0.0178,
+              0.0118,
+              0.0178
+            ]
+          }
+        },
+        {
+          "id": "workstation_keyboard_key_m",
+          "sourceId": "keyboard_key_m",
+          "bounds": {
+            "min": [
+              1.843488,
+              0.752,
+              2.24115
+            ],
+            "max": [
+              1.861287,
+              0.7638,
+              2.25895
+            ],
+            "center": [
+              1.852388,
+              0.7579,
+              2.25005
+            ],
+            "size": [
+              0.0178,
+              0.0118,
+              0.0178
+            ]
+          }
+        },
+        {
+          "id": "workstation_keyboard_key_menu",
+          "sourceId": "keyboard_key_menu",
+          "bounds": {
+            "min": [
+              1.757762,
+              0.752,
+              2.2221
+            ],
+            "max": [
+              1.780325,
+              0.7638,
+              2.2399
+            ],
+            "center": [
+              1.769044,
+              0.7579,
+              2.231
+            ],
+            "size": [
+              0.022563,
+              0.0118,
+              0.0178
+            ]
+          }
+        },
+        {
+          "id": "workstation_keyboard_key_minus",
+          "sourceId": "keyboard_key_minus",
+          "bounds": {
+            "min": [
+              1.7911,
+              0.752,
+              2.2983
+            ],
+            "max": [
+              1.8089,
+              0.7638,
+              2.3161
+            ],
+            "center": [
+              1.8,
+              0.7579,
+              2.3072
+            ],
+            "size": [
+              0.0178,
+              0.0118,
+              0.0178
+            ]
+          }
+        },
+        {
+          "id": "workstation_keyboard_key_n",
+          "sourceId": "keyboard_key_n",
+          "bounds": {
+            "min": [
+              1.862537,
+              0.752,
+              2.24115
+            ],
+            "max": [
+              1.880338,
+              0.7638,
+              2.25895
+            ],
+            "center": [
+              1.871438,
+              0.7579,
+              2.25005
+            ],
+            "size": [
+              0.0178,
+              0.0118,
+              0.0178
+            ]
+          }
+        },
+        {
+          "id": "workstation_keyboard_key_num_0",
+          "sourceId": "keyboard_key_num_0",
+          "bounds": {
+            "min": [
+              1.61965,
+              0.752,
+              2.2221
+            ],
+            "max": [
+              1.6565,
+              0.7638,
+              2.2399
+            ],
+            "center": [
+              1.638075,
+              0.7579,
+              2.231
+            ],
+            "size": [
+              0.03685,
+              0.0118,
+              0.0178
+            ]
+          }
+        },
+        {
+          "id": "workstation_keyboard_key_num_1",
+          "sourceId": "keyboard_key_num_1",
+          "bounds": {
+            "min": [
+              1.6387,
+              0.752,
+              2.24115
+            ],
+            "max": [
+              1.6565,
+              0.7638,
+              2.25895
+            ],
+            "center": [
+              1.6476,
+              0.7579,
+              2.25005
+            ],
+            "size": [
+              0.0178,
+              0.0118,
+              0.0178
+            ]
+          }
+        },
+        {
+          "id": "workstation_keyboard_key_num_2",
+          "sourceId": "keyboard_key_num_2",
+          "bounds": {
+            "min": [
+              1.61965,
+              0.752,
+              2.24115
+            ],
+            "max": [
+              1.63745,
+              0.7638,
+              2.25895
+            ],
+            "center": [
+              1.62855,
+              0.7579,
+              2.25005
+            ],
+            "size": [
+              0.0178,
+              0.0118,
+              0.0178
+            ]
+          }
+        },
+        {
+          "id": "workstation_keyboard_key_num_3",
+          "sourceId": "keyboard_key_num_3",
+          "bounds": {
+            "min": [
+              1.6006,
+              0.752,
+              2.24115
+            ],
+            "max": [
+              1.6184,
+              0.7638,
+              2.25895
+            ],
+            "center": [
+              1.6095,
+              0.7579,
+              2.25005
+            ],
+            "size": [
+              0.0178,
+              0.0118,
+              0.0178
+            ]
+          }
+        },
+        {
+          "id": "workstation_keyboard_key_num_4",
+          "sourceId": "keyboard_key_num_4",
+          "bounds": {
+            "min": [
+              1.6387,
+              0.752,
+              2.2602
+            ],
+            "max": [
+              1.6565,
+              0.7638,
+              2.278
+            ],
+            "center": [
+              1.6476,
+              0.7579,
+              2.2691
+            ],
+            "size": [
+              0.0178,
+              0.0118,
+              0.0178
+            ]
+          }
+        },
+        {
+          "id": "workstation_keyboard_key_num_5",
+          "sourceId": "keyboard_key_num_5",
+          "bounds": {
+            "min": [
+              1.61965,
+              0.752,
+              2.2602
+            ],
+            "max": [
+              1.63745,
+              0.76394,
+              2.278
+            ],
+            "center": [
+              1.62855,
+              0.75797,
+              2.2691
+            ],
+            "size": [
+              0.0178,
+              0.01194,
+              0.0178
+            ]
+          }
+        },
+        {
+          "id": "workstation_keyboard_key_num_6",
+          "sourceId": "keyboard_key_num_6",
+          "bounds": {
+            "min": [
+              1.6006,
+              0.752,
+              2.2602
+            ],
+            "max": [
+              1.6184,
+              0.7638,
+              2.278
+            ],
+            "center": [
+              1.6095,
+              0.7579,
+              2.2691
+            ],
+            "size": [
+              0.0178,
+              0.0118,
+              0.0178
+            ]
+          }
+        },
+        {
+          "id": "workstation_keyboard_key_num_7",
+          "sourceId": "keyboard_key_num_7",
+          "bounds": {
+            "min": [
+              1.6387,
+              0.752,
+              2.27925
+            ],
+            "max": [
+              1.6565,
+              0.7638,
+              2.29705
+            ],
+            "center": [
+              1.6476,
+              0.7579,
+              2.28815
+            ],
+            "size": [
+              0.0178,
+              0.0118,
+              0.0178
+            ]
+          }
+        },
+        {
+          "id": "workstation_keyboard_key_num_8",
+          "sourceId": "keyboard_key_num_8",
+          "bounds": {
+            "min": [
+              1.61965,
+              0.752,
+              2.27925
+            ],
+            "max": [
+              1.63745,
+              0.7638,
+              2.29705
+            ],
+            "center": [
+              1.62855,
+              0.7579,
+              2.28815
+            ],
+            "size": [
+              0.0178,
+              0.0118,
+              0.0178
+            ]
+          }
+        },
+        {
+          "id": "workstation_keyboard_key_num_9",
+          "sourceId": "keyboard_key_num_9",
+          "bounds": {
+            "min": [
+              1.6006,
+              0.752,
+              2.27925
+            ],
+            "max": [
+              1.6184,
+              0.7638,
+              2.29705
+            ],
+            "center": [
+              1.6095,
+              0.7579,
+              2.28815
+            ],
+            "size": [
+              0.0178,
+              0.0118,
+              0.0178
+            ]
+          }
+        },
+        {
+          "id": "workstation_keyboard_key_num_decimal",
+          "sourceId": "keyboard_key_num_decimal",
+          "bounds": {
+            "min": [
+              1.6006,
+              0.752,
+              2.2221
+            ],
+            "max": [
+              1.6184,
+              0.7638,
+              2.2399
+            ],
+            "center": [
+              1.6095,
+              0.7579,
+              2.231
+            ],
+            "size": [
+              0.0178,
+              0.0118,
+              0.0178
+            ]
+          }
+        },
+        {
+          "id": "workstation_keyboard_key_num_divide",
+          "sourceId": "keyboard_key_num_divide",
+          "bounds": {
+            "min": [
+              1.61965,
+              0.752,
+              2.2983
+            ],
+            "max": [
+              1.63745,
+              0.7638,
+              2.3161
+            ],
+            "center": [
+              1.62855,
+              0.7579,
+              2.3072
+            ],
+            "size": [
+              0.0178,
+              0.0118,
+              0.0178
+            ]
+          }
+        },
+        {
+          "id": "workstation_keyboard_key_num_enter",
+          "sourceId": "keyboard_key_num_enter",
+          "bounds": {
+            "min": [
+              1.58155,
+              0.752,
+              2.2221
+            ],
+            "max": [
+              1.59935,
+              0.7638,
+              2.25895
+            ],
+            "center": [
+              1.59045,
+              0.7579,
+              2.240525
+            ],
+            "size": [
+              0.0178,
+              0.0118,
+              0.03685
+            ]
+          }
+        },
+        {
+          "id": "workstation_keyboard_key_num_lock",
+          "sourceId": "keyboard_key_num_lock",
+          "bounds": {
+            "min": [
+              1.6387,
+              0.752,
+              2.2983
+            ],
+            "max": [
+              1.6565,
+              0.7638,
+              2.3161
+            ],
+            "center": [
+              1.6476,
+              0.7579,
+              2.3072
+            ],
+            "size": [
+              0.0178,
+              0.0118,
+              0.0178
+            ]
+          }
+        },
+        {
+          "id": "workstation_keyboard_key_num_minus",
+          "sourceId": "keyboard_key_num_minus",
+          "bounds": {
+            "min": [
+              1.58155,
+              0.752,
+              2.2983
+            ],
+            "max": [
+              1.59935,
+              0.7638,
+              2.3161
+            ],
+            "center": [
+              1.59045,
+              0.7579,
+              2.3072
+            ],
+            "size": [
+              0.0178,
+              0.0118,
+              0.0178
+            ]
+          }
+        },
+        {
+          "id": "workstation_keyboard_key_num_multiply",
+          "sourceId": "keyboard_key_num_multiply",
+          "bounds": {
+            "min": [
+              1.6006,
+              0.752,
+              2.2983
+            ],
+            "max": [
+              1.6184,
+              0.7638,
+              2.3161
+            ],
+            "center": [
+              1.6095,
+              0.7579,
+              2.3072
+            ],
+            "size": [
+              0.0178,
+              0.0118,
+              0.0178
+            ]
+          }
+        },
+        {
+          "id": "workstation_keyboard_key_num_plus",
+          "sourceId": "keyboard_key_num_plus",
+          "bounds": {
+            "min": [
+              1.58155,
+              0.752,
+              2.2602
+            ],
+            "max": [
+              1.59935,
+              0.7638,
+              2.29705
+            ],
+            "center": [
+              1.59045,
+              0.7579,
+              2.278625
+            ],
+            "size": [
+              0.0178,
+              0.0118,
+              0.03685
+            ]
+          }
+        },
+        {
+          "id": "workstation_keyboard_key_o",
+          "sourceId": "keyboard_key_o",
+          "bounds": {
+            "min": [
+              1.819675,
+              0.752,
+              2.27925
+            ],
+            "max": [
+              1.837475,
+              0.7638,
+              2.29705
+            ],
+            "center": [
+              1.828575,
+              0.7579,
+              2.28815
+            ],
+            "size": [
+              0.0178,
+              0.0118,
+              0.0178
+            ]
+          }
+        },
+        {
+          "id": "workstation_keyboard_key_p",
+          "sourceId": "keyboard_key_p",
+          "bounds": {
+            "min": [
+              1.800625,
+              0.752,
+              2.27925
+            ],
+            "max": [
+              1.818425,
+              0.7638,
+              2.29705
+            ],
+            "center": [
+              1.809525,
+              0.7579,
+              2.28815
+            ],
+            "size": [
+              0.0178,
+              0.0118,
+              0.0178
+            ]
+          }
+        },
+        {
+          "id": "workstation_keyboard_key_page_down",
+          "sourceId": "keyboard_key_page_down",
+          "bounds": {
+            "min": [
+              1.667275,
+              0.752,
+              2.27925
+            ],
+            "max": [
+              1.685075,
+              0.7638,
+              2.29705
+            ],
+            "center": [
+              1.676175,
+              0.7579,
+              2.28815
+            ],
+            "size": [
+              0.0178,
+              0.0118,
+              0.0178
+            ]
+          }
+        },
+        {
+          "id": "workstation_keyboard_key_page_up",
+          "sourceId": "keyboard_key_page_up",
+          "bounds": {
+            "min": [
+              1.667275,
+              0.752,
+              2.2983
+            ],
+            "max": [
+              1.685075,
+              0.7638,
+              2.3161
+            ],
+            "center": [
+              1.676175,
+              0.7579,
+              2.3072
+            ],
+            "size": [
+              0.0178,
+              0.0118,
+              0.0178
+            ]
+          }
+        },
+        {
+          "id": "workstation_keyboard_key_pause",
+          "sourceId": "keyboard_key_pause",
+          "bounds": {
+            "min": [
+              1.667275,
+              0.752,
+              2.326875
+            ],
+            "max": [
+              1.685075,
+              0.7638,
+              2.344675
+            ],
+            "center": [
+              1.676175,
+              0.7579,
+              2.335775
+            ],
+            "size": [
+              0.0178,
+              0.0118,
+              0.0178
+            ]
+          }
+        },
+        {
+          "id": "workstation_keyboard_key_period",
+          "sourceId": "keyboard_key_period",
+          "bounds": {
+            "min": [
+              1.805387,
+              0.752,
+              2.24115
+            ],
+            "max": [
+              1.823188,
+              0.7638,
+              2.25895
+            ],
+            "center": [
+              1.814288,
+              0.7579,
+              2.25005
+            ],
+            "size": [
+              0.0178,
+              0.0118,
+              0.0178
+            ]
+          }
+        },
+        {
+          "id": "workstation_keyboard_key_print",
+          "sourceId": "keyboard_key_print",
+          "bounds": {
+            "min": [
+              1.705375,
+              0.752,
+              2.326875
+            ],
+            "max": [
+              1.723175,
+              0.7638,
+              2.344675
+            ],
+            "center": [
+              1.714275,
+              0.7579,
+              2.335775
+            ],
+            "size": [
+              0.0178,
+              0.0118,
+              0.0178
+            ]
+          }
+        },
+        {
+          "id": "workstation_keyboard_key_q",
+          "sourceId": "keyboard_key_q",
+          "bounds": {
+            "min": [
+              1.972075,
+              0.752,
+              2.27925
+            ],
+            "max": [
+              1.989875,
+              0.7638,
+              2.29705
+            ],
+            "center": [
+              1.980975,
+              0.7579,
+              2.28815
+            ],
+            "size": [
+              0.0178,
+              0.0118,
+              0.0178
+            ]
+          }
+        },
+        {
+          "id": "workstation_keyboard_key_quote",
+          "sourceId": "keyboard_key_quote",
+          "bounds": {
+            "min": [
+              1.776812,
+              0.752,
+              2.2602
+            ],
+            "max": [
+              1.794613,
+              0.7638,
+              2.278
+            ],
+            "center": [
+              1.785712,
+              0.7579,
+              2.2691
+            ],
+            "size": [
+              0.0178,
+              0.0118,
+              0.0178
+            ]
+          }
+        },
+        {
+          "id": "workstation_keyboard_key_r",
+          "sourceId": "keyboard_key_r",
+          "bounds": {
+            "min": [
+              1.914925,
+              0.752,
+              2.27925
+            ],
+            "max": [
+              1.932725,
+              0.7638,
+              2.29705
+            ],
+            "center": [
+              1.923825,
+              0.7579,
+              2.28815
+            ],
+            "size": [
+              0.0178,
+              0.0118,
+              0.0178
+            ]
+          }
+        },
+        {
+          "id": "workstation_keyboard_key_right",
+          "sourceId": "keyboard_key_right",
+          "bounds": {
+            "min": [
+              1.667275,
+              0.752,
+              2.2221
+            ],
+            "max": [
+              1.685075,
+              0.7638,
+              2.2399
+            ],
+            "center": [
+              1.676175,
+              0.7579,
+              2.231
+            ],
+            "size": [
+              0.0178,
+              0.0118,
+              0.0178
+            ]
+          }
+        },
+        {
+          "id": "workstation_keyboard_key_s",
+          "sourceId": "keyboard_key_s",
+          "bounds": {
+            "min": [
+              1.948263,
+              0.752,
+              2.2602
+            ],
+            "max": [
+              1.966063,
+              0.7638,
+              2.278
+            ],
+            "center": [
+              1.957163,
+              0.7579,
+              2.2691
+            ],
+            "size": [
+              0.0178,
+              0.0118,
+              0.0178
+            ]
+          }
+        },
+        {
+          "id": "workstation_keyboard_key_scroll",
+          "sourceId": "keyboard_key_scroll",
+          "bounds": {
+            "min": [
+              1.686325,
+              0.752,
+              2.326875
+            ],
+            "max": [
+              1.704125,
+              0.7638,
+              2.344675
+            ],
+            "center": [
+              1.695225,
+              0.7579,
+              2.335775
+            ],
+            "size": [
+              0.0178,
+              0.0118,
+              0.0178
+            ]
+          }
+        },
+        {
+          "id": "workstation_keyboard_key_semicolon",
+          "sourceId": "keyboard_key_semicolon",
+          "bounds": {
+            "min": [
+              1.795863,
+              0.752,
+              2.2602
+            ],
+            "max": [
+              1.813663,
+              0.7638,
+              2.278
+            ],
+            "center": [
+              1.804763,
+              0.7579,
+              2.2691
+            ],
+            "size": [
+              0.0178,
+              0.0118,
+              0.0178
+            ]
+          }
+        },
+        {
+          "id": "workstation_keyboard_key_shift_l",
+          "sourceId": "keyboard_key_shift_l",
+          "bounds": {
+            "min": [
+              1.976838,
+              0.752,
+              2.24115
+            ],
+            "max": [
+              2.01845,
+              0.7638,
+              2.25895
+            ],
+            "center": [
+              1.997644,
+              0.7579,
+              2.25005
+            ],
+            "size": [
+              0.041613,
+              0.0118,
+              0.0178
+            ]
+          }
+        },
+        {
+          "id": "workstation_keyboard_key_shift_r",
+          "sourceId": "keyboard_key_shift_r",
+          "bounds": {
+            "min": [
+              1.73395,
+              0.752,
+              2.24115
+            ],
+            "max": [
+              1.785087,
+              0.7638,
+              2.25895
+            ],
+            "center": [
+              1.759519,
+              0.7579,
+              2.25005
+            ],
+            "size": [
+              0.051138,
+              0.0118,
+              0.0178
+            ]
+          }
+        },
+        {
+          "id": "workstation_keyboard_key_slash",
+          "sourceId": "keyboard_key_slash",
+          "bounds": {
+            "min": [
+              1.786337,
+              0.752,
+              2.24115
+            ],
+            "max": [
+              1.804137,
+              0.7638,
+              2.25895
+            ],
+            "center": [
+              1.795237,
+              0.7579,
+              2.25005
+            ],
+            "size": [
+              0.0178,
+              0.0118,
+              0.0178
+            ]
+          }
+        },
+        {
+          "id": "workstation_keyboard_key_space",
+          "sourceId": "keyboard_key_space",
+          "bounds": {
+            "min": [
+              1.8292,
+              0.752,
+              2.2221
+            ],
+            "max": [
+              1.947013,
+              0.7638,
+              2.2399
+            ],
+            "center": [
+              1.888106,
+              0.7579,
+              2.231
+            ],
+            "size": [
+              0.117812,
+              0.0118,
+              0.0178
+            ]
+          }
+        },
+        {
+          "id": "workstation_keyboard_key_super_l",
+          "sourceId": "keyboard_key_super_l",
+          "bounds": {
+            "min": [
+              1.972075,
+              0.752,
+              2.2221
+            ],
+            "max": [
+              1.994638,
+              0.7638,
+              2.2399
+            ],
+            "center": [
+              1.983356,
+              0.7579,
+              2.231
+            ],
+            "size": [
+              0.022563,
+              0.0118,
+              0.0178
+            ]
+          }
+        },
+        {
+          "id": "workstation_keyboard_key_super_r",
+          "sourceId": "keyboard_key_super_r",
+          "bounds": {
+            "min": [
+              1.781575,
+              0.752,
+              2.2221
+            ],
+            "max": [
+              1.804137,
+              0.7638,
+              2.2399
+            ],
+            "center": [
+              1.792856,
+              0.7579,
+              2.231
+            ],
+            "size": [
+              0.022563,
+              0.0118,
+              0.0178
+            ]
+          }
+        },
+        {
+          "id": "workstation_keyboard_key_t",
+          "sourceId": "keyboard_key_t",
+          "bounds": {
+            "min": [
+              1.895875,
+              0.752,
+              2.27925
+            ],
+            "max": [
+              1.913675,
+              0.7638,
+              2.29705
+            ],
+            "center": [
+              1.904775,
+              0.7579,
+              2.28815
+            ],
+            "size": [
+              0.0178,
+              0.0118,
+              0.0178
+            ]
+          }
+        },
+        {
+          "id": "workstation_keyboard_key_tab",
+          "sourceId": "keyboard_key_tab",
+          "bounds": {
+            "min": [
+              1.991125,
+              0.752,
+              2.27925
+            ],
+            "max": [
+              2.01845,
+              0.7638,
+              2.29705
+            ],
+            "center": [
+              2.004788,
+              0.7579,
+              2.28815
+            ],
+            "size": [
+              0.027325,
+              0.0118,
+              0.0178
+            ]
+          }
+        },
+        {
+          "id": "workstation_keyboard_key_u",
+          "sourceId": "keyboard_key_u",
+          "bounds": {
+            "min": [
+              1.857775,
+              0.752,
+              2.27925
+            ],
+            "max": [
+              1.875575,
+              0.7638,
+              2.29705
+            ],
+            "center": [
+              1.866675,
+              0.7579,
+              2.28815
+            ],
+            "size": [
+              0.0178,
+              0.0118,
+              0.0178
+            ]
+          }
+        },
+        {
+          "id": "workstation_keyboard_key_up",
+          "sourceId": "keyboard_key_up",
+          "bounds": {
+            "min": [
+              1.686325,
+              0.752,
+              2.24115
+            ],
+            "max": [
+              1.704125,
+              0.7638,
+              2.25895
+            ],
+            "center": [
+              1.695225,
+              0.7579,
+              2.25005
+            ],
+            "size": [
+              0.0178,
+              0.0118,
+              0.0178
+            ]
+          }
+        },
+        {
+          "id": "workstation_keyboard_key_v",
+          "sourceId": "keyboard_key_v",
+          "bounds": {
+            "min": [
+              1.900638,
+              0.752,
+              2.24115
+            ],
+            "max": [
+              1.918438,
+              0.7638,
+              2.25895
+            ],
+            "center": [
+              1.909538,
+              0.7579,
+              2.25005
+            ],
+            "size": [
+              0.0178,
+              0.0118,
+              0.0178
+            ]
+          }
+        },
+        {
+          "id": "workstation_keyboard_key_w",
+          "sourceId": "keyboard_key_w",
+          "bounds": {
+            "min": [
+              1.953025,
+              0.752,
+              2.27925
+            ],
+            "max": [
+              1.970825,
+              0.7638,
+              2.29705
+            ],
+            "center": [
+              1.961925,
+              0.7579,
+              2.28815
+            ],
+            "size": [
+              0.0178,
+              0.0118,
+              0.0178
+            ]
+          }
+        },
+        {
+          "id": "workstation_keyboard_key_x",
+          "sourceId": "keyboard_key_x",
+          "bounds": {
+            "min": [
+              1.938738,
+              0.752,
+              2.24115
+            ],
+            "max": [
+              1.956538,
+              0.7638,
+              2.25895
+            ],
+            "center": [
+              1.947638,
+              0.7579,
+              2.25005
+            ],
+            "size": [
+              0.0178,
+              0.0118,
+              0.0178
+            ]
+          }
+        },
+        {
+          "id": "workstation_keyboard_key_y",
+          "sourceId": "keyboard_key_y",
+          "bounds": {
+            "min": [
+              1.876825,
+              0.752,
+              2.27925
+            ],
+            "max": [
+              1.894625,
+              0.7638,
+              2.29705
+            ],
+            "center": [
+              1.885725,
+              0.7579,
+              2.28815
+            ],
+            "size": [
+              0.0178,
+              0.0118,
+              0.0178
+            ]
+          }
+        },
+        {
+          "id": "workstation_keyboard_key_z",
+          "sourceId": "keyboard_key_z",
+          "bounds": {
+            "min": [
+              1.957788,
+              0.752,
+              2.24115
+            ],
+            "max": [
+              1.975588,
+              0.7638,
+              2.25895
+            ],
+            "center": [
+              1.966688,
+              0.7579,
+              2.25005
+            ],
+            "size": [
+              0.0178,
+              0.0118,
+              0.0178
+            ]
+          }
+        },
+        {
+          "id": "workstation_keyboard_lower_case",
+          "sourceId": "keyboard_lower_case",
+          "bounds": {
+            "min": [
+              1.57,
+              0.74,
+              2.21
+            ],
+            "max": [
+              2.03,
+              0.751,
+              2.36115
+            ],
+            "center": [
+              1.8,
+              0.7455,
+              2.285575
+            ],
+            "size": [
+              0.46,
+              0.011,
+              0.15115
+            ]
+          }
+        },
+        {
+          "id": "workstation_keyboard_switch_plate",
+          "sourceId": "keyboard_switch_plate",
+          "bounds": {
+            "min": [
+              1.5765,
+              0.7478,
+              2.218
+            ],
+            "max": [
+              2.0235,
+              0.755,
+              2.352
+            ],
+            "center": [
+              1.8,
+              0.7514,
+              2.285
+            ],
+            "size": [
+              0.447,
+              0.0072,
+              0.134
+            ]
+          }
+        },
+        {
+          "id": "workstation_keyboard_upper_case",
+          "sourceId": "keyboard_upper_case",
+          "bounds": {
+            "min": [
+              1.57,
+              0.7515,
+              2.21
+            ],
+            "max": [
+              2.03,
+              0.7552,
+              2.36
+            ],
+            "center": [
+              1.8,
+              0.75335,
+              2.285
+            ],
+            "size": [
+              0.46,
+              0.0037,
+              0.15
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "chair",
+      "label": "Office chair",
+      "prefix": "workstation_chair_",
+      "asset": "models/furniture/chairs/everyday-mesh-office-chair",
+      "version": "v0001",
+      "bounds": {
+        "min": [
+          1.458596,
+          0,
+          1.442111
+        ],
+        "max": [
+          2.14157,
+          0.96,
+          2.092
+        ],
+        "center": [
+          1.800083,
+          0.48,
+          1.767056
+        ],
+        "size": [
+          0.682974,
+          0.96,
+          0.649889
+        ]
+      },
+      "partIds": [
+        "workstation_chair_backrest",
+        "workstation_chair_base",
+        "workstation_chair_caster_0",
+        "workstation_chair_caster_1",
+        "workstation_chair_caster_2",
+        "workstation_chair_caster_3",
+        "workstation_chair_caster_4",
+        "workstation_chair_gas_housing",
+        "workstation_chair_left_arm",
+        "workstation_chair_lift_piston",
+        "workstation_chair_right_arm",
+        "workstation_chair_seat",
+        "workstation_chair_wheels_0",
+        "workstation_chair_wheels_1",
+        "workstation_chair_wheels_2",
+        "workstation_chair_wheels_3",
+        "workstation_chair_wheels_4"
+      ],
+      "meshIds": [
+        "workstation_chair_back_mesh_horizontal",
+        "workstation_chair_back_mesh_vertical",
+        "workstation_chair_back_mount_44_179_head",
+        "workstation_chair_back_mount_44_179_shank",
+        "workstation_chair_back_mount_44_96_head",
+        "workstation_chair_back_mount_44_96_shank",
+        "workstation_chair_back_mount_n44_179_head",
+        "workstation_chair_back_mount_n44_179_shank",
+        "workstation_chair_back_mount_n44_96_head",
+        "workstation_chair_back_mount_n44_96_shank",
+        "workstation_chair_back_underseat_mount",
+        "workstation_chair_continuous_back_frame",
+        "workstation_chair_left_back_bridge_cap",
+        "workstation_chair_left_back_stay",
+        "workstation_chair_lumbar_rear_bridge",
+        "workstation_chair_right_back_bridge_cap",
+        "workstation_chair_right_back_stay",
+        "workstation_chair_five_star_base",
+        "workstation_chair_caster_0_axle",
+        "workstation_chair_caster_0_fork",
+        "workstation_chair_caster_0_stem",
+        "workstation_chair_caster_0_swivel",
+        "workstation_chair_caster_1_axle",
+        "workstation_chair_caster_1_fork",
+        "workstation_chair_caster_1_stem",
+        "workstation_chair_caster_1_swivel",
+        "workstation_chair_caster_2_axle",
+        "workstation_chair_caster_2_fork",
+        "workstation_chair_caster_2_stem",
+        "workstation_chair_caster_2_swivel",
+        "workstation_chair_caster_3_axle",
+        "workstation_chair_caster_3_fork",
+        "workstation_chair_caster_3_stem",
+        "workstation_chair_caster_3_swivel",
+        "workstation_chair_caster_4_axle",
+        "workstation_chair_caster_4_fork",
+        "workstation_chair_caster_4_stem",
+        "workstation_chair_caster_4_swivel",
+        "workstation_chair_gas_guide",
+        "workstation_chair_gas_lower_shroud",
+        "workstation_chair_gas_outer_tube",
+        "workstation_chair_left_arm_bracket",
+        "workstation_chair_left_arm_mount_0_head",
+        "workstation_chair_left_arm_mount_0_shank",
+        "workstation_chair_left_arm_mount_1_head",
+        "workstation_chair_left_arm_mount_1_shank",
+        "workstation_chair_left_arm_pad",
+        "workstation_chair_left_arm_pad_screw_0_head",
+        "workstation_chair_left_arm_pad_screw_0_shank",
+        "workstation_chair_left_arm_pad_screw_1_head",
+        "workstation_chair_left_arm_pad_screw_1_shank",
+        "workstation_chair_chrome_lift_rod",
+        "workstation_chair_right_arm_bracket",
+        "workstation_chair_right_arm_mount_0_head",
+        "workstation_chair_right_arm_mount_0_shank",
+        "workstation_chair_right_arm_mount_1_head",
+        "workstation_chair_right_arm_mount_1_shank",
+        "workstation_chair_right_arm_pad",
+        "workstation_chair_right_arm_pad_screw_0_head",
+        "workstation_chair_right_arm_pad_screw_0_shank",
+        "workstation_chair_right_arm_pad_screw_1_head",
+        "workstation_chair_right_arm_pad_screw_1_shank",
+        "workstation_chair_height_lever_grip",
+        "workstation_chair_height_lever_rod",
+        "workstation_chair_sculpted_seat_cushion",
+        "workstation_chair_seat_bolt_66_75_head",
+        "workstation_chair_seat_bolt_66_75_shank",
+        "workstation_chair_seat_bolt_66_n75_head",
+        "workstation_chair_seat_bolt_66_n75_shank",
+        "workstation_chair_seat_bolt_n66_75_head",
+        "workstation_chair_seat_bolt_n66_75_shank",
+        "workstation_chair_seat_bolt_n66_n75_head",
+        "workstation_chair_seat_bolt_n66_n75_shank",
+        "workstation_chair_seat_lower_piping",
+        "workstation_chair_seat_mechanism_plate",
+        "workstation_chair_seat_underside_pan",
+        "workstation_chair_tilt_axis",
+        "workstation_chair_tilt_knob_shaft",
+        "workstation_chair_tilt_mechanism_shell",
+        "workstation_chair_tilt_tension_knob",
+        "workstation_chair_wheel_0_a_cap",
+        "workstation_chair_wheel_0_a_hub",
+        "workstation_chair_wheel_0_a_tire",
+        "workstation_chair_wheel_0_b_cap",
+        "workstation_chair_wheel_0_b_hub",
+        "workstation_chair_wheel_0_b_tire",
+        "workstation_chair_wheel_1_a_cap",
+        "workstation_chair_wheel_1_a_hub",
+        "workstation_chair_wheel_1_a_tire",
+        "workstation_chair_wheel_1_b_cap",
+        "workstation_chair_wheel_1_b_hub",
+        "workstation_chair_wheel_1_b_tire",
+        "workstation_chair_wheel_2_a_cap",
+        "workstation_chair_wheel_2_a_hub",
+        "workstation_chair_wheel_2_a_tire",
+        "workstation_chair_wheel_2_b_cap",
+        "workstation_chair_wheel_2_b_hub",
+        "workstation_chair_wheel_2_b_tire",
+        "workstation_chair_wheel_3_a_cap",
+        "workstation_chair_wheel_3_a_hub",
+        "workstation_chair_wheel_3_a_tire",
+        "workstation_chair_wheel_3_b_cap",
+        "workstation_chair_wheel_3_b_hub",
+        "workstation_chair_wheel_3_b_tire",
+        "workstation_chair_wheel_4_a_cap",
+        "workstation_chair_wheel_4_a_hub",
+        "workstation_chair_wheel_4_a_tire",
+        "workstation_chair_wheel_4_b_cap",
+        "workstation_chair_wheel_4_b_hub",
+        "workstation_chair_wheel_4_b_tire"
+      ],
+      "materialNames": [
+        "mat_plastic_workstation_chair_chair_mesh_yarn",
+        "mat_metal_workstation_chair_chair_seat_hardware",
+        "mat_plastic_workstation_chair_chair_graphite_frame",
+        "mat_plastic_workstation_chair_chair_base_nylon",
+        "mat_metal_workstation_chair_chair_gas_rod",
+        "mat_plastic_workstation_chair_chair_grey_woven_cushion",
+        "mat_plastic_workstation_chair_chair_upholstery_binding",
+        "mat_plastic_workstation_chair_chair_wheel_tread"
+      ],
+      "parts": [
+        {
+          "id": "workstation_chair_backrest",
+          "sourceId": "chair_backrest",
+          "bounds": {
+            "min": [
+              1.574774,
+              0.389,
+              1.467329
+            ],
+            "max": [
+              2.025226,
+              0.96,
+              1.671
+            ],
+            "center": [
+              1.8,
+              0.6745,
+              1.569165
+            ],
+            "size": [
+              0.450451,
+              0.571,
+              0.203671
+            ]
+          }
+        },
+        {
+          "id": "workstation_chair_base",
+          "sourceId": "chair_base",
+          "bounds": {
+            "min": [
+              1.484291,
+              0.061,
+              1.468326
+            ],
+            "max": [
+              2.115709,
+              0.163,
+              2.070878
+            ],
+            "center": [
+              1.8,
+              0.112,
+              1.769602
+            ],
+            "size": [
+              0.631418,
+              0.102,
+              0.602552
+            ]
+          }
+        },
+        {
+          "id": "workstation_chair_caster_0",
+          "sourceId": "chair_caster_0",
+          "bounds": {
+            "min": [
+              1.773,
+              0.0225,
+              2.038
+            ],
+            "max": [
+              1.827,
+              0.087,
+              2.072071
+            ],
+            "center": [
+              1.8,
+              0.05475,
+              2.055036
+            ],
+            "size": [
+              0.054,
+              0.0645,
+              0.034071
+            ]
+          }
+        },
+        {
+          "id": "workstation_chair_caster_1",
+          "sourceId": "chair_caster_1",
+          "bounds": {
+            "min": [
+              2.082828,
+              0.0225,
+              1.813361
+            ],
+            "max": [
+              2.121717,
+              0.087,
+              1.8675
+            ],
+            "center": [
+              2.102272,
+              0.05475,
+              1.840431
+            ],
+            "size": [
+              0.038889,
+              0.0645,
+              0.054138
+            ]
+          }
+        },
+        {
+          "id": "workstation_chair_caster_2",
+          "sourceId": "chair_caster_2",
+          "bounds": {
+            "min": [
+              1.966542,
+              0.0225,
+              1.457559
+            ],
+            "max": [
+              2.015519,
+              0.087,
+              1.501205
+            ],
+            "center": [
+              1.99103,
+              0.05475,
+              1.479382
+            ],
+            "size": [
+              0.048977,
+              0.0645,
+              0.043646
+            ]
+          }
+        },
+        {
+          "id": "workstation_chair_caster_3",
+          "sourceId": "chair_caster_3",
+          "bounds": {
+            "min": [
+              1.584481,
+              0.0225,
+              1.457559
+            ],
+            "max": [
+              1.633458,
+              0.087,
+              1.501205
+            ],
+            "center": [
+              1.60897,
+              0.05475,
+              1.479382
+            ],
+            "size": [
+              0.048977,
+              0.0645,
+              0.043646
+            ]
+          }
+        },
+        {
+          "id": "workstation_chair_caster_4",
+          "sourceId": "chair_caster_4",
+          "bounds": {
+            "min": [
+              1.478283,
+              0.0225,
+              1.813361
+            ],
+            "max": [
+              1.517172,
+              0.087,
+              1.8675
+            ],
+            "center": [
+              1.497728,
+              0.05475,
+              1.840431
+            ],
+            "size": [
+              0.038889,
+              0.0645,
+              0.054138
+            ]
+          }
+        },
+        {
+          "id": "workstation_chair_gas_housing",
+          "sourceId": "chair_gas_housing",
+          "bounds": {
+            "min": [
+              1.769,
+              0.142,
+              1.709
+            ],
+            "max": [
+              1.831,
+              0.326,
+              1.771
+            ],
+            "center": [
+              1.8,
+              0.234,
+              1.74
+            ],
+            "size": [
+              0.062,
+              0.184,
+              0.062
+            ]
+          }
+        },
+        {
+          "id": "workstation_chair_left_arm",
+          "sourceId": "chair_left_arm",
+          "bounds": {
+            "min": [
+              1.478,
+              0.403,
+              1.651824
+            ],
+            "max": [
+              1.655,
+              0.668723,
+              1.862218
+            ],
+            "center": [
+              1.5665,
+              0.535861,
+              1.757021
+            ],
+            "size": [
+              0.177,
+              0.265723,
+              0.210393
+            ]
+          }
+        },
+        {
+          "id": "workstation_chair_lift_piston",
+          "sourceId": "chair_lift_piston",
+          "bounds": {
+            "min": [
+              1.7865,
+              0.15,
+              1.7265
+            ],
+            "max": [
+              1.8135,
+              0.41,
+              1.7535
+            ],
+            "center": [
+              1.8,
+              0.28,
+              1.74
+            ],
+            "size": [
+              0.027,
+              0.26,
+              0.027
+            ]
+          }
+        },
+        {
+          "id": "workstation_chair_right_arm",
+          "sourceId": "chair_right_arm",
+          "bounds": {
+            "min": [
+              1.945,
+              0.403,
+              1.651824
+            ],
+            "max": [
+              2.122,
+              0.668723,
+              1.862218
+            ],
+            "center": [
+              2.0335,
+              0.535861,
+              1.757021
+            ],
+            "size": [
+              0.177,
+              0.265723,
+              0.210393
+            ]
+          }
+        },
+        {
+          "id": "workstation_chair_seat",
+          "sourceId": "chair_seat",
+          "bounds": {
+            "min": [
+              1.547,
+              0.33,
+              1.518276
+            ],
+            "max": [
+              2.053,
+              0.469251,
+              1.977724
+            ],
+            "center": [
+              1.8,
+              0.399626,
+              1.748
+            ],
+            "size": [
+              0.506,
+              0.139251,
+              0.459448
+            ]
+          }
+        },
+        {
+          "id": "workstation_chair_wheels_0",
+          "sourceId": "chair_wheels_0",
+          "bounds": {
+            "min": [
+              1.773,
+              0,
+              2.038
+            ],
+            "max": [
+              1.827,
+              0.054,
+              2.092
+            ],
+            "center": [
+              1.8,
+              0.027,
+              2.065
+            ],
+            "size": [
+              0.054,
+              0.054,
+              0.054
+            ]
+          }
+        },
+        {
+          "id": "workstation_chair_wheels_1",
+          "sourceId": "chair_wheels_1",
+          "bounds": {
+            "min": [
+              2.076783,
+              0,
+              1.808287
+            ],
+            "max": [
+              2.14157,
+              0.054,
+              1.872574
+            ],
+            "center": [
+              2.109177,
+              0.027,
+              1.840431
+            ],
+            "size": [
+              0.064787,
+              0.054,
+              0.064288
+            ]
+          }
+        },
+        {
+          "id": "workstation_chair_wheels_2",
+          "sourceId": "chair_wheels_2",
+          "bounds": {
+            "min": [
+              1.955889,
+              0,
+              1.442295
+            ],
+            "max": [
+              2.026172,
+              0.054,
+              1.512028
+            ],
+            "center": [
+              1.99103,
+              0.027,
+              1.477161
+            ],
+            "size": [
+              0.070283,
+              0.054,
+              0.069733
+            ]
+          }
+        },
+        {
+          "id": "workstation_chair_wheels_3",
+          "sourceId": "chair_wheels_3",
+          "bounds": {
+            "min": [
+              1.573828,
+              0,
+              1.442111
+            ],
+            "max": [
+              1.644111,
+              0.054,
+              1.511844
+            ],
+            "center": [
+              1.60897,
+              0.027,
+              1.476978
+            ],
+            "size": [
+              0.070283,
+              0.054,
+              0.069733
+            ]
+          }
+        },
+        {
+          "id": "workstation_chair_wheels_4",
+          "sourceId": "chair_wheels_4",
+          "bounds": {
+            "min": [
+              1.458596,
+              0,
+              1.808287
+            ],
+            "max": [
+              1.523384,
+              0.054,
+              1.872574
+            ],
+            "center": [
+              1.49099,
+              0.027,
+              1.840431
+            ],
+            "size": [
+              0.064787,
+              0.054,
+              0.064288
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "mini",
+      "label": "Mini computer",
+      "prefix": "workstation_mini_",
+      "asset": "models/electronics/computers/studio-mini-pc",
+      "version": "v0004",
+      "bounds": {
+        "min": [
+          1.3565,
+          0.74,
+          2.5365
+        ],
+        "max": [
+          1.4835,
+          0.79,
+          2.6635
+        ],
+        "center": [
+          1.42,
+          0.765,
+          2.6
+        ],
+        "size": [
+          0.127,
+          0.05,
+          0.127
+        ]
+      },
+      "partIds": [
+        "workstation_mini_base_cover",
+        "workstation_mini_chassis",
+        "workstation_mini_power_button"
+      ],
+      "meshIds": [
+        "workstation_mini_bottom_service_cover",
+        "workstation_mini_cover_screw_43_34",
+        "workstation_mini_cover_screw_43_n34",
+        "workstation_mini_cover_screw_n43_34",
+        "workstation_mini_cover_screw_n43_n34",
+        "workstation_mini_silicone_foot_ring",
+        "workstation_mini_audio_jack",
+        "workstation_mini_audio_jack_back",
+        "workstation_mini_ethernet_backing",
+        "workstation_mini_ethernet_socket",
+        "workstation_mini_front_status_light",
+        "workstation_mini_front_usb_back_0",
+        "workstation_mini_front_usb_back_1",
+        "workstation_mini_front_usb_c_0",
+        "workstation_mini_front_usb_c_1",
+        "workstation_mini_front_usb_tongue_0",
+        "workstation_mini_front_usb_tongue_1",
+        "workstation_mini_hdmi_backing",
+        "workstation_mini_hdmi_socket",
+        "workstation_mini_power_backing",
+        "workstation_mini_power_pin_left",
+        "workstation_mini_power_pin_right",
+        "workstation_mini_power_socket",
+        "workstation_mini_rounded_alloy_unibody",
+        "workstation_mini_usb_c_1_backing",
+        "workstation_mini_usb_c_1_socket",
+        "workstation_mini_usb_c_1_tongue",
+        "workstation_mini_usb_c_2_backing",
+        "workstation_mini_usb_c_2_socket",
+        "workstation_mini_usb_c_2_tongue",
+        "workstation_mini_underside_power_button"
+      ],
+      "materialNames": [
+        "mat_plastic_workstation_mini_desktop_socket_graphite",
+        "mat_metal_workstation_mini_desktop_contacts",
+        "mat_plastic_workstation_mini_desktop_cable_sheath",
+        "mat_plastic_workstation_mini_desktop_indicator",
+        "mat_metal_workstation_mini_desktop_satin_alloy"
+      ],
+      "parts": [
+        {
+          "id": "workstation_mini_base_cover",
+          "sourceId": "mini_base_cover",
+          "bounds": {
+            "min": [
+              1.36025,
+              0.74,
+              2.54025
+            ],
+            "max": [
+              1.47975,
+              0.745,
+              2.65975
+            ],
+            "center": [
+              1.42,
+              0.7425,
+              2.6
+            ],
+            "size": [
+              0.1195,
+              0.005,
+              0.1195
+            ]
+          }
+        },
+        {
+          "id": "workstation_mini_chassis",
+          "sourceId": "mini_chassis",
+          "bounds": {
+            "min": [
+              1.3565,
+              0.745,
+              2.5365
+            ],
+            "max": [
+              1.4835,
+              0.79,
+              2.6635
+            ],
+            "center": [
+              1.42,
+              0.7675,
+              2.6
+            ],
+            "size": [
+              0.127,
+              0.045,
+              0.127
+            ]
+          }
+        },
+        {
+          "id": "workstation_mini_power_button",
+          "sourceId": "mini_power_button",
+          "bounds": {
+            "min": [
+              1.4685,
+              0.7423,
+              2.5955
+            ],
+            "max": [
+              1.4775,
+              0.7443,
+              2.6045
+            ],
+            "center": [
+              1.473,
+              0.7433,
+              2.6
+            ],
+            "size": [
+              0.009,
+              0.002,
+              0.009
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "strip",
+      "label": "Power strip",
+      "prefix": "workstation_strip_",
+      "asset": "models/electronics/power/desktop-power-strip",
+      "version": "v0001",
+      "bounds": {
+        "min": [
+          2.17,
+          0.74,
+          2.6775
+        ],
+        "max": [
+          2.47,
+          0.772,
+          2.7425
+        ],
+        "center": [
+          2.32,
+          0.756,
+          2.71
+        ],
+        "size": [
+          0.3,
+          0.032,
+          0.065
+        ]
+      },
+      "partIds": [
+        "workstation_strip_lower_shell",
+        "workstation_strip_master_switch",
+        "workstation_strip_socket_0",
+        "workstation_strip_socket_1",
+        "workstation_strip_socket_2",
+        "workstation_strip_upper_shell"
+      ],
+      "meshIds": [
+        "workstation_strip_case_screw_127_20",
+        "workstation_strip_case_screw_127_n20",
+        "workstation_strip_case_screw_n127_20",
+        "workstation_strip_case_screw_n127_n20",
+        "workstation_strip_foot_127_20",
+        "workstation_strip_foot_127_n20",
+        "workstation_strip_foot_n127_20",
+        "workstation_strip_foot_n127_n20",
+        "workstation_strip_strip_lower_shell",
+        "workstation_strip_master_rocker",
+        "workstation_strip_switch_indicator",
+        "workstation_strip_socket_0_face",
+        "workstation_strip_socket_0_shutter_block",
+        "workstation_strip_socket_1_face",
+        "workstation_strip_socket_1_shutter_block",
+        "workstation_strip_socket_2_face",
+        "workstation_strip_socket_2_shutter_block",
+        "workstation_strip_strip_upper_shell",
+        "workstation_strip_switch_bezel"
+      ],
+      "materialNames": [
+        "mat_metal_workstation_strip_desktop_contacts",
+        "mat_plastic_workstation_strip_desktop_cable_sheath",
+        "mat_plastic_workstation_strip_desktop_warm_white",
+        "mat_plastic_workstation_strip_desktop_indicator",
+        "mat_plastic_workstation_strip_desktop_socket_graphite"
+      ],
+      "parts": [
+        {
+          "id": "workstation_strip_lower_shell",
+          "sourceId": "strip_lower_shell",
+          "bounds": {
+            "min": [
+              2.17,
+              0.74,
+              2.6775
+            ],
+            "max": [
+              2.47,
+              0.755,
+              2.7425
+            ],
+            "center": [
+              2.32,
+              0.7475,
+              2.71
+            ],
+            "size": [
+              0.3,
+              0.015,
+              0.065
+            ]
+          }
+        },
+        {
+          "id": "workstation_strip_master_switch",
+          "sourceId": "strip_master_switch",
+          "bounds": {
+            "min": [
+              2.426,
+              0.7665,
+              2.6955
+            ],
+            "max": [
+              2.446,
+              0.772,
+              2.7245
+            ],
+            "center": [
+              2.436,
+              0.76925,
+              2.71
+            ],
+            "size": [
+              0.02,
+              0.0055,
+              0.029
+            ]
+          }
+        },
+        {
+          "id": "workstation_strip_socket_0",
+          "sourceId": "strip_socket_0",
+          "bounds": {
+            "min": [
+              2.3525,
+              0.757,
+              2.686
+            ],
+            "max": [
+              2.4035,
+              0.771,
+              2.734
+            ],
+            "center": [
+              2.378,
+              0.764,
+              2.71
+            ],
+            "size": [
+              0.051,
+              0.014,
+              0.048
+            ]
+          }
+        },
+        {
+          "id": "workstation_strip_socket_1",
+          "sourceId": "strip_socket_1",
+          "bounds": {
+            "min": [
+              2.2825,
+              0.757,
+              2.686
+            ],
+            "max": [
+              2.3335,
+              0.771,
+              2.734
+            ],
+            "center": [
+              2.308,
+              0.764,
+              2.71
+            ],
+            "size": [
+              0.051,
+              0.014,
+              0.048
+            ]
+          }
+        },
+        {
+          "id": "workstation_strip_socket_2",
+          "sourceId": "strip_socket_2",
+          "bounds": {
+            "min": [
+              2.2125,
+              0.757,
+              2.686
+            ],
+            "max": [
+              2.2635,
+              0.771,
+              2.734
+            ],
+            "center": [
+              2.238,
+              0.764,
+              2.71
+            ],
+            "size": [
+              0.051,
+              0.014,
+              0.048
+            ]
+          }
+        },
+        {
+          "id": "workstation_strip_upper_shell",
+          "sourceId": "strip_upper_shell",
+          "bounds": {
+            "min": [
+              2.17,
+              0.7555,
+              2.6775
+            ],
+            "max": [
+              2.47,
+              0.771,
+              2.7425
+            ],
+            "center": [
+              2.32,
+              0.76325,
+              2.71
+            ],
+            "size": [
+              0.3,
+              0.0155,
+              0.065
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "leads",
+      "label": "Computer cables",
+      "prefix": "workstation_leads_",
+      "asset": "models/electronics/cables/desktop-connected-cables",
+      "version": "v0002",
+      "bounds": {
+        "min": [
+          1.406,
+          0.002,
+          2.505601
+        ],
+        "max": [
+          2.575,
+          0.9535,
+          2.950406
+        ],
+        "center": [
+          1.9905,
+          0.47775,
+          2.728003
+        ],
+        "size": [
+          1.169,
+          0.9515,
+          0.444805
+        ]
+      },
+      "partIds": [
+        "workstation_leads_hdmi_lead",
+        "workstation_leads_mini_power_lead",
+        "workstation_leads_monitor_power_lead",
+        "workstation_leads_strip_mains_lead"
+      ],
+      "meshIds": [
+        "workstation_leads_hdmi_cord",
+        "workstation_leads_mini_hdmi_boot",
+        "workstation_leads_mini_hdmi_grip",
+        "workstation_leads_mini_hdmi_metal_nose",
+        "workstation_leads_monitor_hdmi_boot",
+        "workstation_leads_monitor_hdmi_grip",
+        "workstation_leads_monitor_hdmi_metal_nose",
+        "workstation_leads_mini_ac_blade_l",
+        "workstation_leads_mini_ac_blade_r",
+        "workstation_leads_mini_ac_body",
+        "workstation_leads_mini_ac_boot",
+        "workstation_leads_mini_c7_female_nose",
+        "workstation_leads_mini_c7_grip",
+        "workstation_leads_mini_c7_strain_relief",
+        "workstation_leads_mini_c7_strain_ring_0",
+        "workstation_leads_mini_c7_strain_ring_1",
+        "workstation_leads_mini_c7_strain_ring_2",
+        "workstation_leads_mini_power_cord",
+        "workstation_leads_monitor_ac_blade_l",
+        "workstation_leads_monitor_ac_blade_r",
+        "workstation_leads_monitor_ac_body",
+        "workstation_leads_monitor_ac_boot",
+        "workstation_leads_monitor_c7_female_nose",
+        "workstation_leads_monitor_c7_grip",
+        "workstation_leads_monitor_c7_strain_relief",
+        "workstation_leads_monitor_c7_strain_ring_0",
+        "workstation_leads_monitor_c7_strain_ring_1",
+        "workstation_leads_monitor_c7_strain_ring_2",
+        "workstation_leads_monitor_power_cord",
+        "workstation_leads_strip_mains_boot",
+        "workstation_leads_strip_mains_cord",
+        "workstation_leads_strip_wall_plug_blade_l",
+        "workstation_leads_strip_wall_plug_blade_r",
+        "workstation_leads_strip_wall_plug_body",
+        "workstation_leads_strip_wall_plug_boot"
+      ],
+      "materialNames": [
+        "mat_plastic_workstation_leads_desktop_cable_sheath",
+        "mat_metal_workstation_leads_desktop_contacts",
+        "mat_plastic_workstation_leads_desktop_socket_graphite"
+      ],
+      "parts": [
+        {
+          "id": "workstation_leads_hdmi_lead",
+          "sourceId": "leads_hdmi_lead",
+          "bounds": {
+            "min": [
+              1.406,
+              0.7414,
+              2.505601
+            ],
+            "max": [
+              1.819053,
+              0.953,
+              2.737587
+            ],
+            "center": [
+              1.612527,
+              0.8472,
+              2.621594
+            ],
+            "size": [
+              0.413053,
+              0.2116,
+              0.231987
+            ]
+          }
+        },
+        {
+          "id": "workstation_leads_mini_power_lead",
+          "sourceId": "leads_mini_power_lead",
+          "bounds": {
+            "min": [
+              1.4535,
+              0.741616,
+              2.659
+            ],
+            "max": [
+              2.393,
+              0.84337,
+              2.811759
+            ],
+            "center": [
+              1.92325,
+              0.792493,
+              2.73538
+            ],
+            "size": [
+              0.9395,
+              0.101754,
+              0.152759
+            ]
+          }
+        },
+        {
+          "id": "workstation_leads_monitor_power_lead",
+          "sourceId": "leads_monitor_power_lead",
+          "bounds": {
+            "min": [
+              1.7265,
+              0.741636,
+              2.539768
+            ],
+            "max": [
+              2.323,
+              0.9535,
+              2.733
+            ],
+            "center": [
+              2.02475,
+              0.847568,
+              2.636384
+            ],
+            "size": [
+              0.5965,
+              0.211864,
+              0.193232
+            ]
+          }
+        },
+        {
+          "id": "workstation_leads_strip_mains_lead",
+          "sourceId": "leads_strip_mains_lead",
+          "bounds": {
+            "min": [
+              2.116958,
+              0.002,
+              2.706
+            ],
+            "max": [
+              2.575,
+              0.755,
+              2.950406
+            ],
+            "center": [
+              2.345979,
+              0.3785,
+              2.828203
+            ],
+            "size": [
+              0.458042,
+              0.753,
+              0.244406
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "mouse",
+      "label": "Mouse",
+      "prefix": "workstation_mouse_",
+      "asset": "models/electronics/mice/studio-wireless-mouse",
+      "version": "v0001",
+      "bounds": {
+        "min": [
+          1.376533,
+          0.743,
+          2.245829
+        ],
+        "max": [
+          1.445391,
+          0.781654,
+          2.364069
+        ],
+        "center": [
+          1.410962,
+          0.762327,
+          2.304949
+        ],
+        "size": [
+          0.068858,
+          0.038654,
+          0.11824
+        ]
+      },
+      "partIds": [
+        "workstation_mouse_battery_cover",
+        "workstation_mouse_chassis",
+        "workstation_mouse_left_button",
+        "workstation_mouse_palm_shell",
+        "workstation_mouse_power_slider",
+        "workstation_mouse_right_button",
+        "workstation_mouse_scroll_wheel"
+      ],
+      "meshIds": [
+        "workstation_mouse_battery_door",
+        "workstation_mouse_battery_latch_grip",
+        "workstation_mouse_front_ptfe_glide",
+        "workstation_mouse_left_axle_cradle",
+        "workstation_mouse_left_base_screw",
+        "workstation_mouse_moulded_lower_housing",
+        "workstation_mouse_optical_sensor_lens",
+        "workstation_mouse_power_switch_track",
+        "workstation_mouse_rear_ptfe_glide",
+        "workstation_mouse_right_axle_cradle",
+        "workstation_mouse_right_base_screw",
+        "workstation_mouse_scroll_axle",
+        "workstation_mouse_left_click_panel",
+        "workstation_mouse_palm_upper_shell",
+        "workstation_mouse_underside_power_switch",
+        "workstation_mouse_right_click_panel",
+        "workstation_mouse_ribbed_scroll_tyre"
+      ],
+      "materialNames": [
+        "mat_plastic_workstation_mouse_mouse_graphite",
+        "mat_plastic_workstation_mouse_mouse_glide",
+        "mat_metal_workstation_mouse_mouse_hardware",
+        "mat_plastic_workstation_mouse_mouse_optical_lens",
+        "mat_plastic_workstation_mouse_mouse_wheel_rubber",
+        "mat_plastic_workstation_mouse_mouse_cloud_grey"
+      ],
+      "parts": [
+        {
+          "id": "workstation_mouse_battery_cover",
+          "sourceId": "mouse_battery_cover",
+          "bounds": {
+            "min": [
+              1.398142,
+              0.743725,
+              2.27048
+            ],
+            "max": [
+              1.42583,
+              0.7457,
+              2.301728
+            ],
+            "center": [
+              1.411986,
+              0.744713,
+              2.286104
+            ],
+            "size": [
+              0.027687,
+              0.001975,
+              0.031247
+            ]
+          }
+        },
+        {
+          "id": "workstation_mouse_chassis",
+          "sourceId": "mouse_chassis",
+          "bounds": {
+            "min": [
+              1.377135,
+              0.743,
+              2.246892
+            ],
+            "max": [
+              1.444755,
+              0.7716,
+              2.363006
+            ],
+            "center": [
+              1.410945,
+              0.7573,
+              2.304949
+            ],
+            "size": [
+              0.06762,
+              0.0286,
+              0.116114
+            ]
+          }
+        },
+        {
+          "id": "workstation_mouse_left_button",
+          "sourceId": "mouse_left_button",
+          "bounds": {
+            "min": [
+              1.404281,
+              0.750858,
+              2.311114
+            ],
+            "max": [
+              1.441884,
+              0.780098,
+              2.364069
+            ],
+            "center": [
+              1.423083,
+              0.765478,
+              2.337592
+            ],
+            "size": [
+              0.037603,
+              0.02924,
+              0.052955
+            ]
+          }
+        },
+        {
+          "id": "workstation_mouse_palm_shell",
+          "sourceId": "mouse_palm_shell",
+          "bounds": {
+            "min": [
+              1.376877,
+              0.750912,
+              2.245829
+            ],
+            "max": [
+              1.445391,
+              0.781654,
+              2.313888
+            ],
+            "center": [
+              1.411134,
+              0.766283,
+              2.279858
+            ],
+            "size": [
+              0.068515,
+              0.030742,
+              0.068059
+            ]
+          }
+        },
+        {
+          "id": "workstation_mouse_power_slider",
+          "sourceId": "mouse_power_slider",
+          "bounds": {
+            "min": [
+              1.3921,
+              0.7442,
+              2.292859
+            ],
+            "max": [
+              1.395758,
+              0.7456,
+              2.297674
+            ],
+            "center": [
+              1.393929,
+              0.7449,
+              2.295267
+            ],
+            "size": [
+              0.003658,
+              0.0014,
+              0.004815
+            ]
+          }
+        },
+        {
+          "id": "workstation_mouse_right_button",
+          "sourceId": "mouse_right_button",
+          "bounds": {
+            "min": [
+              1.376533,
+              0.750858,
+              2.307649
+            ],
+            "max": [
+              1.408915,
+              0.780098,
+              2.363623
+            ],
+            "center": [
+              1.392724,
+              0.765478,
+              2.335636
+            ],
+            "size": [
+              0.032382,
+              0.02924,
+              0.055974
+            ]
+          }
+        },
+        {
+          "id": "workstation_mouse_scroll_wheel",
+          "sourceId": "mouse_scroll_wheel",
+          "bounds": {
+            "min": [
+              1.402986,
+              0.75969,
+              2.321316
+            ],
+            "max": [
+              1.411578,
+              0.77831,
+              2.340399
+            ],
+            "center": [
+              1.407282,
+              0.769,
+              2.330858
+            ],
+            "size": [
+              0.008592,
+              0.01862,
+              0.019082
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "mousepad",
+      "label": "Mouse pad",
+      "prefix": "workstation_mousepad_",
+      "asset": "models/electronics/accessories/studio-textile-mouse-pad",
+      "version": "v0001",
+      "bounds": {
+        "min": [
+          1.28,
+          0.74,
+          2.19
+        ],
+        "max": [
+          1.54,
+          0.743,
+          2.41
+        ],
+        "center": [
+          1.41,
+          0.7415,
+          2.3
+        ],
+        "size": [
+          0.26,
+          0.003,
+          0.22
+        ]
+      },
+      "partIds": [
+        "workstation_mousepad_pad"
+      ],
+      "meshIds": [
+        "workstation_mousepad_soft_rubber_backing",
+        "workstation_mousepad_woven_fabric_face"
+      ],
+      "materialNames": [
+        "mat_plastic_workstation_mousepad_pad_nonslip_rubber",
+        "mat_plastic_workstation_mousepad_pad_blue_grey_textile"
+      ],
+      "parts": [
+        {
+          "id": "workstation_mousepad_pad",
+          "sourceId": "mousepad_pad",
+          "bounds": {
+            "min": [
+              1.28,
+              0.74,
+              2.19
+            ],
+            "max": [
+              1.54,
+              0.743,
+              2.41
+            ],
+            "center": [
+              1.41,
+              0.7415,
+              2.3
+            ],
+            "size": [
+              0.26,
+              0.003,
+              0.22
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "lamp",
+      "label": "Desk lamp",
+      "prefix": "workstation_lamp_",
+      "asset": "models/electronics/lighting/studio-articulated-desk-lamp",
+      "version": "v0002",
+      "bounds": {
+        "min": [
+          1.075,
+          0.74,
+          2.459407
+        ],
+        "max": [
+          1.274043,
+          1.204999,
+          2.730539
+        ],
+        "center": [
+          1.174521,
+          0.9725,
+          2.594973
+        ],
+        "size": [
+          0.199043,
+          0.464999,
+          0.271132
+        ]
+      },
+      "partIds": [
+        "workstation_lamp_base",
+        "workstation_lamp_lamp_head",
+        "workstation_lamp_lower_arm",
+        "workstation_lamp_switch",
+        "workstation_lamp_swivel",
+        "workstation_lamp_upper_arm"
+      ],
+      "meshIds": [
+        "workstation_lamp_base_screw_0",
+        "workstation_lamp_base_screw_1",
+        "workstation_lamp_base_screw_2",
+        "workstation_lamp_bottom_service_plate",
+        "workstation_lamp_c8_inlet_frame",
+        "workstation_lamp_internal_ballast_disc",
+        "workstation_lamp_left_inlet_pin",
+        "workstation_lamp_nonslip_base_ring",
+        "workstation_lamp_right_inlet_pin",
+        "workstation_lamp_switch_bezel",
+        "workstation_lamp_swivel_base_collar",
+        "workstation_lamp_weighted_base_shell",
+        "workstation_lamp_led_carrier_disc",
+        "workstation_lamp_left_shade_yoke",
+        "workstation_lamp_recessed_opal_diffuser",
+        "workstation_lamp_right_shade_yoke",
+        "workstation_lamp_shade_neck",
+        "workstation_lamp_shade_rear_cap",
+        "workstation_lamp_shade_retainer_0",
+        "workstation_lamp_shade_retainer_1",
+        "workstation_lamp_shade_retainer_2",
+        "workstation_lamp_spun_metal_shade",
+        "workstation_lamp_elbow_axle",
+        "workstation_lamp_elbow_fixed_head",
+        "workstation_lamp_elbow_friction_washer",
+        "workstation_lamp_elbow_grip_0",
+        "workstation_lamp_elbow_grip_1",
+        "workstation_lamp_elbow_grip_n1",
+        "workstation_lamp_elbow_locking_knob",
+        "workstation_lamp_lower_cast_link",
+        "workstation_lamp_power_rocker",
+        "workstation_lamp_rocker_indicator",
+        "workstation_lamp_left_shoulder_washer",
+        "workstation_lamp_right_shoulder_washer",
+        "workstation_lamp_shoulder_axle",
+        "workstation_lamp_shoulder_fixed_head",
+        "workstation_lamp_shoulder_fork_bridge",
+        "workstation_lamp_shoulder_grip_0",
+        "workstation_lamp_shoulder_grip_1",
+        "workstation_lamp_shoulder_grip_n1",
+        "workstation_lamp_shoulder_locking_knob",
+        "workstation_lamp_swivel_pedestal",
+        "workstation_lamp_left_wrist_washer",
+        "workstation_lamp_right_wrist_washer",
+        "workstation_lamp_upper_cast_link",
+        "workstation_lamp_wrist_axle",
+        "workstation_lamp_wrist_fixed_head",
+        "workstation_lamp_wrist_grip_0",
+        "workstation_lamp_wrist_grip_1",
+        "workstation_lamp_wrist_grip_n1",
+        "workstation_lamp_wrist_locking_knob"
+      ],
+      "materialNames": [
+        "mat_metal_workstation_lamp_lamp_brushed_hardware",
+        "mat_plastic_workstation_lamp_lamp_graphite",
+        "mat_plastic_workstation_lamp_lamp_rubber",
+        "mat_metal_workstation_lamp_lamp_sage_enamel",
+        "mat_metal_workstation_lamp_lamp_ivory_reflector",
+        "mat_plastic_workstation_lamp_lamp_opal_diffuser",
+        "mat_metal_workstation_lamp_lamp_arm_enamel"
+      ],
+      "parts": [
+        {
+          "id": "workstation_lamp_base",
+          "sourceId": "lamp_base",
+          "bounds": {
+            "min": [
+              1.075,
+              0.74,
+              2.575
+            ],
+            "max": [
+              1.225,
+              0.765,
+              2.725
+            ],
+            "center": [
+              1.15,
+              0.7525,
+              2.65
+            ],
+            "size": [
+              0.15,
+              0.025,
+              0.15
+            ]
+          }
+        },
+        {
+          "id": "workstation_lamp_lamp_head",
+          "sourceId": "lamp_lamp_head",
+          "bounds": {
+            "min": [
+              1.152646,
+              1.107969,
+              2.459407
+            ],
+            "max": [
+              1.274043,
+              1.201986,
+              2.579162
+            ],
+            "center": [
+              1.213344,
+              1.154978,
+              2.519285
+            ],
+            "size": [
+              0.121397,
+              0.094018,
+              0.119756
+            ]
+          }
+        },
+        {
+          "id": "workstation_lamp_lower_arm",
+          "sourceId": "lamp_lower_arm",
+          "bounds": {
+            "min": [
+              1.085231,
+              0.789007,
+              2.638743
+            ],
+            "max": [
+              1.158698,
+              1.027,
+              2.730539
+            ],
+            "center": [
+              1.121964,
+              0.908004,
+              2.684641
+            ],
+            "size": [
+              0.073467,
+              0.237993,
+              0.091797
+            ]
+          }
+        },
+        {
+          "id": "workstation_lamp_switch",
+          "sourceId": "lamp_switch",
+          "bounds": {
+            "min": [
+              1.161882,
+              0.7622,
+              2.602228
+            ],
+            "max": [
+              1.181118,
+              0.76452,
+              2.623294
+            ],
+            "center": [
+              1.1715,
+              0.76336,
+              2.612761
+            ],
+            "size": [
+              0.019236,
+              0.00232,
+              0.021066
+            ]
+          }
+        },
+        {
+          "id": "workstation_lamp_swivel",
+          "sourceId": "lamp_swivel",
+          "bounds": {
+            "min": [
+              1.131144,
+              0.7646,
+              2.632974
+            ],
+            "max": [
+              1.164533,
+              0.811,
+              2.6635
+            ],
+            "center": [
+              1.147838,
+              0.7878,
+              2.648237
+            ],
+            "size": [
+              0.03339,
+              0.0464,
+              0.030526
+            ]
+          }
+        },
+        {
+          "id": "workstation_lamp_upper_arm",
+          "sourceId": "lamp_upper_arm",
+          "bounds": {
+            "min": [
+              1.092706,
+              1.005001,
+              2.547116
+            ],
+            "max": [
+              1.203806,
+              1.204999,
+              2.724429
+            ],
+            "center": [
+              1.148256,
+              1.105,
+              2.635773
+            ],
+            "size": [
+              0.1111,
+              0.199998,
+              0.177312
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "lamplead",
+      "label": "Lamp cable",
+      "prefix": "workstation_lamplead_",
+      "asset": "models/electronics/cables/studio-lamp-power-lead",
+      "version": "v0002",
+      "bounds": {
+        "min": [
+          1.081793,
+          0.740707,
+          2.706581
+        ],
+        "max": [
+          2.253,
+          0.843299,
+          2.823031
+        ],
+        "center": [
+          1.667396,
+          0.792003,
+          2.764806
+        ],
+        "size": [
+          1.171207,
+          0.102592,
+          0.11645
+        ]
+      },
+      "partIds": [
+        "workstation_lamplead_lamp_power_lead"
+      ],
+      "meshIds": [
+        "workstation_lamplead_lamp_ac_blade_l",
+        "workstation_lamplead_lamp_ac_blade_r",
+        "workstation_lamplead_lamp_ac_body",
+        "workstation_lamplead_lamp_ac_boot",
+        "workstation_lamplead_lamp_c7_female_nose",
+        "workstation_lamplead_lamp_c7_grip",
+        "workstation_lamplead_lamp_c7_strain_relief",
+        "workstation_lamplead_lamp_c7_strain_ring_0",
+        "workstation_lamplead_lamp_c7_strain_ring_1",
+        "workstation_lamplead_lamp_c7_strain_ring_2",
+        "workstation_lamplead_lamp_power_cord"
+      ],
+      "materialNames": [
+        "mat_metal_workstation_lamplead_desktop_contacts",
+        "mat_plastic_workstation_lamplead_desktop_cable_sheath",
+        "mat_plastic_workstation_lamplead_desktop_socket_graphite"
+      ],
+      "parts": [
+        {
+          "id": "workstation_lamplead_lamp_power_lead",
+          "sourceId": "lamplead_lamp_power_lead",
+          "bounds": {
+            "min": [
+              1.081793,
+              0.740707,
+              2.706581
+            ],
+            "max": [
+              2.253,
+              0.843299,
+              2.823031
+            ],
+            "center": [
+              1.667396,
+              0.792003,
+              2.764806
+            ],
+            "size": [
+              1.171207,
+              0.102592,
+              0.11645
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "cameras": [
+    {
+      "id": "complete_desk_and_window",
+      "eye": [
+        3.35,
+        1.6,
+        -0.35
+      ],
+      "target": [
+        1.95,
+        1.05,
+        2.5
+      ],
+      "fov": 62,
+      "worldEye": [
+        1.3,
+        3.15,
+        1.23
+      ],
+      "worldTarget": [
+        -0.1,
+        2.6,
+        4.08
+      ],
+      "projected": {
+        "1": {
+          "workstation": {
+            "min": [
+              -0.374814,
+              -0.822371,
+              0.982587
+            ],
+            "max": [
+              0.54533,
+              0.111164,
+              0.990165
+            ]
+          },
+          "withWindow": {
+            "min": [
+              -0.84278,
+              -0.822371,
+              0.982587
+            ],
+            "max": [
+              0.54533,
+              0.739611,
+              0.990475
+            ]
+          }
+        },
+        "1.7777777777777777": {
+          "workstation": {
+            "min": [
+              -0.210833,
+              -0.822371,
+              0.982587
+            ],
+            "max": [
+              0.306748,
+              0.111164,
+              0.990165
+            ]
+          },
+          "withWindow": {
+            "min": [
+              -0.474064,
+              -0.822371,
+              0.982587
+            ],
+            "max": [
+              0.306748,
+              0.739611,
+              0.990475
+            ]
+          }
+        },
+        "1.5": {
+          "workstation": {
+            "min": [
+              -0.249876,
+              -0.822371,
+              0.982587
+            ],
+            "max": [
+              0.363553,
+              0.111164,
+              0.990165
+            ]
+          },
+          "withWindow": {
+            "min": [
+              -0.561853,
+              -0.822371,
+              0.982587
+            ],
+            "max": [
+              0.363553,
+              0.739611,
+              0.990475
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "front_desk_and_window",
+      "eye": [
+        2.75,
+        1.5,
+        -0.35
+      ],
+      "target": [
+        1.95,
+        1.05,
+        2.5
+      ],
+      "fov": 62,
+      "worldEye": [
+        0.7,
+        3.05,
+        1.23
+      ],
+      "worldTarget": [
+        -0.1,
+        2.6,
+        4.08
+      ],
+      "projected": {
+        "1": {
+          "workstation": {
+            "min": [
+              -0.375377,
+              -0.935371,
+              0.980086
+            ],
+            "max": [
+              0.575614,
+              0.107522,
+              0.989199
+            ]
+          },
+          "withWindow": {
+            "min": [
+              -0.809147,
+              -0.935371,
+              0.980086
+            ],
+            "max": [
+              0.575614,
+              0.74721,
+              0.989861
+            ]
+          }
+        },
+        "1.7777777777777777": {
+          "workstation": {
+            "min": [
+              -0.211149,
+              -0.935371,
+              0.980086
+            ],
+            "max": [
+              0.323783,
+              0.107522,
+              0.989199
+            ]
+          },
+          "withWindow": {
+            "min": [
+              -0.455145,
+              -0.935371,
+              0.980086
+            ],
+            "max": [
+              0.323783,
+              0.74721,
+              0.989861
+            ]
+          }
+        },
+        "1.5": {
+          "workstation": {
+            "min": [
+              -0.250251,
+              -0.935371,
+              0.980086
+            ],
+            "max": [
+              0.383743,
+              0.107522,
+              0.989199
+            ]
+          },
+          "withWindow": {
+            "min": [
+              -0.539431,
+              -0.935371,
+              0.980086
+            ],
+            "max": [
+              0.383743,
+              0.74721,
+              0.989861
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "original_desk",
+      "eye": [
+        3.1,
+        1.8,
+        1.18
+      ],
+      "target": [
+        1.8,
+        0.98,
+        2.47
+      ],
+      "fov": 52,
+      "worldEye": [
+        1.05,
+        3.35,
+        2.76
+      ],
+      "worldTarget": [
+        -0.25,
+        2.53,
+        4.05
+      ],
+      "projected": {
+        "1": {
+          "workstation": {
+            "min": [
+              -0.954387,
+              -1.629177,
+              0.967367
+            ],
+            "max": [
+              1.177041,
+              0.391036,
+              0.986999
+            ]
+          },
+          "withWindow": {
+            "min": [
+              -3.56256,
+              -1.629177,
+              0.9555
+            ],
+            "max": [
+              1.177041,
+              2.418829,
+              0.986999
+            ]
+          }
+        },
+        "1.7777777777777777": {
+          "workstation": {
+            "min": [
+              -0.536843,
+              -1.629177,
+              0.967367
+            ],
+            "max": [
+              0.662085,
+              0.391036,
+              0.986999
+            ]
+          },
+          "withWindow": {
+            "min": [
+              -2.00394,
+              -1.629177,
+              0.9555
+            ],
+            "max": [
+              0.662085,
+              2.418829,
+              0.986999
+            ]
+          }
+        },
+        "1.5": {
+          "workstation": {
+            "min": [
+              -0.636258,
+              -1.629177,
+              0.967367
+            ],
+            "max": [
+              0.784694,
+              0.391036,
+              0.986999
+            ]
+          },
+          "withWindow": {
+            "min": [
+              -2.37504,
+              -1.629177,
+              0.9555
+            ],
+            "max": [
+              0.784694,
+              2.418829,
+              0.986999
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "selection": {
+    "broadPhase": "Intersect each object bounds translated by current homeOffset; nearest box is only a candidate.",
+    "narrowPhase": "Raycast the raw assembled parts in the nearest candidate objects, with proxyRoot translated by homeOffset and matrixWorld updated. Use recursive raycast: multi-primitive meshes may retain intermediate Groups. Find nearest ancestor part_id and match workstation_<object>_ prefix.",
+    "rendering": "Keep raw proxyRoot outside the rendered scene; Mesh.raycast works without scene membership. Use cached original root for proxy. Detail root clones ONLY the chosen matching parts, preserving part_id, mesh_id, material names and original bedroom appearanceByMesh/sketchByMaterial. Do not mutate linked_source or rename mesh IDs.",
+    "explode": "Keyboard: group all workstation_keyboard_key_* at one offset above switch_plate; move upper_case, switch_plate, lower_case in a vertical stack. Other objects have 1–17 authored parts and can decompose directly."
+  }
+}

@@ -3,7 +3,7 @@
   "private": true,
   "scripts": {
     "build:viewer": "node scripts/build-sketch-viewer.mjs",
-    "test:viewer": "node --test tests/sketch-viewer.test.mjs",
+    "test:viewer": "node --test tests/sketch-viewer.test.mjs tests/desk-inspection.test.mjs",
     "test": "bundle exec jekyll build --destination _site && node --test tests/mobile-layout.test.cjs"
   },
   "devDependencies": {

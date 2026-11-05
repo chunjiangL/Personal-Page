@@ -42,37 +42,33 @@ permalink: /games.html
     <article class="game-feature" id="sketch-game" aria-labelledby="sketch-game-title">
       <div class="game-feature-heading">
         <div><p class="game-field">{{ sketch.field }}</p><h2 id="sketch-game-title">{{ sketch.name }}</h2></div>
-        <p class="game-description">Explore the full neighborhood and its streets, then step into the kitchen and bedroom. Move freely, inspect objects, and change the weather.</p>
+        <p class="game-description">A neighborhood in changing weather, and a quiet bedroom. Take a closer look at the objects on the desk and explore their modeled parts.</p>
       </div>
 
       <div class="sketch-viewer" id="sketch-viewer" aria-label="Interactive Sketch Game scenes">
         <div class="viewer-toolbar">
           <div class="viewer-scenes" role="group" aria-label="Choose a scene">
             <button type="button" data-scene="neighborhood" aria-pressed="true">Neighborhood</button>
-            <button type="button" data-scene="kitchen" aria-pressed="false">Kitchen</button>
             <button type="button" data-scene="bedroom" aria-pressed="false">Bedroom</button>
           </div>
-          <div class="viewer-tools" role="group" aria-label="Camera controls">
-            <button type="button" id="camera-mode" aria-pressed="false" disabled>Free camera</button>
-            <button type="button" id="reset-view" disabled>Reset view</button>
+          <div class="viewer-weather" role="group" aria-label="Scene atmosphere">
+            <label for="weather-select">Weather</label>
+            <select id="weather-select" disabled>
+              <option value="sunny">Sunny</option>
+              <option value="overcast">Overcast</option>
+              <option value="rain">Rain</option>
+              <option value="sunset">Sunset</option>
+              <option value="night">Night</option>
+            </select>
+          </div>
+          <div class="viewer-tools" role="group" aria-label="Display controls">
             <button type="button" id="viewer-fullscreen" aria-label="Enter fullscreen" disabled><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M7 3H3v4m10-4h4v4M3 13v4h4m10-4v4h-4"/></svg><span>Fullscreen</span></button>
           </div>
         </div>
 
-        <div class="viewer-weather" role="group" aria-label="Scene atmosphere">
-          <label for="weather-select">Weather</label>
-          <select id="weather-select" disabled>
-            <option value="sunny">Sunny</option>
-            <option value="overcast">Overcast</option>
-            <option value="rain">Rain</option>
-            <option value="sunset">Sunset</option>
-            <option value="night">Night</option>
-          </select>
-          <button type="button" id="traffic-toggle" aria-pressed="false" disabled>Pause traffic</button>
-        </div>
-
         <div class="viewer-stage">
           <div id="sketch-canvas" class="sketch-canvas" aria-label="3D scene" aria-describedby="viewer-help"></div>
+          <div id="inspection-canvas" class="inspection-canvas" role="region" aria-label="Object component view" hidden></div>
           <div id="viewer-loading" class="viewer-message" role="status">
             <span class="viewer-loading-mark" aria-hidden="true"></span>
             <p>Preparing the neighborhood</p>
@@ -84,33 +80,20 @@ permalink: /games.html
             <span class="viewer-message-note">Please try again.</span>
             <button type="button" id="viewer-retry">Retry</button>
           </div>
-          <div id="touch-flight" class="touch-flight" role="group" aria-label="Free camera movement" hidden>
-            <div class="touch-flight-planar">
-              <button type="button" data-move="forward" aria-label="Move forward">↑</button>
-              <button type="button" data-move="left" aria-label="Move left">←</button>
-              <button type="button" data-move="back" aria-label="Move backward">↓</button>
-              <button type="button" data-move="right" aria-label="Move right">→</button>
-            </div>
-            <div class="touch-flight-height">
-              <button type="button" data-move="up" aria-label="Move up">Up</button>
-              <button type="button" data-move="down" aria-label="Move down">Down</button>
-            </div>
-          </div>
         </div>
 
         <div class="viewer-inspector">
-          <div class="viewer-object-picker"><label for="object-select">Explore an object</label><select id="object-select" disabled><option value="">Choose an object</option></select></div>
+          <div id="desk-objects" class="desk-objects" role="group" aria-label="Objects on the desk" hidden></div>
           <div id="selection-panel" class="selection-panel" hidden>
             <strong id="selected-name"></strong>
             <div class="selection-actions" role="group" aria-label="Selected object">
-              <button type="button" id="focus-object">Focus</button>
-              <button type="button" id="explode-object" aria-pressed="false">Explode</button>
-              <button type="button" id="clear-selection">Back to scene</button>
+              <button type="button" id="explode-object" aria-pressed="true">Assemble</button>
+              <button type="button" id="clear-selection">Back to bedroom</button>
             </div>
           </div>
         </div>
-        <div class="viewer-notes"><p id="viewer-help">Drag to orbit · Scroll to zoom · Right-drag to pan · Click an object to inspect</p><p id="viewer-status" role="status" aria-live="polite" aria-atomic="true">Loading neighborhood…</p></div>
-        <noscript><p class="viewer-noscript">Enable JavaScript to explore the neighborhood, kitchen, and bedroom.</p></noscript>
+        <div class="viewer-notes"><p id="viewer-help">Choose Bedroom to explore the objects on the desk.</p><p id="viewer-status" role="status" aria-live="polite" aria-atomic="true">Loading neighborhood…</p></div>
+        <noscript><p class="viewer-noscript">Enable JavaScript to view the neighborhood and bedroom.</p></noscript>
       </div>
     </article>
 

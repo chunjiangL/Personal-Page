@@ -1,8 +1,8 @@
 - id: sketch-game
   name: Sketch Game
   field: Everyday worlds · Sketch rendering
-  description: Three small places in a hand-drawn world. Explore the neighborhood, step into the kitchen and bedroom, and take a closer look at the objects within them.
-  focus: Interactive scenes, free camera exploration, and object studies.
+  description: A neighborhood in changing weather, and a quiet bedroom facing the window. Take a closer look at the modeled objects on the desk.
+  focus: Fixed views, changing weather, and individual object studies.
   images:
     - file: sketch-neighborhood
       label: The neighborhood

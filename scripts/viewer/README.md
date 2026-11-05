@@ -1,8 +1,8 @@
 # Sketch Game showcase
 
-This adapter bundles the original SketchGame ApartmentStage, procedural neighborhood, atmosphere and AssetRenderCore. It changes asset delivery and the English website controls. It does not replace the original materials, weather, scene factories or free-camera implementation.
+This adapter bundles the original SketchGame ApartmentStage, procedural neighborhood, atmosphere and AssetRenderCore. It changes asset delivery and the English website controls. The original materials, weather and scene factories remain intact.
 
-The three entry views are Neighborhood, Kitchen and Bedroom. Neighborhood retains the original street continuation, courtyards, authored props and traffic. Component inspection loads the unbatched source asset and uses the original GeometryStage and AssetRenderCore.
+The two entry views are Neighborhood and Bedroom, with fixed cameras and weather selection. Neighborhood retains the original street continuation, courtyards, authored props and traffic. Bedroom faces the real window, framing the complete desk and chair. Only the desktop monitor, keyboard, mouse, lamp and mini computer are selectable. Their source triangles provide picking; the original GeometryStage and AssetRenderCore show individual parts on a transparent foreground canvas while the real room is blurred behind it. The keyboard's keycaps stay together as one readable exploded layer.
 
 ## Rebuild
 
@@ -17,4 +17,4 @@ The runtime loads gzip payloads using DecompressionStream. Large, uncompressed i
 
 ## Integration checks
 
-Serve the Jekyll output over HTTP and open `games.html?qa=1`. The hidden `viewer-diagnostics` output reports startup time, camera, weather, scene/instance counts and component inspection state for DOM-based QA. Check all three views, five weather states, orbit/free camera, object picking, decomposition/reassembly, fullscreen and a narrow mobile viewport. No private asset server or external CDN is needed.
+Serve the Jekyll output over HTTP and open `games.html?qa=1`. The hidden `viewer-diagnostics` output reports startup time, fixed camera, weather and component inspection state for DOM-based QA. Check both views, weather changes, that drag/wheel/keyboard cannot move either camera, individual desktop object picking, decomposition/reassembly, background blur, fullscreen and narrow mobile framing. No private asset server or external CDN is needed.
