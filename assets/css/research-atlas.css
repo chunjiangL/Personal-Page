@@ -126,7 +126,7 @@
   .venue-city { font-size: 32px; }
   .region-map svg { height: 176px; }
 }
-@media (max-width: 360px) {
+@media (max-width: 480px) {
   .atlas-nav { flex-wrap: wrap; gap: 0; }
   .atlas-nav-links { width: 100%; }
 }

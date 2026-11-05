@@ -10,8 +10,7 @@ permalink: /world.html
   <title>Research Atlas | {{ site.title }}</title>
   <meta name="description" content="Chunjiang Liu's accepted papers, mapped to their conference locations.">
   <link rel="canonical" href="{{ site.canonical }}world.html">
-  <link rel="icon" media="(prefers-color-scheme:dark)" href="{{ site.favicon_dark | relative_url }}" type="image/png">
-  <link rel="icon" media="(prefers-color-scheme:light)" href="{{ site.favicon | relative_url }}" type="image/png">
+  {% include favicon.html %}
   {% assign asset_version = site.github.build_revision %}
   {% unless asset_version %}{% assign asset_version = site.time | date: '%s' %}{% endunless %}
   {% if site.font == 'Sans Serif' %}
@@ -31,7 +30,7 @@ permalink: /world.html
 <body class="atlas-page{% if site.auto_dark_mode %} atlas-auto-dark{% endif %}">
   <nav class="atlas-nav" aria-label="Main navigation">
     <a class="atlas-name" href="{{ '/' | relative_url }}">{{ site.title }}</a>
-    <div class="atlas-nav-links"><a href="{{ '/' | relative_url }}">Home</a><a href="{{ '/' | relative_url }}#publications">Publications</a><a href="{{ '/world.html' | relative_url }}" aria-current="page">Atlas</a></div>
+    <div class="atlas-nav-links"><a href="{{ '/' | relative_url }}">Home</a><a href="{{ '/' | relative_url }}#publications">Publications</a><a href="{{ '/world.html' | relative_url }}" aria-current="page">Atlas</a><a href="{{ '/games.html' | relative_url }}">Games</a></div>
   </nav>
 <main class="world" aria-labelledby="atlas-title">
   <h1 id="atlas-title">Research Atlas</h1>

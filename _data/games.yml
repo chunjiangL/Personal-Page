@@ -1,0 +1,48 @@
+- id: sketch-game
+  name: Sketch Game
+  field: Everyday worlds · Sketch rendering
+  description: A hand-drawn 3D world, from a small apartment kitchen to the neighborhood outside. Soft colors, pencil-like outlines, and carefully built everyday objects give each space its character.
+  focus: Apartment and street scenes, cooking props, and interactive lighting.
+  images:
+    - file: sketch-neighborhood
+      label: The neighborhood
+      alt: A sunlit corner block with outlined shopfronts, trees, and a street crossing in Sketch Game.
+      width: 1440
+      height: 742
+    - file: sketch-kitchen
+      label: Apartment kitchen
+      alt: A softly colored kitchen with pencil-like outlines, a stove, sink, refrigerator, and dining table.
+      width: 1440
+      height: 1000
+- id: mirror-world
+  name: Mirror World
+  field: Procedural worlds · Exploration
+  description: An exploration of worlds generated from a continuous 3D terrain field. Planet-scale geography gives way to mountains, plateaus, and deep canyons, with climate and erosion shaping the landscape.
+  focus: Planet generation, terrain detail, and movement between scales.
+  images:
+    - file: mirror-planet
+      label: Planet view
+      alt: A procedurally generated planet with colored terrain regions and the Mirror World development controls.
+      width: 1400
+      height: 900
+    - file: mirror-canyon
+      label: Into the canyon
+      alt: A deep rocky canyon in Mirror World, alongside a world map and a list of generated landmarks.
+      width: 1500
+      height: 950
+- id: ink-game
+  name: Ink Game
+  field: Ink landscapes · Real-time rendering
+  description: A 3D world shaped by the visual language of Chinese ink painting. Mountains, flowering trees, and architecture become studies in brushwork, color washes, and atmosphere.
+  focus: Stylized terrain, ink materials, and explorable landscape scenes.
+  images:
+    - file: ink-landscape
+      label: Mountains & blossoms
+      alt: A small character among tall ink-outlined rock formations and pink flowering trees in Ink Game.
+      width: 1440
+      height: 1000
+    - file: ink-courtyard
+      label: A brush-built courtyard
+      alt: A courtyard house rendered with expressive black brushwork and pale pink roof strokes.
+      width: 1066
+      height: 650

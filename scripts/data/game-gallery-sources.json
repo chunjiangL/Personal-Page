@@ -1,0 +1,29 @@
+{
+  "note": "Development screenshots from the three local projects. Converted to WebP without altering scene content.",
+  "images": [
+    {
+      "file": "sketch-neighborhood.webp",
+      "source": "SketchGame/artifact/checks/apartment-art-1793492770485/sunny-overview.png"
+    },
+    {
+      "file": "sketch-kitchen.webp",
+      "source": "SketchGame/artifact/checks/apartment-1793332144248/desktop-kitchen.png"
+    },
+    {
+      "file": "mirror-planet.webp",
+      "source": "MirrorWorld/out/screenshots/lod-stream/stream-orbit.png"
+    },
+    {
+      "file": "mirror-canyon.webp",
+      "source": "MirrorWorld/out/places/2-went-to-canyon.png"
+    },
+    {
+      "file": "ink-landscape.webp",
+      "source": "GameP/generated/verification/current-mountains-map/published.png"
+    },
+    {
+      "file": "ink-courtyard.webp",
+      "source": "GameP/generated/verification/brush-built-house/final-courtyard.png"
+    }
+  ]
+}
