@@ -58,3 +58,8 @@ exclude:
   - html_source_file/
   - vendor/
   - scripts/
+  - node_modules/
+  - artifacts/
+  - tests/
+  - package.json
+  - package-lock.json

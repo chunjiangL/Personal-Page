@@ -24,6 +24,7 @@ permalink: /games.html
   {% endif %}
   <link rel="stylesheet" href="{{ '/assets/css/research-atlas.css' | relative_url }}?v={{ asset_version }}">
   <link rel="stylesheet" href="{{ '/assets/css/games.css' | relative_url }}?v={{ asset_version }}">
+  <link rel="stylesheet" href="{{ '/assets/css/sketch-viewer.css' | relative_url }}?v={{ asset_version }}">
 </head>
 <body class="atlas-page games-page{% if site.auto_dark_mode %} atlas-auto-dark games-auto-dark{% endif %}">
   <nav class="atlas-nav" aria-label="Main navigation">
@@ -37,40 +38,94 @@ permalink: /games.html
         {% for game in site.data.games %}<a href="#{{ game.id }}">{{ game.name }}</a>{% endfor %}
       </nav>
     </div>
-    {% for game in site.data.games %}
-    {% assign first_image = game.images | first %}
-    <article class="game-project" id="{{ game.id }}" aria-labelledby="{{ game.id }}-title">
-      <div class="game-copy">
+    {% assign sketch = site.data.games | where: 'id', 'sketch-game' | first %}
+    <article class="game-feature" id="sketch-game" aria-labelledby="sketch-game-title">
+      <div class="game-feature-heading">
+        <div><p class="game-field">{{ sketch.field }}</p><h2 id="sketch-game-title">{{ sketch.name }}</h2></div>
+        <p class="game-description">Explore the full neighborhood and its streets, then step into the kitchen and bedroom. Move freely, inspect objects, and change the weather.</p>
+      </div>
+
+      <div class="sketch-viewer" id="sketch-viewer" aria-label="Interactive Sketch Game scenes">
+        <div class="viewer-toolbar">
+          <div class="viewer-scenes" role="group" aria-label="Choose a scene">
+            <button type="button" data-scene="neighborhood" aria-pressed="true">Neighborhood</button>
+            <button type="button" data-scene="kitchen" aria-pressed="false">Kitchen</button>
+            <button type="button" data-scene="bedroom" aria-pressed="false">Bedroom</button>
+          </div>
+          <div class="viewer-tools" role="group" aria-label="Camera controls">
+            <button type="button" id="camera-mode" aria-pressed="false" disabled>Free camera</button>
+            <button type="button" id="reset-view" disabled>Reset view</button>
+            <button type="button" id="viewer-fullscreen" aria-label="Enter fullscreen" disabled><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M7 3H3v4m10-4h4v4M3 13v4h4m10-4v4h-4"/></svg><span>Fullscreen</span></button>
+          </div>
+        </div>
+
+        <div class="viewer-weather" role="group" aria-label="Scene atmosphere">
+          <label for="weather-select">Weather</label>
+          <select id="weather-select" disabled>
+            <option value="sunny">Sunny</option>
+            <option value="overcast">Overcast</option>
+            <option value="rain">Rain</option>
+            <option value="sunset">Sunset</option>
+            <option value="night">Night</option>
+          </select>
+          <button type="button" id="traffic-toggle" aria-pressed="false" disabled>Pause traffic</button>
+        </div>
+
+        <div class="viewer-stage">
+          <div id="sketch-canvas" class="sketch-canvas" aria-label="3D scene" aria-describedby="viewer-help"></div>
+          <div id="viewer-loading" class="viewer-message" role="status">
+            <span class="viewer-loading-mark" aria-hidden="true"></span>
+            <p>Preparing the neighborhood</p>
+            <progress id="viewer-progress" aria-label="Loading scene"></progress>
+            <span class="viewer-message-note">Loading the scene and its objects.</span>
+          </div>
+          <div id="viewer-error" class="viewer-message" role="alert" hidden>
+            <p>The scene could not be loaded.</p>
+            <span class="viewer-message-note">Please try again.</span>
+            <button type="button" id="viewer-retry">Retry</button>
+          </div>
+          <div id="touch-flight" class="touch-flight" role="group" aria-label="Free camera movement" hidden>
+            <div class="touch-flight-planar">
+              <button type="button" data-move="forward" aria-label="Move forward">↑</button>
+              <button type="button" data-move="left" aria-label="Move left">←</button>
+              <button type="button" data-move="back" aria-label="Move backward">↓</button>
+              <button type="button" data-move="right" aria-label="Move right">→</button>
+            </div>
+            <div class="touch-flight-height">
+              <button type="button" data-move="up" aria-label="Move up">Up</button>
+              <button type="button" data-move="down" aria-label="Move down">Down</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="viewer-inspector">
+          <div class="viewer-object-picker"><label for="object-select">Explore an object</label><select id="object-select" disabled><option value="">Choose an object</option></select></div>
+          <div id="selection-panel" class="selection-panel" hidden>
+            <strong id="selected-name"></strong>
+            <div class="selection-actions" role="group" aria-label="Selected object">
+              <button type="button" id="focus-object">Focus</button>
+              <button type="button" id="explode-object" aria-pressed="false">Explode</button>
+              <button type="button" id="clear-selection">Back to scene</button>
+            </div>
+          </div>
+        </div>
+        <div class="viewer-notes"><p id="viewer-help">Drag to orbit · Scroll to zoom · Right-drag to pan · Click an object to inspect</p><p id="viewer-status" role="status" aria-live="polite" aria-atomic="true">Loading neighborhood…</p></div>
+        <noscript><p class="viewer-noscript">Enable JavaScript to explore the neighborhood, kitchen, and bedroom.</p></noscript>
+      </div>
+    </article>
+
+    <div class="game-notes">
+      {% for game in site.data.games %}{% unless game.id == 'sketch-game' %}
+      <article class="game-project" id="{{ game.id }}" aria-labelledby="{{ game.id }}-title">
         <p class="game-field">{{ game.field }}</p>
         <h2 id="{{ game.id }}-title">{{ game.name }}</h2>
         <p class="game-description">{{ game.description }}</p>
         <div class="game-focus"><h3>In development</h3><p>{{ game.focus }}</p></div>
-      </div>
-      <div class="game-gallery" data-gallery="{{ game.id }}">
-        <figure>
-          <a class="game-image-link" href="{{ '/assets/img/games/' | relative_url }}{{ first_image.file }}.webp" aria-label="Enlarge {{ game.name }}: {{ first_image.label }}">
-            <img class="game-image" src="{{ '/assets/img/games/' | relative_url }}{{ first_image.file }}.webp" alt="{{ first_image.alt }}" width="{{ first_image.width }}" height="{{ first_image.height }}" {% if forloop.first %}fetchpriority="high"{% else %}loading="lazy"{% endif %} decoding="async">
-            <span class="game-enlarge" aria-hidden="true">↗</span>
-          </a>
-          <figcaption><span class="game-caption">{{ first_image.label }}</span><span>Development capture</span></figcaption>
-        </figure>
-        <div class="game-views" aria-label="{{ game.name }} views">
-          {% for shot in game.images %}
-          <a class="game-view" href="{{ '/assets/img/games/' | relative_url }}{{ shot.file }}.webp" data-caption="{{ shot.label }}" data-alt="{{ shot.alt }}" data-width="{{ shot.width }}" data-height="{{ shot.height }}" {% if forloop.first %}aria-current="true"{% endif %}>
-            <img src="{{ '/assets/img/games/' | relative_url }}{{ shot.file }}.webp" alt="" width="72" height="48" loading="lazy"><span>{{ shot.label }}</span>
-          </a>
-          {% endfor %}
-        </div>
-      </div>
-    </article>
-    {% endfor %}
+      </article>
+      {% endunless %}{% endfor %}
+    </div>
     <div class="games-footer"><a href="{{ '/' | relative_url }}">← Back to home</a><a href="#games-title">Back to top ↑</a></div>
   </main>
-  <dialog class="game-lightbox" aria-labelledby="lightbox-caption">
-    <form method="dialog"><button class="lightbox-close" aria-label="Close image">Close <span aria-hidden="true">×</span></button></form>
-    <img class="lightbox-image" alt="">
-    <p id="lightbox-caption"></p>
-  </dialog>
-  <script src="{{ '/assets/js/games.js' | relative_url }}?v={{ asset_version }}" defer></script>
+  <script type="module" src="{{ '/assets/js/sketch-viewer.bundle.js' | relative_url }}?v={{ asset_version }}"></script>
 </body>
 </html>

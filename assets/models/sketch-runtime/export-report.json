@@ -1,0 +1,682 @@
+{
+  "schema": "sketch.showcase.runtime.report.v1",
+  "generatedAt": "2026-11-05T11:03:14.980Z",
+  "source": "SketchGame original pinned assets and LabLibrary preview assembly output",
+  "compression": "EXT_meshopt_compression with unfiltered ATTRIBUTES and exact INDICES sequence coding; every compressed buffer view decoded and byte-compared before writing; no transforms or quantization",
+  "totalSourceBytes": 112215444,
+  "totalBytes": 86361280,
+  "totalGzipBytes": 35615122,
+  "manifestBytes": 3857056,
+  "manifestGzipBytes": 65746,
+  "models": [
+    {
+      "file": "assemblies/kitchen.glb",
+      "sourceBytes": 23737024,
+      "bytes": 16481548,
+      "gzipBytes": 6161011,
+      "sha256": "8053a6360e69fc98d2093c6c0356870c1f785d16e69a24bbff874f58b6414061",
+      "sourceSha256": "60221b7ef282a961a14dfa6539afcf40c79a5153a3f73a278aaeb2941b7010f4",
+      "lossless": true,
+      "compressedViews": 2534,
+      "validation": {
+        "originalRuntimeGLTFLoader": "pass",
+        "decodedTextures": true,
+        "parsedMeshes": 704,
+        "animations": 0
+      },
+      "nodes": 770,
+      "meshes": 700,
+      "materials": 45,
+      "triangles": 419556
+    },
+    {
+      "file": "assemblies/bedroom.glb",
+      "sourceBytes": 41771588,
+      "bytes": 29626484,
+      "gzipBytes": 17471571,
+      "sha256": "ec93457e7dd6dbea0413f456167aaae0166bf652de3de7519af86f2eac604c95",
+      "sourceSha256": "b0b23d79bcfb231bffd9c3b7e56f5124f8e1b898808f13a4d9d9c9d033ea9ff8",
+      "lossless": true,
+      "compressedViews": 5990,
+      "validation": {
+        "originalRuntimeGLTFLoader": "pass",
+        "decodedTextures": true,
+        "parsedMeshes": 1878,
+        "animations": 0
+      },
+      "nodes": 2125,
+      "meshes": 1867,
+      "materials": 121,
+      "triangles": 1254962
+    },
+    {
+      "file": "files/models/street/buildings/street-market-gable/versions/v0002/model.glb",
+      "sourceBytes": 5365772,
+      "bytes": 4585408,
+      "gzipBytes": 1104312,
+      "sha256": "22a4175057aff26ce63864a696aadd47cf39ea27dada1b3e822f93c47e4005c1",
+      "sourceSha256": "e6ba8d758f25b4fb2854c81b136e0934fb04c0264a34aa54b7759cf17566735a",
+      "lossless": true,
+      "compressedViews": 4496,
+      "validation": {
+        "originalRuntimeGLTFLoader": "pass",
+        "decodedTextures": true,
+        "parsedMeshes": 1554,
+        "animations": 0
+      },
+      "nodes": 1560,
+      "meshes": 1554,
+      "materials": 12,
+      "triangles": 61700
+    },
+    {
+      "file": "files/models/street/buildings/street-garden-terrace/versions/v0001/model.glb",
+      "sourceBytes": 7676544,
+      "bytes": 6697172,
+      "gzipBytes": 1555305,
+      "sha256": "75c0e9251a69ad3b1d901eec141c83c649f61e755f1fc9626bc704f7ad3c17a5",
+      "sourceSha256": "605ce01efdd5c5a9353af87dd1e1d62fca94fd9ca7c7e07b2907b358aa675efc",
+      "lossless": true,
+      "compressedViews": 7079,
+      "validation": {
+        "originalRuntimeGLTFLoader": "pass",
+        "decodedTextures": true,
+        "parsedMeshes": 2471,
+        "animations": 0
+      },
+      "nodes": 2477,
+      "meshes": 2471,
+      "materials": 12,
+      "triangles": 88208
+    },
+    {
+      "file": "files/models/street/buildings/street-reading-mansard/versions/v0002/model.glb",
+      "sourceBytes": 5522448,
+      "bytes": 4715080,
+      "gzipBytes": 1114371,
+      "sha256": "5e0ed3af6656bc5f70ea883878813aa43d8a3af3310ceb7ad2ab63b8276204cb",
+      "sourceSha256": "90d8d8afed166a801fe7a671cfe4f9f1b8b5afc5fa4916d8785d34aec4af2b5e",
+      "lossless": true,
+      "compressedViews": 4614,
+      "validation": {
+        "originalRuntimeGLTFLoader": "pass",
+        "decodedTextures": true,
+        "parsedMeshes": 1594,
+        "animations": 0
+      },
+      "nodes": 1600,
+      "meshes": 1594,
+      "materials": 12,
+      "triangles": 63412
+    },
+    {
+      "file": "files/models/street/buildings/street-workshop-brick/versions/v0001/model.glb",
+      "sourceBytes": 4317768,
+      "bytes": 3717368,
+      "gzipBytes": 966287,
+      "sha256": "6b4a9406207a2794fe995c963bde36cd8c61786e230fcf79ef459cf7086da72a",
+      "sourceSha256": "1a89c7d36f5603b802a8ef5168315db413e331e5240dda445b4419449c796256",
+      "lossless": true,
+      "compressedViews": 3617,
+      "validation": {
+        "originalRuntimeGLTFLoader": "pass",
+        "decodedTextures": true,
+        "parsedMeshes": 1282,
+        "animations": 0
+      },
+      "nodes": 1288,
+      "meshes": 1282,
+      "materials": 12,
+      "triangles": 49732
+    },
+    {
+      "file": "files/models/street/buildings/street-corner-pediment/versions/v0001/model.glb",
+      "sourceBytes": 6742420,
+      "bytes": 5834684,
+      "gzipBytes": 1420671,
+      "sha256": "fd79e741513920d2041e8496e40b5247ab2c62524bde6cbb5c5db0d56bee1941",
+      "sourceSha256": "b0a7021377b22de9335d44f964942ced7de76c5d519ae3c985716c2c49e038fd",
+      "lossless": true,
+      "compressedViews": 5897,
+      "validation": {
+        "originalRuntimeGLTFLoader": "pass",
+        "decodedTextures": true,
+        "parsedMeshes": 2093,
+        "animations": 0
+      },
+      "nodes": 2099,
+      "meshes": 2093,
+      "materials": 12,
+      "triangles": 77304
+    },
+    {
+      "file": "files/models/street/buildings/street-courtyard-house/versions/v0001/model.glb",
+      "sourceBytes": 2694844,
+      "bytes": 2292356,
+      "gzipBytes": 598346,
+      "sha256": "48a1120ddd2da0869486710850263e96eb10ac73321528acdcd50ae75b4e0387",
+      "sourceSha256": "84cccd5985aaa351539c7bac8f63b36b1cf2b66b83a61460e9af2862d89b0f48",
+      "lossless": true,
+      "compressedViews": 2251,
+      "validation": {
+        "originalRuntimeGLTFLoader": "pass",
+        "decodedTextures": true,
+        "parsedMeshes": 783,
+        "animations": 0
+      },
+      "nodes": 789,
+      "meshes": 783,
+      "materials": 12,
+      "triangles": 32016
+    },
+    {
+      "file": "files/models/street/buildings/street-narrow-courtyard/versions/v0001/model.glb",
+      "sourceBytes": 3899212,
+      "bytes": 3336356,
+      "gzipBytes": 844493,
+      "sha256": "1bd9c515a056006d057544db2d6a57d1eb36842fc82dfcb262e688e9a5677b45",
+      "sourceSha256": "d27b0f62a7452a1c48e30692a51a0e6324da2aaf06fbbb65b137c15a5f5fa04c",
+      "lossless": true,
+      "compressedViews": 3300,
+      "validation": {
+        "originalRuntimeGLTFLoader": "pass",
+        "decodedTextures": true,
+        "parsedMeshes": 1164,
+        "animations": 0
+      },
+      "nodes": 1170,
+      "meshes": 1164,
+      "materials": 12,
+      "triangles": 45756
+    },
+    {
+      "file": "files/models/street/furniture/street-oak-public-bench/versions/v0002/model.glb",
+      "sourceBytes": 403132,
+      "bytes": 348612,
+      "gzipBytes": 180034,
+      "sha256": "07947ab6bfbb8db5c1d8d110fc62d966d18edc7b51e391bbbd6b4870ff0c3d2a",
+      "sourceSha256": "d229fe01daba4992f2b7d6fef7c01228ea93db561746cd5e477d1df69a9c1ba3",
+      "lossless": true,
+      "compressedViews": 218,
+      "validation": {
+        "originalRuntimeGLTFLoader": "pass",
+        "decodedTextures": true,
+        "parsedMeshes": 63,
+        "animations": 0
+      },
+      "nodes": 68,
+      "meshes": 63,
+      "materials": 3,
+      "triangles": 7412
+    },
+    {
+      "file": "files/models/street/furniture/street-oak-litter-bin/versions/v0002/model.glb",
+      "sourceBytes": 444120,
+      "bytes": 401276,
+      "gzipBytes": 150602,
+      "sha256": "0e4ef42d2e1721ef8099183623aeb611dbee2398a462f3666e9db6a5463e5879",
+      "sourceSha256": "35b73995aaaa7d054653e6fca809493b2da57a9c46f33ae3dd00063301bd15ba",
+      "lossless": true,
+      "compressedViews": 300,
+      "validation": {
+        "originalRuntimeGLTFLoader": "pass",
+        "decodedTextures": true,
+        "parsedMeshes": 85,
+        "animations": 0
+      },
+      "nodes": 89,
+      "meshes": 85,
+      "materials": 3,
+      "triangles": 8444
+    },
+    {
+      "file": "files/models/street/furniture/street-cycle-stand/versions/v0002/model.glb",
+      "sourceBytes": 67464,
+      "bytes": 54352,
+      "gzipBytes": 22857,
+      "sha256": "9bb865d295380d848e1195c46cfe817ae3879a69e0cdd1a4eacf6b99a3cd7d1c",
+      "sourceSha256": "617a9d910fb906e1c373b9f7bb527ee2fe2c55ece8b8eadfb2350227ebf85798",
+      "lossless": true,
+      "compressedViews": 33,
+      "validation": {
+        "originalRuntimeGLTFLoader": "pass",
+        "decodedTextures": true,
+        "parsedMeshes": 11,
+        "animations": 0
+      },
+      "nodes": 14,
+      "meshes": 11,
+      "materials": 2,
+      "triangles": 1816
+    },
+    {
+      "file": "files/models/street/furniture/street-heritage-bollard/versions/v0002/model.glb",
+      "sourceBytes": 71964,
+      "bytes": 54988,
+      "gzipBytes": 22336,
+      "sha256": "c1f7c56856df752198ced7a638393cdecf789e39a11cfe379332acfc91a15723",
+      "sourceSha256": "e69ba870fbc157b4b8db6d9e4445983ef23ec209d88872b4f4d05ad20de1ce0d",
+      "lossless": true,
+      "compressedViews": 39,
+      "validation": {
+        "originalRuntimeGLTFLoader": "pass",
+        "decodedTextures": true,
+        "parsedMeshes": 10,
+        "animations": 0
+      },
+      "nodes": 13,
+      "meshes": 10,
+      "materials": 3,
+      "triangles": 1672
+    },
+    {
+      "file": "files/models/street/fixtures/street-wall-lantern/versions/v0001/model.glb",
+      "sourceBytes": 111144,
+      "bytes": 89260,
+      "gzipBytes": 39568,
+      "sha256": "9b774a685b937affe7696cc97fa67c48250c2476a9b0fdfbd78a2656055e5337",
+      "sourceSha256": "6366b4949c51eca66e94cd8364ef40af42202f218afdf9be18278844de317a56",
+      "lossless": true,
+      "compressedViews": 62,
+      "validation": {
+        "originalRuntimeGLTFLoader": "pass",
+        "decodedTextures": true,
+        "parsedMeshes": 18,
+        "animations": 0
+      },
+      "nodes": 22,
+      "meshes": 18,
+      "materials": 4,
+      "triangles": 2786
+    },
+    {
+      "file": "files/models/street/fixtures/street-cast-drain-grate/versions/v0001/model.glb",
+      "sourceBytes": 165464,
+      "bytes": 133688,
+      "gzipBytes": 66024,
+      "sha256": "8b5210b4f5e084e4de05b35884f8e21d4b8fe0c82df62f7a0d974beb74c002c3",
+      "sourceSha256": "7321e6e5c954f3743c90ce4a9c320ddea7fd8a3055bfe682d942335a9044a6e9",
+      "lossless": true,
+      "compressedViews": 100,
+      "validation": {
+        "originalRuntimeGLTFLoader": "pass",
+        "decodedTextures": true,
+        "parsedMeshes": 25,
+        "animations": 0
+      },
+      "nodes": 28,
+      "meshes": 25,
+      "materials": 2,
+      "triangles": 4188
+    },
+    {
+      "file": "files/models/street/furniture/street-city-bicycle/versions/v0001/model.glb",
+      "sourceBytes": 786600,
+      "bytes": 656584,
+      "gzipBytes": 233004,
+      "sha256": "eb777986fcda5d616c0afd38b5bb58fe52e84726a63d85a9b11c2ab2e6093463",
+      "sourceSha256": "b4b0cc68e596bdf5ab487d301129aba5c32f2025ecc635f75e4cd8705963b7a8",
+      "lossless": true,
+      "compressedViews": 511,
+      "validation": {
+        "originalRuntimeGLTFLoader": "pass",
+        "decodedTextures": true,
+        "parsedMeshes": 154,
+        "animations": 0
+      },
+      "nodes": 163,
+      "meshes": 154,
+      "materials": 5,
+      "triangles": 18844
+    },
+    {
+      "file": "files/models/street/fixtures/street-courtyard-gate/versions/v0001/model.glb",
+      "sourceBytes": 444400,
+      "bytes": 367208,
+      "gzipBytes": 170121,
+      "sha256": "fb186f5e27fcb5c6f2fae33208d1de9b227d0e263f55abed75ba154434e46708",
+      "sourceSha256": "37e4ecaa620bf64963c196128a833a057238fad952376bb9f7679309afb8eb93",
+      "lossless": true,
+      "compressedViews": 288,
+      "validation": {
+        "originalRuntimeGLTFLoader": "pass",
+        "decodedTextures": true,
+        "parsedMeshes": 76,
+        "animations": 0
+      },
+      "nodes": 81,
+      "meshes": 76,
+      "materials": 2,
+      "triangles": 10816
+    },
+    {
+      "file": "files/models/street/furniture/street-oak-menu-board/versions/v0002/model.glb",
+      "sourceBytes": 745504,
+      "bytes": 657644,
+      "gzipBytes": 473622,
+      "sha256": "9b13fbb05a711fe7e13999c7a11a9a9d392aa33b752d643bb91a21b03925f848",
+      "sourceSha256": "3b8337e6bf85e6bf7265c64cf2dae7646233da94541244c18252b7ce6b8c8c6a",
+      "lossless": true,
+      "compressedViews": 272,
+      "validation": {
+        "originalRuntimeGLTFLoader": "pass",
+        "decodedTextures": true,
+        "parsedMeshes": 74,
+        "animations": 0
+      },
+      "nodes": 82,
+      "meshes": 74,
+      "materials": 9,
+      "triangles": 10304
+    },
+    {
+      "file": "files/models/street/furniture/street-oak-cafe-table/versions/v0001/model.glb",
+      "sourceBytes": 401768,
+      "bytes": 347756,
+      "gzipBytes": 168911,
+      "sha256": "7d4ab43eebb862ef1a6cd6e5f813ba13d0bbe6872bad98c72a5665b10fbb85ca",
+      "sourceSha256": "89484ff96510900c0b8a232bda685a076b9f3e7276d276accb99f4f8b6fa8484",
+      "lossless": true,
+      "compressedViews": 225,
+      "validation": {
+        "originalRuntimeGLTFLoader": "pass",
+        "decodedTextures": true,
+        "parsedMeshes": 60,
+        "animations": 0
+      },
+      "nodes": 63,
+      "meshes": 60,
+      "materials": 4,
+      "triangles": 7624
+    },
+    {
+      "file": "files/models/street/furniture/street-oak-cafe-chair/versions/v0001/model.glb",
+      "sourceBytes": 481824,
+      "bytes": 381944,
+      "gzipBytes": 238392,
+      "sha256": "a06c3c54aa6ab63be1a058add471a8d7490c750329a4d1707fa3f877c1c9f8e6",
+      "sourceSha256": "c0f47f00b8dce1234ecfd35d097cc0ff0706e41429002c595ed7761a9c744266",
+      "lossless": true,
+      "compressedViews": 143,
+      "validation": {
+        "originalRuntimeGLTFLoader": "pass",
+        "decodedTextures": true,
+        "parsedMeshes": 37,
+        "animations": 0
+      },
+      "nodes": 41,
+      "meshes": 37,
+      "materials": 4,
+      "triangles": 11728
+    },
+    {
+      "file": "files/models/street/planters/street-terracotta-window-box/versions/v0001/model.glb",
+      "sourceBytes": 981800,
+      "bytes": 809844,
+      "gzipBytes": 404578,
+      "sha256": "33b23a99dcd67ba01f66128860503b4170c4a5906ee3b797bc8c284a8aaba4ee",
+      "sourceSha256": "fbea6d2674f4b809044c25cb2c0a4bff1cf778306d1c4ce56dd42b1fb19191c8",
+      "lossless": true,
+      "compressedViews": 889,
+      "validation": {
+        "originalRuntimeGLTFLoader": "pass",
+        "decodedTextures": true,
+        "parsedMeshes": 239,
+        "animations": 0
+      },
+      "nodes": 244,
+      "meshes": 239,
+      "materials": 4,
+      "triangles": 13796
+    },
+    {
+      "file": "files/models/street/shopfronts/street-bakery-bread-tray/versions/v0001/model.glb",
+      "sourceBytes": 266440,
+      "bytes": 220052,
+      "gzipBytes": 145437,
+      "sha256": "77229de476f880bbd3de26146bd36bda67fed389e614dd67cfa4cda194eeacfb",
+      "sourceSha256": "5749ce1a5ad3a15499ae0443d0f43a2abffeadd1f678400949ad88257c3fef74",
+      "lossless": true,
+      "compressedViews": 64,
+      "validation": {
+        "originalRuntimeGLTFLoader": "pass",
+        "decodedTextures": true,
+        "parsedMeshes": 16,
+        "animations": 0
+      },
+      "nodes": 21,
+      "meshes": 16,
+      "materials": 2,
+      "triangles": 5528
+    },
+    {
+      "file": "files/models/street/shopfronts/street-projecting-sign-cafe/versions/v0002/model.glb",
+      "sourceBytes": 370084,
+      "bytes": 322660,
+      "gzipBytes": 239087,
+      "sha256": "783d1e82b5500bdc0e17cd11e500b93cdaaaf20288132945c8b038e55a20a853",
+      "sourceSha256": "d5370d928d9ff9ee209fbe654db772ee57286a8150836ac76519f54266ee3f2a",
+      "lossless": true,
+      "compressedViews": 107,
+      "validation": {
+        "originalRuntimeGLTFLoader": "pass",
+        "decodedTextures": true,
+        "parsedMeshes": 27,
+        "animations": 0
+      },
+      "nodes": 30,
+      "meshes": 27,
+      "materials": 6,
+      "triangles": 4896
+    },
+    {
+      "file": "files/models/street/shopfronts/street-projecting-sign-bakery/versions/v0002/model.glb",
+      "sourceBytes": 369540,
+      "bytes": 322116,
+      "gzipBytes": 238699,
+      "sha256": "99430267f4fedf3232615a4c6069f270f3595e61be6fdbe3f49aa1ced4f97002",
+      "sourceSha256": "b4bfbff6b33194cb5e48f4b035ffff51a330a47be726ff0fd3072fde7ec929a4",
+      "lossless": true,
+      "compressedViews": 107,
+      "validation": {
+        "originalRuntimeGLTFLoader": "pass",
+        "decodedTextures": true,
+        "parsedMeshes": 27,
+        "animations": 0
+      },
+      "nodes": 30,
+      "meshes": 27,
+      "materials": 6,
+      "triangles": 4896
+    },
+    {
+      "file": "files/models/street/shopfronts/street-projecting-sign-books/versions/v0002/model.glb",
+      "sourceBytes": 370640,
+      "bytes": 323216,
+      "gzipBytes": 239561,
+      "sha256": "9bf777b262ba50ec9269109acfa0a54677b400c8cd32be5c3c384868cb60aea1",
+      "sourceSha256": "cc92f3346e8d90e351306adde1fc133746259e53b04ef98cdcc854d0e0402fa9",
+      "lossless": true,
+      "compressedViews": 107,
+      "validation": {
+        "originalRuntimeGLTFLoader": "pass",
+        "decodedTextures": true,
+        "parsedMeshes": 27,
+        "animations": 0
+      },
+      "nodes": 30,
+      "meshes": 27,
+      "materials": 6,
+      "triangles": 4896
+    },
+    {
+      "file": "files/models/street/shopfronts/street-projecting-sign-florist/versions/v0002/model.glb",
+      "sourceBytes": 373988,
+      "bytes": 326564,
+      "gzipBytes": 243196,
+      "sha256": "200c819494cdfbb1b89a3284f0de9cd6cfb3f930e8688b72d9378e3c80ede54a",
+      "sourceSha256": "47be4ed6872743cba344b91780305816169ba9fc91325dcca675bea587aa81e3",
+      "lossless": true,
+      "compressedViews": 107,
+      "validation": {
+        "originalRuntimeGLTFLoader": "pass",
+        "decodedTextures": true,
+        "parsedMeshes": 27,
+        "animations": 0
+      },
+      "nodes": 30,
+      "meshes": 27,
+      "materials": 6,
+      "triangles": 4896
+    },
+    {
+      "file": "files/models/street/shopfronts/street-canvas-awning-2600/versions/v0001/model.glb",
+      "sourceBytes": 355724,
+      "bytes": 285172,
+      "gzipBytes": 79828,
+      "sha256": "6cab26850f2d4bc2e2c1f03efd2bcaee12f8b2358cc57c030c3dadea5f650fbc",
+      "sourceSha256": "87576fbdfce3cfa802e48b2abb98629be0c52c9a1196f947089b935b51a7e9e7",
+      "lossless": true,
+      "compressedViews": 271,
+      "validation": {
+        "originalRuntimeGLTFLoader": "pass",
+        "decodedTextures": true,
+        "parsedMeshes": 72,
+        "animations": 0
+      },
+      "nodes": 78,
+      "meshes": 72,
+      "materials": 5,
+      "triangles": 7224
+    },
+    {
+      "file": "files/models/street/shopfronts/street-canvas-awning-3000/versions/v0001/model.glb",
+      "sourceBytes": 351868,
+      "bytes": 280672,
+      "gzipBytes": 77399,
+      "sha256": "6948530de5adf493fe073a440492fca865a4013e156dbb9027cdbf3267d2e7ae",
+      "sourceSha256": "327190a0d849544f8f4948ef664119028f9d542be83ab82cc7465e2909059f90",
+      "lossless": true,
+      "compressedViews": 267,
+      "validation": {
+        "originalRuntimeGLTFLoader": "pass",
+        "decodedTextures": true,
+        "parsedMeshes": 72,
+        "animations": 0
+      },
+      "nodes": 78,
+      "meshes": 72,
+      "materials": 5,
+      "triangles": 7224
+    },
+    {
+      "file": "files/models/street/shopfronts/street-canvas-awning-3700/versions/v0001/model.glb",
+      "sourceBytes": 351460,
+      "bytes": 281720,
+      "gzipBytes": 81239,
+      "sha256": "f97d725e59a1557c5f218ffd2318119462e0b53e70dcfc1517db0136f04ea322",
+      "sourceSha256": "c18d8738a0bdf18e79c070b8125e28002d51da8bfe3c0485ad3fd84acee66904",
+      "lossless": true,
+      "compressedViews": 265,
+      "validation": {
+        "originalRuntimeGLTFLoader": "pass",
+        "decodedTextures": true,
+        "parsedMeshes": 72,
+        "animations": 0
+      },
+      "nodes": 78,
+      "meshes": 72,
+      "materials": 5,
+      "triangles": 7224
+    },
+    {
+      "file": "files/models/kitchenware/cups/teacup-saucer/versions/v0002/model.glb",
+      "sourceBytes": 116160,
+      "bytes": 75592,
+      "gzipBytes": 32605,
+      "sha256": "64fdbcd919341b11ea5211ac28e18a20613cca919fa68806f1645b79dbd65f62",
+      "sourceSha256": "d6013fa26a7ee29bbf46938a59c5ed31a9da11551ccc47f68f93f43e3f24da0b",
+      "lossless": true,
+      "compressedViews": 12,
+      "validation": {
+        "originalRuntimeGLTFLoader": "pass",
+        "decodedTextures": true,
+        "parsedMeshes": 3,
+        "animations": 0
+      },
+      "nodes": 6,
+      "meshes": 3,
+      "materials": 1,
+      "triangles": 3476
+    },
+    {
+      "file": "files/models/personal/books/studio-clothbound-reading-book/versions/v0001/model.glb",
+      "sourceBytes": 447984,
+      "bytes": 325152,
+      "gzipBytes": 166060,
+      "sha256": "b02be1c7602e6b7f94ce080bcba22a27c13988c7f873a5f32566fc66348f18f3",
+      "sourceSha256": "5112a741a1e29e0d9b80214e2ec63b04a180c2d965699bb442116b96622041a8",
+      "lossless": true,
+      "compressedViews": 137,
+      "validation": {
+        "originalRuntimeGLTFLoader": "pass",
+        "decodedTextures": true,
+        "parsedMeshes": 50,
+        "animations": 0
+      },
+      "nodes": 47,
+      "meshes": 42,
+      "materials": 6,
+      "triangles": 9532
+    },
+    {
+      "file": "files/characters/residents/v0001/male.glb",
+      "sourceBytes": 1001736,
+      "bytes": 1001736,
+      "gzipBytes": 335700,
+      "sha256": "6401efc8c6ace22eef8f09076e963b79fd1f861bcb28484c80c1eaf36cc7ede6",
+      "sourceSha256": "6401efc8c6ace22eef8f09076e963b79fd1f861bcb28484c80c1eaf36cc7ede6",
+      "lossless": true,
+      "compressedViews": 0,
+      "validation": {
+        "originalRuntimeGLTFLoader": "pass",
+        "decodedTextures": true,
+        "parsedMeshes": 15,
+        "animations": 1
+      },
+      "nodes": 25,
+      "meshes": 2,
+      "materials": 15,
+      "triangles": 27620
+    },
+    {
+      "file": "files/characters/residents/v0001/female.glb",
+      "sourceBytes": 1007016,
+      "bytes": 1007016,
+      "gzipBytes": 329895,
+      "sha256": "258f848505cee7c15783221ac64597a58a1bf4dc4ef4d22109afbd4500bc3999",
+      "sourceSha256": "258f848505cee7c15783221ac64597a58a1bf4dc4ef4d22109afbd4500bc3999",
+      "lossless": true,
+      "compressedViews": 0,
+      "validation": {
+        "originalRuntimeGLTFLoader": "pass",
+        "decodedTextures": true,
+        "parsedMeshes": 15,
+        "animations": 1
+      },
+      "nodes": 25,
+      "meshes": 2,
+      "materials": 15,
+      "triangles": 27788
+    }
+  ],
+  "resources": [],
+  "visibleTextAudit": {
+    "action": "Preserve original maps and pigments. Translate DOM/inspection labels in adapter only.",
+    "findings": [
+      "Source assembly child display names contain Chinese metadata; never expose those directly in English showcase UI.",
+      "Original apartment procedural factories contain no canvas/text geometry signage rendering. Street signage uses authored motifs.",
+      "Workstation resources include English keyboard legends and wood/cloth surfaces; no Chinese computer-screen image was found."
+    ]
+  }
+}

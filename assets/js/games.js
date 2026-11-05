@@ -1,5 +1,6 @@
 (() => {
   const dialog = document.querySelector('.game-lightbox');
+  if (!dialog) return;
   const enlargedImage = dialog.querySelector('.lightbox-image');
   const enlargedCaption = dialog.querySelector('#lightbox-caption');
 

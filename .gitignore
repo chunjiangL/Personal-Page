@@ -11,3 +11,7 @@ vendor
 !assets/vendor/
 !assets/vendor/**
 atlas-preview.html
+node_modules/
+artifacts/
+assets/models/sketch-game/
+assets/models/sketch-runtime/**/*.glb

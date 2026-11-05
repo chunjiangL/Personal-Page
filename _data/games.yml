@@ -1,8 +1,8 @@
 - id: sketch-game
   name: Sketch Game
   field: Everyday worlds · Sketch rendering
-  description: A hand-drawn 3D world, from a small apartment kitchen to the neighborhood outside. Soft colors, pencil-like outlines, and carefully built everyday objects give each space its character.
-  focus: Apartment and street scenes, cooking props, and interactive lighting.
+  description: Three small places in a hand-drawn world. Explore the neighborhood, step into the kitchen and bedroom, and take a closer look at the objects within them.
+  focus: Interactive scenes, free camera exploration, and object studies.
   images:
     - file: sketch-neighborhood
       label: The neighborhood

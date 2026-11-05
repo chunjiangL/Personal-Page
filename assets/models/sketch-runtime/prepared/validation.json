@@ -1,0 +1,31 @@
+{
+  "status": "pass",
+  "meshes": 1245,
+  "parts": 210,
+  "cache": {
+    "hits": 1199,
+    "misses": 0,
+    "sourceGeometries": 1199,
+    "entries": 1125
+  },
+  "cacheDisposed": true,
+  "cacheLoadMS": 1623,
+  "fingerprintMS": 327,
+  "prepareMS": 1540,
+  "structureAtlas": [
+    1024,
+    6400
+  ],
+  "bounds": {
+    "min": [
+      -600,
+      -6.480000019073486,
+      -600
+    ],
+    "max": [
+      600,
+      14.88749885559082,
+      600
+    ]
+  }
+}

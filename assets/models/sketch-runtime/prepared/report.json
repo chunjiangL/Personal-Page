@@ -1,0 +1,249 @@
+{
+  "meshes": 1245,
+  "unique": 1125,
+  "milliseconds": 187071,
+  "bytes": 643578664,
+  "gzipBytes": 79905244,
+  "heavyMeshes": [
+    {
+      "mesh": "scene_kitchen_42",
+      "vertices": 388992,
+      "chartMS": 1001,
+      "fieldMS": 7111
+    },
+    {
+      "mesh": "street_life_trees_4",
+      "vertices": 347904,
+      "chartMS": 815,
+      "fieldMS": 3512
+    },
+    {
+      "mesh": "scene_bedroom_94",
+      "vertices": 319584,
+      "chartMS": 630,
+      "fieldMS": 3621
+    },
+    {
+      "mesh": "scene_bedroom_20",
+      "vertices": 143070,
+      "chartMS": 265,
+      "fieldMS": 3558
+    },
+    {
+      "mesh": "scene_bedroom_88",
+      "vertices": 319584,
+      "chartMS": 656,
+      "fieldMS": 3093
+    },
+    {
+      "mesh": "scene_bedroom_72",
+      "vertices": 298440,
+      "chartMS": 739,
+      "fieldMS": 2757
+    },
+    {
+      "mesh": "street_life_trees_3",
+      "vertices": 278640,
+      "chartMS": 599,
+      "fieldMS": 2816
+    },
+    {
+      "mesh": "scene_bedroom_17",
+      "vertices": 193884,
+      "chartMS": 319,
+      "fieldMS": 2478
+    },
+    {
+      "mesh": "building_interior_unit_201_furniture_18",
+      "vertices": 159300,
+      "chartMS": 362,
+      "fieldMS": 2234
+    },
+    {
+      "mesh": "building_interior_unit_301_furniture_18",
+      "vertices": 159300,
+      "chartMS": 284,
+      "fieldMS": 2298
+    },
+    {
+      "mesh": "scene_kitchen_1",
+      "vertices": 91692,
+      "chartMS": 215,
+      "fieldMS": 2065
+    },
+    {
+      "mesh": "scene_bedroom_75",
+      "vertices": 151308,
+      "chartMS": 401,
+      "fieldMS": 1518
+    },
+    {
+      "mesh": "scene_kitchen_45",
+      "vertices": 77760,
+      "chartMS": 122,
+      "fieldMS": 1794
+    },
+    {
+      "mesh": "scene_bedroom_24",
+      "vertices": 140400,
+      "chartMS": 336,
+      "fieldMS": 1439
+    },
+    {
+      "mesh": "scene_bedroom_27",
+      "vertices": 128502,
+      "chartMS": 282,
+      "fieldMS": 1259
+    },
+    {
+      "mesh": "scene_bedroom_43",
+      "vertices": 104700,
+      "chartMS": 226,
+      "fieldMS": 1256
+    },
+    {
+      "mesh": "building_interior_unit_201_furniture_2",
+      "vertices": 91440,
+      "chartMS": 217,
+      "fieldMS": 1214
+    },
+    {
+      "mesh": "scene_bedroom_67",
+      "vertices": 167136,
+      "chartMS": 318,
+      "fieldMS": 1096
+    },
+    {
+      "mesh": "street_authored_building_1_7",
+      "vertices": 70188,
+      "chartMS": 132,
+      "fieldMS": 1259
+    },
+    {
+      "mesh": "scene_bedroom_79",
+      "vertices": 89496,
+      "chartMS": 228,
+      "fieldMS": 1126
+    },
+    {
+      "mesh": "street_authored_building_4_4",
+      "vertices": 55752,
+      "chartMS": 166,
+      "fieldMS": 1180
+    },
+    {
+      "mesh": "building_interior_unit_301_furniture_2",
+      "vertices": 91440,
+      "chartMS": 167,
+      "fieldMS": 1178
+    },
+    {
+      "mesh": "scene_bedroom_65",
+      "vertices": 77364,
+      "chartMS": 193,
+      "fieldMS": 1135
+    },
+    {
+      "mesh": "scene_kitchen_48",
+      "vertices": 72816,
+      "chartMS": 127,
+      "fieldMS": 1196
+    },
+    {
+      "mesh": "street_neighbourhood_frontage_5",
+      "vertices": 71736,
+      "chartMS": 183,
+      "fieldMS": 1057
+    },
+    {
+      "mesh": "street_authored_building_1_4",
+      "vertices": 55356,
+      "chartMS": 147,
+      "fieldMS": 1057
+    },
+    {
+      "mesh": "scene_bedroom_51",
+      "vertices": 77724,
+      "chartMS": 237,
+      "fieldMS": 941
+    },
+    {
+      "mesh": "street_neighbourhood_frontage_3",
+      "vertices": 58188,
+      "chartMS": 101,
+      "fieldMS": 1022
+    },
+    {
+      "mesh": "building_interior_unit_301_furniture_9",
+      "vertices": 86184,
+      "chartMS": 196,
+      "fieldMS": 907
+    },
+    {
+      "mesh": "building_interior_unit_301_furniture_1",
+      "vertices": 81936,
+      "chartMS": 183,
+      "fieldMS": 909
+    },
+    {
+      "mesh": "street_life_car_teal_0",
+      "vertices": 93528,
+      "chartMS": 392,
+      "fieldMS": 689
+    },
+    {
+      "mesh": "building_interior_unit_201_furniture_1",
+      "vertices": 81936,
+      "chartMS": 175,
+      "fieldMS": 880
+    },
+    {
+      "mesh": "street_authored_building_6_4",
+      "vertices": 38952,
+      "chartMS": 83,
+      "fieldMS": 940
+    },
+    {
+      "mesh": "building_interior_unit_201_furniture_9",
+      "vertices": 86184,
+      "chartMS": 202,
+      "fieldMS": 778
+    },
+    {
+      "mesh": "building_interior_unit_201_furniture_11",
+      "vertices": 63720,
+      "chartMS": 199,
+      "fieldMS": 781
+    },
+    {
+      "mesh": "scene_bedroom_78",
+      "vertices": 61008,
+      "chartMS": 108,
+      "fieldMS": 871
+    },
+    {
+      "mesh": "street_authored_building_2_4",
+      "vertices": 40404,
+      "chartMS": 67,
+      "fieldMS": 904
+    },
+    {
+      "mesh": "street_authored_building_0_4",
+      "vertices": 40404,
+      "chartMS": 80,
+      "fieldMS": 867
+    },
+    {
+      "mesh": "street_authored_building_4_7",
+      "vertices": 40044,
+      "chartMS": 73,
+      "fieldMS": 843
+    },
+    {
+      "mesh": "street_authored_building_0_1",
+      "vertices": 57156,
+      "chartMS": 136,
+      "fieldMS": 774
+    }
+  ]
+}
