@@ -2,6 +2,8 @@
 
 The public page is https://chunjiangliu.com/gallery.html. The legacy /games.html page redirects to it while retaining query parameters and the selected project hash.
 
+Project thumbnails are real links to their Gallery hash. The URL selects the project ahead of stored history state; explicit thumbnail taps recreate the matching, separately named iframe. Hash navigation and restored pages reconcile the player with that URL. tests/gallery-mobile-routing.mjs covers Android Chrome touch targets, conflicting restored state, repeated selection, back/forward, refresh and closing the player without downloading the 3D scenes.
+
 The website is built by GitHub Pages from the main branch of chunjiangL/Personal-Page. Gallery embeds Life and Worlds under the same website origin. Life's compressed assets are included in this repository. Worlds keeps its viewer and worker JavaScript here, while baked terrain is served through https://worlds-assets.chunjiang-liu-richard.workers.dev/v1/.
 
 ## Zero-budget limits

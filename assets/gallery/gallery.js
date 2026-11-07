@@ -21,19 +21,25 @@ function projectURL(key) {
   return url;
 }
 
-function display(key) {
+function display(key, force = false) {
   const card = cards.get(key);
-  if (active === key) return;
+  if (active === key && !force) return;
   // Removing the browsing context also stops its renderer, workers and pending loads.
   stage.replaceChildren();
   frame = null;
   active = card ? key : null;
-  for (const [id, button] of cards) button.setAttribute('aria-pressed', String(id === active));
+  for (const [id, link] of cards) {
+    if (id === active) link.setAttribute('aria-current', 'true');
+    else link.removeAttribute('aria-current');
+  }
   for (const description of descriptions) description.hidden = description.dataset.projectDescription !== active;
   player.hidden = !card;
   if (!card) return;
   title.textContent = card.querySelector('span').textContent;
   frame = document.createElement('iframe');
+  // Give each project its own browsing-context identity on history restoration.
+  frame.id = 'project-frame-' + key;
+  frame.name = 'gallery-' + key;
   frame.title = title.textContent;
   frame.allowFullscreen = true;
   frame.className = {'sketch-game':'life-frame', 'mirror-world':'mirror-canvas'}[key];
@@ -43,30 +49,37 @@ function display(key) {
 }
 
 function select(key) {
-  if (key === active) return;
   const url = new URL(location.href);
   url.hash = key ?? '';
-  history.pushState({galleryProject:key}, '', url);
-  display(key);
+  if (url.href === location.href) history.replaceState({galleryProject:key}, '', url);
+  else history.pushState({galleryProject:key}, '', url);
+  // An explicit thumbnail tap also repairs a stale/restored child document.
+  display(key, true);
 }
 
 function projectForEntry() {
-  // Closing the player is an explicit choice for this history entry.
-  if (Object.hasOwn(history.state ?? {}, 'galleryProject')) {
-    const previous = history.state.galleryProject;
-    return previous === null || cards.has(previous) ? previous : 'sketch-game';
-  }
   const linkedProject = location.hash.slice(1);
-  return cards.has(linkedProject) ? linkedProject : 'sketch-game';
+  // A project link must win over state inherited from an earlier history entry.
+  if (cards.has(linkedProject)) return linkedProject;
+  // Closing the player is an explicit choice for this history entry.
+  return !linkedProject && history.state?.galleryProject === null ? null : 'sketch-game';
 }
 
-for (const [key, button] of cards) button.addEventListener('click', () => select(key));
+for (const [key, link] of cards) link.addEventListener('click', event => {
+  if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+  event.preventDefault();
+  select(key);
+});
 document.getElementById('close-project').addEventListener('click', () => {
   const previous = cards.get(active);
   select(null);
   previous?.focus();
 });
 window.addEventListener('popstate', () => display(projectForEntry()));
+window.addEventListener('hashchange', () => display(projectForEntry()));
+window.addEventListener('pageshow', event => {
+  if (event.persisted) display(projectForEntry(), true);
+});
 window.addEventListener('message', event => {
   if (!frame || event.origin !== location.origin || event.source !== frame.contentWindow) return;
   const data = event.data;

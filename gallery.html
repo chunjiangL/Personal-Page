@@ -33,11 +33,11 @@ permalink: /gallery.html
   <main class="games" aria-label="Gallery">
     <nav class="gallery-projects" aria-label="Projects">
       {% for game in site.data.games %}
-      <button class="gallery-card" type="button" data-project="{{ game.id }}" data-view="{{ game.viewer | relative_url }}"
-        aria-label="Open {{ game.name }}" aria-pressed="false" aria-controls="gallery-player">
+      <a class="gallery-card" href="{{ '/gallery.html' | relative_url }}#{{ game.id }}" data-project="{{ game.id }}" data-view="{{ game.viewer | relative_url }}"
+        aria-label="Open {{ game.name }}" aria-controls="gallery-player">
         <img src="{{ game.thumbnail | relative_url }}?v={{ asset_version }}" alt="" width="640" height="400">
         <span>{{ game.name }}</span>
-      </button>
+      </a>
       {% endfor %}
     </nav>
     <div id="gallery-player" role="region" aria-labelledby="project-title" hidden>
