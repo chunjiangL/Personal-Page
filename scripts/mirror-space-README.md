@@ -25,3 +25,11 @@ Worker configuration is in scripts/cloudflare/wrangler.jsonc. The public Worker 
 The Gallery production build workflow checks the Jekyll output and the 1 GB Pages site limit without storing an extra build artifact. The existing Pages deployment publishes main. Credentials remain in local Wrangler storage and never enter this repository or the client bundle.
 
 The two project introductions are English bullet lists, justified across the full player width. The Worlds thumbnail is a capture of the actual renderer; node scripts/capture-worlds-thumbnail.mjs refreshes it while the local preview is running.
+
+## Native mesh inspection
+
+Mesh displays wireframes only for the original 0.3 m native terrain. The reduced overview and full-planet display exports remain colored surfaces, without misleading proxy wireframes. At planet scale, subpixel native cells fade out; the viewer asks the visitor to zoom in to inspect them.
+
+Turning Mesh on prefetches the facing native terrain window before ground mode and pauses subsequent full-planet display downloads while that window loads. The existing 96-tile working window and bounded cache still apply. The full display model remains hidden until all its packs are prepared, and native tiles retain their stencil/mask ownership to avoid overlapping terrain layers.
+
+Run node tests/worlds-native-mesh.mjs with the local preview running (or GALLERY_ORIGIN set to the public site). It holds all full-planet display packs, verifies independent native loading and absence of proxy wireframes, inspects a native close-up, then releases the packs and checks return to all ten worlds. It uses the existing baked data without new uploads.
