@@ -1,5 +1,7 @@
 # Gallery hosting
 
+The public page is https://chunjiangliu.com/gallery.html. The legacy /games.html page redirects to it while retaining query parameters and the selected project hash.
+
 The website is built by GitHub Pages from the main branch of chunjiangL/Personal-Page. Gallery embeds Life and Worlds under the same website origin. Life's compressed assets are included in this repository. Worlds keeps its viewer and worker JavaScript here, while baked terrain is served through https://worlds-assets.chunjiang-liu-richard.workers.dev/v1/.
 
 ## Zero-budget limits

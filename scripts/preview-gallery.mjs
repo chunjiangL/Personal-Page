@@ -37,4 +37,4 @@ http.createServer(async(req,res)=>{
     if(req.method==='HEAD')return res.end();
     const stream=createReadStream(file);stream.on('error',()=>res.destroy());res.on('close',()=>stream.destroy());stream.pipe(res);
   }catch(error){if(res.headersSent)return res.destroy();fail(['ENOENT','ENOTDIR'].includes(error.code)?404:error instanceof URIError?400:500);}
-}).listen(5199,'127.0.0.1',()=>console.log('Local Gallery: http://127.0.0.1:5199/games.html#mirror-world'));
+}).listen(5199,'127.0.0.1',()=>console.log('Local Gallery: http://127.0.0.1:5199/gallery.html#mirror-world'));

@@ -14,7 +14,7 @@ export async function syncMirrorSpace(){
   for(const name of ['index.html','space.js','mesh-worker.js','worlds.json'])await fs.copyFile(path.join(dataRoot,'space',name),path.join(output,name));
   const entry=path.join(output,'index.html');
   await fs.writeFile(entry,(await fs.readFile(entry,'utf8')).replace(/name="worlds-data-base" content="[^"]*"/,()=>`name="worlds-data-base" content="${dataBase}"`));
-  const generated=path.join(project,'_site/games.html');
+  const generated=path.join(project,'_site/gallery.html');
   const source=await fs.readFile(path.join(project,'_data/games.yml'),'utf8');
   const world=source.split('- id: mirror-world')[1]?.split('\n- id:')[0];
   const viewer=world?.match(/^\s+viewer:\s*(\S+)/m)?.[1],thumbnail=world?.match(/^\s+thumbnail:\s*(\S+)/m)?.[1];

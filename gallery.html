@@ -1,0 +1,72 @@
+---
+layout: null
+permalink: /gallery.html
+---
+<!doctype html>
+<html lang="{{ site.lang | default: 'en-US' }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Gallery | {{ site.title }}</title>
+  <meta name="description" content="Life and Worlds — visual experiments by Chunjiang Liu.">
+  <link rel="canonical" href="{{ site.canonical }}gallery.html">
+  {% include favicon.html %}
+  {% assign asset_version = site.github.build_revision | default: site.time %}
+  {% if site.font == 'Sans Serif' %}
+  <link rel="stylesheet" href="{{ '/assets/css/font_sans_serif.css' | relative_url }}">
+  {% else %}
+  <link rel="stylesheet" href="{{ '/assets/css/font.css' | relative_url }}">
+  {% endif %}
+  {% if site.auto_dark_mode %}
+  <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}?v={{ asset_version }}">
+  {% else %}
+  <link rel="stylesheet" href="{{ '/assets/css/style-no-dark-mode.css' | relative_url }}?v={{ asset_version }}">
+  {% endif %}
+  <link rel="stylesheet" href="{{ '/assets/css/research-atlas.css' | relative_url }}?v={{ asset_version }}">
+  <link rel="stylesheet" href="{{ '/assets/css/games.css' | relative_url }}?v={{ asset_version }}">
+</head>
+<body class="atlas-page games-page{% if site.auto_dark_mode %} atlas-auto-dark games-auto-dark{% endif %}">
+  <nav class="atlas-nav" aria-label="Main navigation">
+    <a class="atlas-name" href="{{ '/' | relative_url }}">{{ site.title }}</a>
+    <div class="atlas-nav-links"><a href="{{ '/' | relative_url }}">Home</a><a href="{{ '/' | relative_url }}#publications">Publications</a><a href="{{ '/world.html' | relative_url }}">Atlas</a><a href="{{ '/gallery.html' | relative_url }}" aria-current="page">Gallery</a></div>
+  </nav>
+  <main class="games" aria-label="Gallery">
+    <nav class="gallery-projects" aria-label="Projects">
+      {% for game in site.data.games %}
+      <button class="gallery-card" type="button" data-project="{{ game.id }}" data-view="{{ game.viewer | relative_url }}"
+        aria-label="Open {{ game.name }}" aria-pressed="false" aria-controls="gallery-player">
+        <img src="{{ game.thumbnail | relative_url }}?v={{ asset_version }}" alt="" width="640" height="400">
+        <span>{{ game.name }}</span>
+      </button>
+      {% endfor %}
+    </nav>
+    <div id="gallery-player" role="region" aria-labelledby="project-title" hidden>
+      <div class="project-bar">
+        <h2 id="project-title"></h2>
+        <button id="close-project" type="button" aria-label="Close project">Close <span aria-hidden="true">×</span></button>
+      </div>
+      <div id="project-stage"></div>
+      <section class="project-description" data-project-description="sketch-game" aria-labelledby="life-description-title" hidden>
+        <h3 id="life-description-title">About Life</h3>
+        <ul>
+          <li><strong>Procedural environments.</strong> Everyday spaces built from streets, buildings, vegetation, furnished interiors and the objects within them.</li>
+          <li><strong>Illustrative rendering.</strong> Ink contours, soft colors and material details give architecture, furniture and household objects a consistent visual style.</li>
+          <li><strong>Changing atmosphere.</strong> Daylight, sunset, overcast skies, rain and night reshape the scenes through lighting, reflections, moving traffic and interior illumination.</li>
+          <li><strong>Object construction.</strong> Component-based models reveal how everyday products fit together through interactive inspection, separation and reassembly.</li>
+        </ul>
+      </section>
+      <section class="project-description" data-project-description="mirror-world" aria-labelledby="worlds-description-title" hidden>
+        <h3 id="worlds-description-title">About Worlds</h3>
+        <ul>
+          <li><strong>Procedural planets.</strong> Large landforms and fine terrain detail combine to create distinct mountain ridges, cliffs, valleys and coastlines.</li>
+          <li><strong>Ink and terrain materials.</strong> Contour lines define the landscape, while elevation and slope shape the distribution of snow, exposed rock, grassland and ochre soil.</li>
+          <li><strong>Fragment-filled space.</strong> Animated, reflective glass fragments form distinct orbital patterns and nebula fields around rotating planets.</li>
+          <li><strong>Exploration across scales.</strong> Terrain streaming and levels of detail connect planetary views to surface exploration, retaining the original terrain mesh in close views.</li>
+        </ul>
+      </section>
+    </div>
+    <noscript><p>Enable JavaScript to open the projects.</p></noscript>
+  </main>
+  <script type="module" src="{{ '/assets/gallery/gallery.js' | relative_url }}?v={{ asset_version }}"></script>
+</body>
+</html>

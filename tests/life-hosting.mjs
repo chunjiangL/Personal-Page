@@ -7,7 +7,7 @@ const page=await browser.newPage({viewport:{width:1280,height:900}}),errors=[],m
 page.setDefaultTimeout(180000);
 page.on('pageerror',e=>errors.push(e.message));page.on('response',r=>{if(r.status()>=400)missing.push({status:r.status(),url:r.url()});});
 try{
- await page.goto(origin+'/games.html?qa=1#sketch-game');
+ await page.goto(origin+'/gallery.html?qa=1#sketch-game');
  await page.locator('iframe.life-frame').scrollIntoViewIfNeeded();
  const handle=await page.locator('iframe.life-frame').elementHandle(),frame=await handle.contentFrame();
  await frame.waitForFunction(()=>{const d=JSON.parse(document.querySelector('#viewer-diagnostics')?.textContent||'{}');return d.ready&&d.frames>0;},null,{timeout:180000});

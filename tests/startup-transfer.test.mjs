@@ -102,7 +102,7 @@ test('fatal release prevents late workers from repopulating packs while previous
 });
 
 test('QA cold mode bypasses individual CacheStorage and requests each pack with HTTP reload',async()=>{
- const f=fixture(),storage=cacheStore();globalThis.location={href:'https://example.com/games.html?qa=1&cold=1'};const module=await moduleFor(f.index);
+ const f=fixture(),storage=cacheStore();globalThis.location={href:'https://example.com/gallery.html?qa=1&cold=1'};const module=await moduleFor(f.index);
  for(const [relative,member]of Object.entries(f.index.members))storage.entries.set(module.assetURL(base,relative,member.sha256),new Response(f.files.get(relative)));
  const calls=network(f);await Promise.all(Object.keys(f.index.members).map(relative=>consume(module,f,relative)));
  assert.equal(storage.stats.matches,0);assert.equal(calls.length,3);assert.ok(calls.every(call=>call.options?.cache==='reload'));module.releaseStartupPacks();

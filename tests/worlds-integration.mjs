@@ -9,7 +9,7 @@ async function scene(){await page.waitForSelector('iframe.mirror-canvas');const 
 async function choose(f,name){const b=f.locator('#list button').filter({hasText:name});await b.focus();await b.click();await f.locator('#sky').focus();}
 async function settled(f){await f.waitForFunction(()=>window.__spaceDiagnostics.flightProgress===0,null,{timeout:30000});}
 try{
- await page.goto('http://127.0.0.1:5199/games.html?qa=1#mirror-world');const f=await scene(),opening=await state(f);report.openingCamera=opening.camera;
+ await page.goto('http://127.0.0.1:5199/gallery.html?qa=1#mirror-world');const f=await scene(),opening=await state(f);report.openingCamera=opening.camera;
  await page.screenshot({path:'artifacts/worlds-opening.jpg',quality:93});
  await f.waitForFunction(()=>window.__spaceDiagnostics.intro==='complete',null,{timeout:60000});
  assert.deepEqual(await f.locator('#nav button').allTextContents(),['All worlds','Water','Mesh']);assert.equal((await state(f)).water,true);assert.equal((await state(f)).mesh,false);

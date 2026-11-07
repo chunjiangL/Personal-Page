@@ -16,6 +16,7 @@ jobs:
           destination: ./_site
       - name: Check Gallery output
         run: |
+          test -f _site/gallery.html
           test -f _site/games.html
           test -f _site/assets/gallery/life.html
           test -f _site/assets/mirror-space/space/index.html
