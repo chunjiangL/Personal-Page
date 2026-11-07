@@ -1,5 +1,6 @@
 import {Box3, Scene, Sphere, Vector3} from 'three';
 import {windowCones, seenThroughWindows, hasTransmissiveSurface} from './bedroom-window-visibility.mjs';
+import {compactDevice} from './device-budget.mjs';
 
 // Project the entire world-space bounds onto a solid wall panel. Cull only
 // if every corner falls behind the panel and inside both of its edge pairs.
@@ -29,20 +30,21 @@ function solidPanels(walls,origin){
 // During a gesture the room uses its last prepared materials, rigid batches
 // and ink meshes. Keep the original objects and their world transforms so
 // moving the camera still produces real parallax, including through the panes.
-export function createBedroomMotionView(stage, windows) {
+export function createBedroomMotionView(stage, windows, {compact=compactDevice}={}) {
   const scene=new Scene();
   scene.matrixWorldAutoUpdate=false;
   scene.userData.galleryMotion=true;
   const {renderer, core}=stage;
-  const sources=new Map(),exterior=new Set();
+  const sources=new Map(),exterior=new Set(),exteriorInkOwners=new Set();
   for(const {partId,node} of stage.loaded.geometry.meshes.values()){
+    if(/^(street_|building_)/.test(partId))exteriorInkOwners.add(node.uuid);
     if(node.isInstancedMesh||node.morphTargetInfluences?.length||stage.loaded.geometry.parts.get(partId)?.userData.street_vehicle)continue;
     sources.set(node.uuid,node);
     if(/^(street_|building_)/.test(partId))exterior.add(node);
   }
   const movingParts=[...stage.loaded.geometry.parts.values()].filter(p=>p.userData.street_vehicle);
   const eye=new Vector3(Infinity,Infinity,Infinity);
-  let entries, filtered, panels, timer, active=false, lastFullTime, lastRefresh=0, lastCount=0;
+  let entries, filtered, panels, timer, active=false, lastFullTime, lastRefresh=0, lastCount=0, displayRatio;
 
   function capture() {
     const list=[], bounds=new Map();
@@ -51,6 +53,10 @@ export function createBedroomMotionView(stage, windows) {
       stage.scene.updateMatrixWorld(true);
       stage.scene.traverseVisible(node=>{
         if(!(node.isLight||node.isMesh||node.isLine||node.isPoints||node.isSprite))return;
+        // Through the small phone window, exterior crease/hull passes cost
+        // millions of vertices. Keep all outdoor surfaces and room ink while
+        // moving; the normal renderer restores every exterior stroke at rest.
+        if(compact&&exteriorInkOwners.has(node.galleryInkOwner??node.userData.labInkOwner))return;
         const source=sources.get(node.galleryInkOwner??node.userData.labInkOwner??node.uuid);
         let shape;
         if(source){
@@ -78,6 +84,7 @@ export function createBedroomMotionView(stage, windows) {
     clearTimeout(timer);
     if(!active)return;
     active=false;entries=filtered=undefined;scene.children.length=0;
+    if(displayRatio!==undefined){renderer.setPixelRatio(displayRatio);displayRatio=undefined;}
     renderer.shadowMap.needsUpdate=true;
     stage.windowGlass.lastCapture=-100;
     stage.dirty=true;
@@ -86,17 +93,22 @@ export function createBedroomMotionView(stage, windows) {
     get active(){return active;},
     sample(){
       if(!stage.seated)return;
-      if(!active){active=true;lastFullTime=undefined;lastRefresh=performance.now();lastCount=stage.renderedFrames;}
-      clearTimeout(timer);timer=setTimeout(finish,200);
+      if(!active){
+        active=true;lastFullTime=undefined;lastRefresh=performance.now();lastCount=stage.renderedFrames;
+        if(compact){displayRatio=renderer.getPixelRatio();renderer.setPixelRatio(Math.min(1,displayRatio));}
+      }
+      clearTimeout(timer);timer=setTimeout(finish,compact?350:200);
     },
     finish,
     draw(minutes){
       if(!active||!stage.seated||!stage.renderedFrames)return false;
-      if(!entries&&hasTransmissiveSurface(stage.scene))return false;
+      // During touch gestures use Three's single transmission capture. The
+      // settled frame still uses the original layered-glass renderer.
+      if(!compact&&!entries&&hasTransmissiveSurface(stage.scene))return false;
       // Refit the whole exterior occasionally during sustained sun changes.
       // An orbit at the same time of day can share its original shadow map.
       const now=performance.now();
-      if(lastFullTime!==undefined&&Math.abs(minutes-lastFullTime)>=25&&now-lastRefresh>550&&stage.renderedFrames-lastCount>=8){
+      if(!compact&&lastFullTime!==undefined&&Math.abs(minutes-lastFullTime)>=25&&now-lastRefresh>550&&stage.renderedFrames-lastCount>=8){
         lastRefresh=now;lastCount=stage.renderedFrames;lastFullTime=minutes;
         stage.windowGlass.lastCapture=-100;renderer.shadowMap.needsUpdate=true;entries=filtered=undefined;
         return false;
@@ -125,11 +137,16 @@ export function createBedroomMotionView(stage, windows) {
       }
       scene.children.length=0;
       for(const {node} of filtered)if(node.visible&&node.userData.galleryMotionCount!==0)scene.children.push(node);
-      const dirty=renderer.shadowMap.needsUpdate;
+      const dirty=renderer.shadowMap.needsUpdate, transmission=renderer.transmissionResolutionScale;
       try{
         renderer.shadowMap.needsUpdate=false;
+        if(compact){
+          renderer.transmissionResolutionScale=.5;
+          core.sketch.setViewport(stage.host.clientWidth,stage.host.clientHeight,renderer.getPixelRatio());
+          core.shadowInk.setPixelRatio(renderer.getPixelRatio());
+        }
         renderer.render(scene,camera);
-      } finally {renderer.shadowMap.needsUpdate=dirty;}
+      } finally {renderer.shadowMap.needsUpdate=dirty;renderer.transmissionResolutionScale=transmission;}
       return true;
     },
     dispose:finish,

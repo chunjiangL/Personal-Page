@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import {Box3, Group, Scene, PerspectiveCamera, Mesh, BoxGeometry, MeshStandardMaterial, Sphere, Vector3} from 'three';
 import {windowCones, seenThroughWindows, orderWindowInstances, limitBedroomDraws} from '../scripts/viewer/bedroom-window-visibility.mjs';
 import {behindPanel, createBedroomMotionView} from '../scripts/viewer/bedroom-motion-view.mjs';
+import {MeshPhysicalMaterial, InstancedMesh} from 'three';
 
 test('both window openings retain silhouettes grazing the sill or jamb',()=>{
   const eye=new Vector3(), pane={x:0,z:2,width:2,bottom:-1,top:1};
@@ -62,4 +63,28 @@ test('camera and sun gestures share prepared native draws and restore the full s
     motion.finish();assert.equal(motion.draw(845),false);
     assert.ok(stage.dirty);assert.equal(stage.windowGlass.lastCapture,-100);
   } finally {motion.dispose();chair.geometry.dispose();chair.material.dispose();}
+});
+
+test('touch gestures retain glass, lower only the moving resolution, and restore render state on failure',()=>{
+  const scene=new Scene(),glass=new Mesh(new BoxGeometry(),new MeshPhysicalMaterial({transmission:1}));
+  const outdoor=new InstancedMesh(glass.geometry,glass.material,1),outdoorInk=new Mesh(glass.geometry,glass.material);
+  outdoorInk.galleryInkOwner=outdoor.uuid;
+  scene.add(glass,outdoor,outdoorInk);let ratio=1.5,footprint,fail=false;
+  const stage={scene,seated:true,camera:new PerspectiveCamera(),homeOffset:new Vector3(),renderedFrames:6,host:{clientWidth:390,clientHeight:320},
+    renderer:{shadowMap:{needsUpdate:true},transmissionResolutionScale:1.5,getPixelRatio:()=>ratio,setPixelRatio:r=>{ratio=r;},render(view){
+      assert.ok(view.children.includes(glass));assert.equal(glass.material.transmission,1);
+      assert.ok(view.children.includes(outdoor));assert.ok(!view.children.includes(outdoorInk));assert.equal(outdoorInk.visible,true);
+      assert.equal(ratio,1);assert.equal(this.transmissionResolutionScale,.5);assert.equal(this.shadowMap.needsUpdate,false);
+      if(fail)throw Error('draw failed');
+    }},windowGlass:{lastCapture:2},
+    core:{sketch:{setViewport:(...args)=>{footprint=args;}},shadowInk:{setPixelRatio(){}},lighting:{group:new Group()},contours:{group:new Group(),sync(){}},batches:{begin:()=>()=>{}}},
+    loaded:{geometry:{meshes:new Map([['outdoor',{partId:'street_building',node:outdoor}]]),parts:new Map()}},atmosphere:{root:new Group(),prepare(){}}};
+  const motion=createBedroomMotionView(stage,[],{compact:true});
+  try{
+    motion.sample();assert.equal(motion.draw(720),true);assert.deepEqual(footprint,[390,320,1]);
+    assert.equal(stage.renderer.transmissionResolutionScale,1.5);assert.equal(stage.renderer.shadowMap.needsUpdate,true);
+    fail=true;assert.throws(()=>motion.draw(900),/draw failed/);
+    assert.equal(stage.renderer.transmissionResolutionScale,1.5);
+    motion.finish();assert.equal(ratio,1.5);assert.equal(motion.active,false);assert.equal(stage.windowGlass.lastCapture,-100);assert.ok(stage.dirty);
+  }finally{motion.dispose();outdoor.dispose();glass.geometry.dispose();glass.material.dispose();}
 });

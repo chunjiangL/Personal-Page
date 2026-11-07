@@ -16,6 +16,7 @@ import {applyCornerLightBands} from './street-light-bands.mjs';
 import {BedroomAtmosphere} from './bedroom-atmosphere.mjs';
 import {limitBedroomDraws} from './bedroom-window-visibility.mjs';
 import {createBedroomMotionView} from './bedroom-motion-view.mjs';
+import {compactDevice} from './device-budget.mjs';
 import {BEDROOM_WINDOW,LIVING_WINDOW} from '@sketch/assets/scenes/bedroom-window';
 
 const $=id=>document.getElementById(id),host=$('sketch-canvas'),viewer=$('sketch-viewer'),overlay=$('inspection-canvas');
@@ -57,7 +58,7 @@ function syncTimeControl(){
 }
 function updateLightControls(event){
  const strength=$('light-strength').valueAsNumber,offset=$('light-azimuth').valueAsNumber,minutes=$('light-time').valueAsNumber;
- if(event?.target?.id==='light-time'&&!busy&&!detail)motionView?.sample();
+ if(event&&!busy&&!detail)motionView?.sample();
  if(offset!==lightAdjustment.offset||minutes!==lightAdjustment.minutes)refitLight=true;
  lightAdjustment.strength=strength;lightAdjustment.offset=offset;lightAdjustment.minutes=minutes;
  syncTimeControl();
@@ -69,12 +70,15 @@ function updateLightControls(event){
  lightFrame=requestAnimationFrame(flushSceneLight);
 }
 function flushSceneLight(){
-  if(!lightFrame)return;
+  if(!lightFrame){
+   if(refitLight&&!motionView?.active&&stage?.ready){stage.fitGalleryShadows();stage.renderer.shadowMap.needsUpdate=true;stage.dirty=true;refitLight=false;}
+   return;
+  }
   cancelAnimationFrame(lightFrame);
   lightFrame=0;
   if(!stage?.ready)return;
   applySceneLight();
-  if(refitLight){stage.fitGalleryShadows();stage.renderer.shadowMap.needsUpdate=true;refitLight=false;}
+  if(refitLight&&!(compactDevice&&motionView?.active)){stage.fitGalleryShadows();stage.renderer.shadowMap.needsUpdate=true;refitLight=false;}
   stage.dirty=true;
   if(detail){applyDetailLight();backgroundPending=true;syncSuspension();}
   report();
@@ -261,7 +265,7 @@ async function start(requested=new URLSearchParams(location.search).get('scene')
   resizeObserver?.disconnect();desk?.dispose();desk=undefined;motionView?.dispose();motionView=undefined;bedroomAir?.dispose();bedroomAir=undefined;stage?.dispose();
   loadPhase('renderer');stage=new ApartmentStage(host);fixedZoom=createFixedViewZoom(stage.camera,()=>{stage.dirty=true;},{reduced,views:zoomViews});
   if(diagnostic)window.__lifeStage=stage;
-  stage.onBeforeFrame=dt=>{stage.core.galleryBedroom=stage.seated;flushSceneLight();applyNightTraffic(stage);if(fixedZoom.update(dt))motionView?.sample();bedroomAir?.tick(dt);};
+  stage.onBeforeFrame=dt=>{stage.core.galleryBedroom=stage.seated;flushSceneLight();applyNightTraffic(stage);if(fixedZoom.update(dt))motionView?.sample();bedroomAir?.tick(dt);if(bedroomAir)bedroomAir.uniforms.uPixelRatio.value=stage.renderer.getPixelRatio();};
   stage.onGalleryLightBounds=applySceneLight;
   const viewChanged=()=>{stage.dirty=true;};
   streetOrbit=createViewOrbit(stage.camera,stage.viewTarget,streetAngles,viewChanged);
@@ -330,9 +334,11 @@ document.querySelectorAll('[data-scene]').forEach(button=>button.addEventListene
 $('viewer-zoom-in').addEventListener('click',()=>changeZoom(1.2));
 $('viewer-zoom-out').addEventListener('click',()=>changeZoom(1/1.2));
 $('viewer-zoom-reset').addEventListener('click',()=>changeZoom(null));
-for(const input of viewer.querySelectorAll('.viewer-light input'))input.addEventListener('input',updateLightControls);
+for(const input of viewer.querySelectorAll('.viewer-light input')){
+ input.addEventListener('input',updateLightControls);
+ for(const event of ['pointerup','pointercancel','blur'])input.addEventListener(event,()=>motionView?.finish());
+}
 const timeSlider=$('light-time');
-for(const event of ['pointerup','pointercancel','blur'])timeSlider.addEventListener(event,()=>motionView?.finish());
 const linkedTime=/^([01]\d|2[0-3]):([0-5]\d)$/.exec(new URL(location.href).searchParams.get('time')??'');
 if(linkedTime){
  const minutes=Number(linkedTime[1])*60+Number(linkedTime[2]);
