@@ -8,7 +8,12 @@ export const dataRoot=path.resolve(process.env.MIRROR_DEMO_SITE||'F:/MirrorWorld
 export async function syncMirrorSpace(){
   const output=path.join(project,'assets/mirror-space/space');
   await fs.mkdir(output,{recursive:true});
+  const previous=await fs.readFile(path.join(output,'index.html'),'utf8').catch(()=> '');
+  const dataBase=process.env.MIRROR_DATA_BASE??previous.match(/name="worlds-data-base" content="([^"]*)"/)?.[1]??'';
+  if(dataBase&&(!dataBase.startsWith('https://')||/["<>]/.test(dataBase)))throw Error('MIRROR_DATA_BASE must be a public HTTPS data root');
   for(const name of ['index.html','space.js','mesh-worker.js','worlds.json'])await fs.copyFile(path.join(dataRoot,'space',name),path.join(output,name));
+  const entry=path.join(output,'index.html');
+  await fs.writeFile(entry,(await fs.readFile(entry,'utf8')).replace(/name="worlds-data-base" content="[^"]*"/,()=>`name="worlds-data-base" content="${dataBase}"`));
   const generated=path.join(project,'_site/games.html');
   const source=await fs.readFile(path.join(project,'_data/games.yml'),'utf8');
   const world=source.split('- id: mirror-world')[1]?.split('\n- id:')[0];

@@ -6,7 +6,7 @@ import uploader from '../scripts/cloudflare/worlds-upload.js';
 test('terrain endpoint returns gzip bytes without triggering HTTP decompression and varies CORS',async()=>{
   const bytes=new Uint8Array([31,139,8,0]),pending=[];let reads=0,cached;
   globalThis.caches={default:{match:async()=>cached?.clone(),put:async(_key,res)=>{cached=res;}}};
-  const env={TERRAIN:{get:async()=>{reads++;return {body:bytes,size:4,httpEtag:'"test"',writeHttpMetadata:h=>{h.set('Content-Type','application/gzip');h.set('Content-Encoding','gzip');}};}}};
+  const env={TERRAIN:{get:async()=>{reads++;return {body:bytes,size:4,range:{offset:0,length:4},httpEtag:'"test"',writeHttpMetadata:h=>{h.set('Content-Type','application/gzip');h.set('Content-Encoding','gzip');}};}}};
   const url='https://assets.example/v1/space/tiles/watershed/1_2_3.gz';
   const response=await reader.fetch(new Request(url,{headers:{Origin:'https://chunjiangliu.com'}}),env,{waitUntil:p=>pending.push(p)});
   assert.equal(response.status,200);assert.equal(response.headers.get('Content-Encoding'),null);

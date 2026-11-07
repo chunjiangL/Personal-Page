@@ -1,15 +1,25 @@
-# Local Worlds integration
+# Gallery hosting
 
-Gallery → Worlds now embeds `/assets/mirror-space/space/`, the shared ten-planet scene. The local bundle retains the nebula opening, travel effect, distinct fragment fields, streamed native terrain, Water (on by default) and Mesh (off by default). Closing or changing Gallery projects removes the iframe and releases its renderer and workers.
+The website is built by GitHub Pages from the main branch of chunjiangL/Personal-Page. Gallery embeds Life and Worlds under the same website origin. Life's compressed assets are included in this repository. Worlds keeps its viewer and worker JavaScript here, while baked terrain is served through https://worlds-assets.chunjiang-liu-richard.workers.dev/v1/.
 
-Run `npm run preview:gallery`, then open `http://127.0.0.1:5199/games.html#mirror-world`. The preview command syncs the four small runtime files from the standalone demo and updates the existing `_site/games.html` preview to match `_data/games.yml`. The standard Jekyll source remains `games.html` plus `_data/games.yml`.
+## Zero-budget limits
 
-The full baked data (about 10 GB) stays in `F:/MirrorWorld-gallery-lab/planet-1km-native/site`. Set `MIRROR_DEMO_SITE` to change that directory. The preview server mounts its `space/{tiles,overview,context,worlds}` and `gallery` assets under the same origin; it does not require the standalone server on port 5226, copy the data into OneDrive, or use a localhost iframe in the page source. After another standalone build, run `npm run sync:mirror-space` to update the small runtime files.
+- The deployment contains 23,254 terrain objects totaling 9,914,862,605 bytes. The uploader refuses a release or combined bucket inventory above 9,950,000,000 bytes, below R2 Standard's current 10 GB free storage allowance. It refuses changes to existing immutable objects.
+- The account was checked with no other R2 buckets before this bucket was created. The dedicated personal-page-worlds bucket uses Standard storage. Its r2.dev URL is disabled and it has no public custom domain.
+- Public access is read-only through Workers Free. Its hard 100,000-request daily account limit bounds the reader to at most 3.1 million R2 read operations over a 31-day month, below the current 10 million free Class B operations. Requests beyond the Workers Free limit stop with an error rather than paid overage. Cache hits do not read R2.
+- This upload uses about 23,254 Class A writes plus inventory checks and bounded retries, below the current one million free Class A operations. The authenticated temporary uploader is removed after verification. No paid Workers plan, analytics add-on, custom-domain service, or R2 Infrequent Access is enabled.
+- These bounds apply to this release and the current free plans. Do not add a second full terrain version, additional R2 data, or upgrade Workers without rechecking the storage and request budgets.
 
-This is a local integration. Nothing was deployed, pushed, or published. The production exclusion of Gallery in `_config.yml` remains in place. A future deployment would need a separately configured host for the baked data; the local preview mount is deliberately not a production hosting setup. MirrorWorld's checkout is only read during the standalone build and has not been edited.
+Current provider terms: https://developers.cloudflare.com/r2/pricing/ and https://developers.cloudflare.com/workers/platform/limits/.
 
-With the preview running, `npm run test:worlds` checks the opening, interrupted-flight return to All worlds, all ten visible planets, selection after return, default controls on reload, disposal on close, Life switching and the mobile layout. Latest result: no browser errors or missing assets. Proof is in `artifacts/worlds-integration.json` and the matching screenshots.
+## Rebuild and verify
 
-Native terrain now preloads on approach and replaces the display mesh only after GPU upload, with complementary ownership masks and a retained near window. The standalone `verify-lod-stability.mjs` checks loading overlap, original 0.3 m detail, stationary redraws, panning and zoom reversals. Results and limitations are documented in the standalone `LOD-STABILITY.md`.
+Life: npm run build:viewer followed by npm run test:viewer. The standalone Worlds source remains in F:/MirrorWorld-gallery-lab/planet-1km-native/space-lab and imports the original engine read-only. After building it, npm run sync:mirror-space copies the small viewer files and preserves the configured public data root. Set MIRROR_DATA_BASE to an empty string to use local baked data, or to a public HTTPS root to change hosting.
 
-The Worlds card uses `assets/gallery/worlds-nebula.webp`, a 1280 × 800 capture of the actual scene with its controls hidden. To refresh it, run `node scripts/capture-worlds-thumbnail.mjs` while the preview is running, then `npm run sync:mirror-space`. The local generated page uses a content hash for the thumbnail so an old cached capture is not reused.
+For a local full preview, run npm run preview:gallery. The local server mounts the baked files from F:/MirrorWorld-gallery-lab/planet-1km-native/site when the viewer uses its local data root. No terrain data is copied into this repository.
+
+Worker configuration is in scripts/cloudflare/wrangler.jsonc. The public Worker only serves approved terrain paths and GET/HEAD/OPTIONS, preserves raw gzip bytes, sets origin-specific CORS and caches immutable responses. tests/worlds-assets.test.mjs checks those boundaries. tests/worlds-hosting.mjs verifies original 0.3 m near terrain through the public host and return to all ten worlds. Set GALLERY_ORIGIN to the public website when testing the actual deployment.
+
+The Gallery production build workflow checks the Jekyll output and the 1 GB Pages site limit without storing an extra build artifact. The existing Pages deployment publishes main. Credentials remain in local Wrangler storage and never enter this repository or the client bundle.
+
+The two project introductions are English bullet lists, justified across the full player width. The Worlds thumbnail is a capture of the actual renderer; node scripts/capture-worlds-thumbnail.mjs refreshes it while the local preview is running.

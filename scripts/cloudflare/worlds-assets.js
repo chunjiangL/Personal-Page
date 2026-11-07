@@ -19,14 +19,15 @@ export default {
       const cached=await cache.match(cacheKey);
       if(cached)return cors(new Response(request.method==='HEAD'?null:cached.body,cached),request);
     }
-    const object=request.method==='HEAD'?await env.TERRAIN.head(key):await env.TERRAIN.get(key,{range:request.headers});
+    const ranged=request.headers.has('Range');
+    const object=request.method==='HEAD'?await env.TERRAIN.head(key):await env.TERRAIN.get(key,ranged?{range:request.headers}:undefined);
     if(!object)return cors(new Response('Not found',{status:404}),request);
     const headers=new Headers();object.writeHttpMetadata(headers);
     // These gzip files are decoded by the terrain loader, not HTTP middleware.
     headers.delete('Content-Encoding');headers.set('ETag',object.httpEtag);
     headers.set('Cache-Control','public, max-age=31536000, immutable');headers.set('Accept-Ranges','bytes');
     let status=200,length=object.size;
-    if(object.range){const start=object.range.offset??object.size-object.range.suffix;length=object.range.length??object.range.suffix;headers.set('Content-Range',`bytes ${start}-${start+length-1}/${object.size}`);status=206;}
+    if(ranged&&object.range){const start=object.range.offset??object.size-object.range.suffix;length=object.range.length??object.range.suffix;headers.set('Content-Range',`bytes ${start}-${start+length-1}/${object.size}`);status=206;}
     headers.set('Content-Length',String(length));
     const response=new Response(request.method==='HEAD'?null:object.body,{status,headers});
     if(request.method==='GET'&&status===200)ctx.waitUntil(cache.put(cacheKey,response.clone()));
