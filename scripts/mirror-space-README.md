@@ -2,7 +2,7 @@
 
 The public page is https://chunjiangliu.com/gallery.html. The legacy /games.html page redirects to it while retaining query parameters and the selected project hash.
 
-Project thumbnails are real links to their Gallery hash. The URL selects the project ahead of stored history state; explicit thumbnail taps recreate the matching, separately named iframe. Hash navigation and restored pages reconcile the player with that URL. tests/gallery-mobile-routing.mjs covers Android Chrome touch targets, conflicting restored state, repeated selection, back/forward, refresh and closing the player without downloading the 3D scenes.
+Project thumbnails are real links to their Gallery hash. The URL selects the project ahead of stored history state. Each player has a separate iframe identity; repeated taps and restored pages retain a healthy matching player and repair mismatched documents. Resize messages and history writes are deduplicated. tests/gallery-mobile-routing.mjs covers touch targets, conflicting restored state, back/forward, refresh and closing.
 
 The website is built by GitHub Pages from the main branch of chunjiangL/Personal-Page. Gallery embeds Life and Worlds under the same website origin. Life's compressed assets are included in this repository. Worlds keeps its viewer and worker JavaScript here, while baked terrain is served through https://worlds-assets.chunjiang-liu-richard.workers.dev/v1/.
 
@@ -31,6 +31,10 @@ The two project introductions are English bullet lists, justified across the ful
 ## Native mesh inspection
 
 Mesh displays wireframes only for the original 0.3 m native terrain. The reduced overview and full-planet display exports remain colored surfaces, without misleading proxy wireframes. At planet scale, subpixel native cells fade out; the viewer asks the visitor to zoom in to inspect them.
+
+Clicking Mesh from orbit now moves into a native terrain inspection view, where the cells are visible. All worlds camera travel continues with ambient motion paused. Water waits for the full terrain before removing the sea: the overview export omits submerged triangles and cannot display lake beds by itself. tests/worlds-controls.mjs verifies these controls; an optional WORLDS_DATA_ROOT supplies local baked fixtures instead of the public host.
+
+Life's touch-device path broadcasts constant ink/bounds attributes instead of repeating them per vertex, skips an unused legacy distance attribute and duplicate rigid draw batches, and builds its structure atlas from Float32 blocks rather than boxed numbers. Authored geometry and shader values are retained. The loading overlay follows the site color scheme. tests/life-webkit.mjs checks dark loading, actual rendering, repeated thumbnail taps and persisted-page restoration in WebKit with an iPhone viewport. This is desktop WebKit emulation, not a physical-device memory-limit test.
 
 Turning Mesh on prefetches the facing native terrain window before ground mode and pauses subsequent full-planet display downloads while that window loads. The existing 96-tile working window and bounded cache still apply. The full display model remains hidden until all its packs are prepared, and native tiles retain their stencil/mask ownership to avoid overlapping terrain layers.
 

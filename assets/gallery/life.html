@@ -3,6 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <style>html{background:#fff}@media(prefers-color-scheme:dark){html,body{background:#20212b}}</style>
   <title>Life</title>
   <link rel="icon" href="data:,">
   <link rel="stylesheet" href="../css/font.css">
@@ -79,17 +81,23 @@
   </div>
   <script type="module">
     const viewer = document.getElementById('sketch-viewer');
+    let lastReport = '';
     function report() {
       if (parent === window) return;
       const url = new URL(location.href);
-      parent.postMessage({action:'life-view', height:Math.ceil(viewer.getBoundingClientRect().height),
-        scene:url.searchParams.get('scene'), time:url.searchParams.get('time')}, location.origin);
+      const data = {action:'life-view', height:Math.ceil(viewer.getBoundingClientRect().height),
+        scene:url.searchParams.get('scene'), time:url.searchParams.get('time')};
+      const serialized = JSON.stringify(data);
+      if (serialized !== lastReport) { lastReport = serialized; parent.postMessage(data, location.origin); }
     }
     new ResizeObserver(report).observe(viewer);
     new MutationObserver(report).observe(viewer.querySelector('.viewer-scenes'), {subtree:true, attributes:true, attributeFilter:['aria-pressed']});
     document.getElementById('light-time').addEventListener('change', () => queueMicrotask(report));
     const bundle = new URL('../js/sketch-viewer.bundle.js', location.href);
     bundle.searchParams.set('v', new URL(location.href).searchParams.get('v') || '');
+    for (const link of document.querySelectorAll('link[rel="stylesheet"]')) {
+      const url = new URL(link.href); url.searchParams.set('v', bundle.searchParams.get('v')); link.href = url.href;
+    }
     await import(bundle.href);
   </script>
 </body>

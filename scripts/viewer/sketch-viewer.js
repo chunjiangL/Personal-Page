@@ -260,6 +260,7 @@ async function start(requested=new URLSearchParams(location.search).get('scene')
   await prepareAssets((done,total)=>{$('viewer-progress').max=total;$('viewer-progress').value=done;},mode);$('viewer-progress').removeAttribute('value');
   resizeObserver?.disconnect();desk?.dispose();desk=undefined;motionView?.dispose();motionView=undefined;bedroomAir?.dispose();bedroomAir=undefined;stage?.dispose();
   loadPhase('renderer');stage=new ApartmentStage(host);fixedZoom=createFixedViewZoom(stage.camera,()=>{stage.dirty=true;},{reduced,views:zoomViews});
+  if(diagnostic)window.__lifeStage=stage;
   stage.onBeforeFrame=dt=>{stage.core.galleryBedroom=stage.seated;flushSceneLight();applyNightTraffic(stage);if(fixedZoom.update(dt))motionView?.sample();bedroomAir?.tick(dt);};
   stage.onGalleryLightBounds=applySceneLight;
   const viewChanged=()=>{stage.dirty=true;};

@@ -21,9 +21,20 @@ function projectURL(key) {
   return url;
 }
 
-function display(key, force = false) {
+function frameMatches(key) {
+  if (!key) return !frame;
+  if (!frame?.isConnected) return false;
+  const expected = projectURL(key);
+  try {
+    const actual = frame.contentWindow.location;
+    return new URL(frame.src).pathname === expected.pathname &&
+      (actual.href === 'about:blank' || actual.origin === expected.origin && actual.pathname === expected.pathname);
+  } catch { return false; }
+}
+
+function display(key) {
   const card = cards.get(key);
-  if (active === key && !force) return;
+  if (active === key && frameMatches(key)) return;
   // Removing the browsing context also stops its renderer, workers and pending loads.
   stage.replaceChildren();
   frame = null;
@@ -53,8 +64,8 @@ function select(key) {
   url.hash = key ?? '';
   if (url.href === location.href) history.replaceState({galleryProject:key}, '', url);
   else history.pushState({galleryProject:key}, '', url);
-  // An explicit thumbnail tap also repairs a stale/restored child document.
-  display(key, true);
+  // Repair mismatched child documents without restarting a healthy loading view.
+  display(key);
 }
 
 function projectForEntry() {
@@ -78,19 +89,19 @@ document.getElementById('close-project').addEventListener('click', () => {
 window.addEventListener('popstate', () => display(projectForEntry()));
 window.addEventListener('hashchange', () => display(projectForEntry()));
 window.addEventListener('pageshow', event => {
-  if (event.persisted) display(projectForEntry(), true);
+  if (event.persisted) display(projectForEntry());
 });
 window.addEventListener('message', event => {
   if (!frame || event.origin !== location.origin || event.source !== frame.contentWindow) return;
   const data = event.data;
   if (active === 'sketch-game' && data?.action === 'life-view') {
-    if (Number.isFinite(data.height) && data.height > 0) frame.style.height = data.height + 'px';
+    if (Number.isFinite(data.height) && data.height > 0 && frame.style.height !== data.height + 'px') frame.style.height = data.height + 'px';
     if (!['neighborhood','bedroom'].includes(data.scene)) return;
     const url = new URL(location.href);
     url.searchParams.set('scene', data.scene);
     if (data.time) url.searchParams.set('time', data.time);
     else url.searchParams.delete('time');
-    history.replaceState(history.state, '', url);
+    if (url.href !== location.href) history.replaceState(history.state, '', url);
   }
 });
 display(projectForEntry());

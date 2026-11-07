@@ -3,6 +3,7 @@ import {addLodBounds} from '@sketch/rendering/asset/sketch-lod';
 import {unpackAsset} from './asset-transfer.mjs';
 import {geometryCodecReady,decodeGeometryArray} from './geometry-codec.mjs';
 import {NEAR_FOLIAGE_PART, NEAR_FOLIAGE_MATERIALS} from './foliage-treatment.mjs';
+import {compactDevice,displayAttribute} from './device-budget.mjs';
 
 // The illustration pen uses metre-space positions and normals on the leaf
 // masses. These two surfaces have no triangle seams or structure-edge ink.
@@ -48,7 +49,12 @@ export async function loadPreparedDisplayCache(base,progress=()=>{},mode='full')
   if(views.has(key))return views.get(key);
   const entry=manifest.entries[key];if(!entry)return;
   const attributes={};
-  for(const [name,a]of Object.entries(entry.attributes))attributes[name]={array:decodeGeometryArray(chunks.get(a.chunk||entry.chunk),a),itemSize:a.itemSize};
+  for(const [name,a]of Object.entries(entry.attributes)){
+   // The native shader now computes crease distance from StructureField. Its
+   // legacy vLabStructure varying is never read; omit that dead mobile buffer.
+   if(compactDevice&&name==='labStructureDistance')continue;
+   attributes[name]={array:decodeGeometryArray(chunks.get(a.chunk||entry.chunk),a),itemSize:a.itemSize};
+  }
   const value={attributes,field:{offset:0,data:decodeGeometryArray(chunks.get(entry.field.chunk||entry.chunk),entry.field)},userData:entry.userData};views.set(key,value);return value;
  }
  return {stats,manifest,
@@ -77,7 +83,7 @@ export async function loadPreparedDisplayCache(base,progress=()=>{},mode='full')
    // GeometryStage asks cached.geometry.clone(). Construct directly here so
    // there is no second copy of the large expanded position/normal buffers.
    return {geometry:{clone(){const geometry=source.index?source.toNonIndexed():source.clone();
-    for(const [name,a]of Object.entries(value.attributes))geometry.setAttribute(name,new T.BufferAttribute(name==='labStructureEdges'?a.array.slice():a.array,a.itemSize));
+    for(const [name,a]of Object.entries(value.attributes))geometry.setAttribute(name,displayAttribute(a.array,a.itemSize,name==='labStructureEdges'));
     geometry.userData={...geometry.userData,labStrokeCharts:value.userData.labStrokeCharts,showcaseSourceKey:key};return addLodBounds(geometry);
    }},field:value.field};
   },

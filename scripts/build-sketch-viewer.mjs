@@ -172,6 +172,23 @@ const result=await build({
    // only on the eye, orientation and lens, so the native timed refresh suffices.
    return {contents:source.replace(projection,"[camera.fov,camera.aspect,camera.zoom].join(',')"),loader:'ts'};
   });
+  b.onLoad({filter:/rendering[\\/]asset[\\/]structure-field\.ts$/},async args=>{
+   let source=await fs.readFile(args.path,'utf8');
+   for(const [from,to] of [['private data:number[]=[];','private data=new FloatStore();'],['for(let i=0;i<prepared.data.length;i++)this.data.push(prepared.data[i]);','this.data.append(prepared.data);'],['data.set(this.data);','this.data.writeTo(data);'],['this.data=[];','this.data=new FloatStore();']]){
+    if(source.split(from).length!==2)throw Error('Original structure atlas storage changed');source=source.replace(from,to);
+   }
+   return {contents:"import {FloatStore} from "+JSON.stringify(path.resolve('scripts/viewer/float-store.mjs'))+";\n"+source,loader:'ts'};
+  });
+  b.onLoad({filter:/rendering[\\/]asset[\\/]sketch-lod\.ts$/},async args=>{
+   const source=await fs.readFile(args.path,'utf8'),start='function writeLodBounds(target:T.BufferGeometry,b:T.Sphere){';
+   if(source.split(start).length!==2)throw Error('Original LOD bounds writer changed');
+   return {contents:"import {compactDevice,constantAttribute} from "+JSON.stringify(path.resolve('scripts/viewer/device-budget.mjs'))+";\n"+source.replace(start,start+"if(compactDevice){target.setAttribute('labLodBounds',constantAttribute([b.center.x,b.center.y,b.center.z,b.radius*2],4));return target;}"),loader:'ts'};
+  });
+  b.onLoad({filter:/rendering[\\/]asset[\\/]rigid-batches\.ts$/},async args=>{
+   const source=await fs.readFile(args.path,'utf8'),start='begin(){';
+   if(source.split(start).length!==2)throw Error('Original rigid batch entry changed');
+   return {contents:"import {compactDevice} from "+JSON.stringify(path.resolve('scripts/viewer/device-budget.mjs'))+";\n"+source.replace(start,start+'if(compactDevice)return ()=>{};'),loader:'ts'};
+  });
   b.onLoad({filter:/rendering[\\/]asset[\\/]render-core\.ts$/},async args=>{
    const source=await fs.readFile(args.path,'utf8'),passes="if(active){const scale=";
    if(source.split(passes).length!==2)throw Error('Original transparency passes changed');

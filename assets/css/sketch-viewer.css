@@ -35,7 +35,7 @@
 .viewer-light input::-moz-range-thumb { width: 11px; height: 11px; border: 0; border-radius: 50%; background: var(--game-link); }
 .viewer-light input:disabled { opacity: .45; cursor: default; }
 .viewer-light input:focus-visible { outline: 2px solid var(--game-link); outline-offset: 1px; }
-.viewer-stage { position: relative; isolation: isolate; overflow: hidden; background: #eeeae1; }
+.viewer-stage { position: relative; isolation: isolate; overflow: hidden; background: var(--game-surface); }
 .sketch-canvas { position: relative; width: 100%; min-height: 440px; height: min(48vw, 580px); overflow: hidden; }
 .sketch-canvas canvas, .inspection-canvas canvas { display: block; width: 100%; height: 100%; outline: none; }
 .sketch-canvas canvas { touch-action: none; cursor: grab; }
@@ -47,14 +47,14 @@
 .inspection-canvas canvas { background: transparent; pointer-events: none; }
 .is-inspecting .sketch-canvas { pointer-events: none; }
 .is-inspecting .desk-backdrop { --defocus: clamp(4px, .65vw, 8px); --bleed: calc(3 * var(--defocus)); inset: calc(-1 * var(--bleed)) auto auto calc(-1 * var(--bleed)); width: calc(100% + 2 * var(--bleed)); height: calc(100% + 2 * var(--bleed)); filter: blur(var(--defocus)); }
-.viewer-message { position: absolute; inset: 0; z-index: 3; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; padding: 28px; text-align: center; background: #f4f1e9; color: #595959; }
-.viewer-message p { margin: 0; font-size: 23px; line-height: 1.2; color: #043361; }
+.viewer-message { position: absolute; inset: 0; z-index: 3; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; padding: 28px; text-align: center; background: var(--game-surface); color: var(--game-text); }
+.viewer-message p { margin: 0; font-size: 23px; line-height: 1.2; color: var(--game-heading); }
 .viewer-message-note { font-size: 14px; }
-.viewer-message button { margin-top: 4px; border-color: #043361; color: #043361; }
-.viewer-loading-mark { width: 24px; height: 24px; border: 1px solid #04336135; border-top-color: #043361; border-radius: 50%; animation: viewer-loading 1.2s linear infinite; }
-#viewer-progress { width: 150px; height: 3px; border: 0; accent-color: #043361; }
-#viewer-progress::-webkit-progress-bar { background: #0433611a; }
-#viewer-progress::-webkit-progress-value { background: #043361; }
+.viewer-message button { margin-top: 4px; border-color: var(--game-link); color: var(--game-link); }
+.viewer-loading-mark { width: 24px; height: 24px; border: 1px solid var(--game-border); border-top-color: var(--game-link); border-radius: 50%; animation: viewer-loading 1.2s linear infinite; }
+#viewer-progress { width: 150px; height: 3px; border: 0; accent-color: var(--game-link); }
+#viewer-progress::-webkit-progress-bar { background: var(--game-tint); }
+#viewer-progress::-webkit-progress-value { background: var(--game-link); }
 .viewer-inspector { display: flex; flex-wrap: wrap; gap: 10px 24px; align-items: center; padding: 10px 16px; border-top: 1px solid var(--game-border); }
 .viewer-inspector:not(:has(#desk-objects:not([hidden]))):not(:has(#selection-panel:not([hidden]))) { display: none; }
 .desk-objects { display: flex; align-items: center; flex-wrap: wrap; gap: 4px 8px; }
