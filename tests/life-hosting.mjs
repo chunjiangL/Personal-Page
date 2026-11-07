@@ -1,0 +1,36 @@
+import {chromium} from 'playwright';
+import assert from 'node:assert/strict';
+import fs from 'node:fs/promises';
+const origin=process.env.GALLERY_ORIGIN||'http://127.0.0.1:5199';
+const browser=await chromium.launch({channel:'chrome',headless:true,args:['--enable-gpu','--ignore-gpu-blocklist','--use-angle=d3d11']});
+const page=await browser.newPage({viewport:{width:1280,height:900}}),errors=[],missing=[],report={origin};
+page.setDefaultTimeout(180000);
+page.on('pageerror',e=>errors.push(e.message));page.on('response',r=>{if(r.status()>=400)missing.push({status:r.status(),url:r.url()});});
+try{
+ await page.goto(origin+'/games.html?qa=1#sketch-game');
+ await page.locator('iframe.life-frame').scrollIntoViewIfNeeded();
+ const handle=await page.locator('iframe.life-frame').elementHandle(),frame=await handle.contentFrame();
+ await frame.waitForFunction(()=>{const d=JSON.parse(document.querySelector('#viewer-diagnostics')?.textContent||'{}');return d.ready&&d.frames>0;},null,{timeout:180000});
+ console.log('Life ready');
+ await frame.locator('#weather-select').selectOption('night');
+ await frame.waitForFunction(()=>JSON.parse(document.querySelector('#viewer-diagnostics').textContent).weather==='night');
+ report.night=await frame.locator('#viewer-diagnostics').evaluate(e=>JSON.parse(e.textContent).trafficPaused);assert(report.night);
+ console.log('Night ready');
+ await frame.locator('#weather-select').selectOption('rain');
+ await frame.waitForFunction(()=>JSON.parse(document.querySelector('#viewer-diagnostics').textContent).weather==='rain');report.rain=true;
+ console.log('Rain ready');
+ await frame.locator('[data-scene="bedroom"]').click();
+ await frame.waitForFunction(()=>{const d=JSON.parse(document.querySelector('#viewer-diagnostics').textContent);return d.scene==='bedroom'&&d.objects?.length===5;},null,{timeout:180000});
+ console.log('Bedroom ready');
+ await frame.locator('[data-object="monitor"]').click();await frame.locator('#inspection-canvas').waitFor({state:'visible'});
+ await frame.locator('#explode-object').click();assert.equal(await frame.locator('#explode-object').textContent(),'Explode');
+ await frame.locator('#clear-selection').click();await frame.locator('#desk-objects').waitFor({state:'visible'});report.inspection=true;
+ await page.locator('[data-project-description="sketch-game"]').scrollIntoViewIfNeeded();
+ const about=page.locator('[data-project-description="sketch-game"]');assert.equal(await about.locator('li').count(),4);
+ await page.setViewportSize({width:390,height:844});await page.waitForTimeout(250);
+ assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));assert(await frame.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));report.mobile=true;
+ await page.screenshot({path:'artifacts/life-hosted-mobile.jpg',quality:90});
+ await page.locator('#close-project').click();assert.equal(await page.locator('iframe').count(),0);report.closed=true;
+ assert.deepEqual(errors,[]);assert.deepEqual(missing,[]);console.log({...report,errors,missing});
+}catch(error){report.failure=error.message;report.frames=await Promise.all(page.frames().map(async frame=>({url:frame.url(),...await frame.evaluate(()=>({status:document.querySelector('#viewer-status')?.textContent,diagnostic:document.querySelector('#viewer-diagnostics')?.textContent})).catch(()=>({}))})));throw error;
+}finally{await fs.mkdir('artifacts',{recursive:true});await fs.writeFile('artifacts/life-hosting.json',JSON.stringify({...report,errors,missing},null,2));await browser.close();}
