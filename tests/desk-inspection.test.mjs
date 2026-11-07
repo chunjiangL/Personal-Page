@@ -2,51 +2,80 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
 import * as T from 'three';
-import {DESK_OBJECTS,createDeskObjects,makeDetailRoot} from '../scripts/viewer/desk-inspection.mjs';
+import {DESK_OBJECTS,isDeskMesh,setDeskSeparation} from '../scripts/viewer/desk-inspection.mjs';
+import {createRoomDesk,deskRange} from '../scripts/viewer/desk-room-view.mjs';
 
-const audit=JSON.parse(await fs.readFile(new URL('../scripts/data/bedroom-workstation.json',import.meta.url),'utf8'));
-function fixture(){
- const root=new T.Group(),texture=new T.DataTexture(new Uint8Array([140,160,180,255]),1,1),material=new T.MeshStandardMaterial({map:texture});material.name='authored_material';
- for(const object of audit.objects)for(const entry of object.parts){const part=new T.Group();part.userData={asset_role:'part',part_id:entry.id,linked_source:'workstation'};part.position.fromArray(entry.bounds.center);part.rotation.y=.12;
-  const mesh=new T.Mesh(new T.BoxGeometry(...entry.bounds.size.map(n=>Math.max(n,.0001))),material);mesh.userData={asset_role:'mesh',mesh_id:'mesh_'+entry.id};part.add(mesh);root.add(part);
+test('range views reuse the room GPU attributes and raycast only the specified component',()=>{
+ const source=new T.BufferGeometry();
+ for(const [key,buffer] of Object.entries({
+  position:[0,0,0,1,0,0,0,1,0,3,0,0,4,0,0,3,1,0],
+  normal:[0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1],
+  labStrokeUV:[0,0,1,0,0,1,0,0,1,0,0,1],
+ }))source.setAttribute(key,new T.Float32BufferAttribute(buffer,key==='labStrokeUV'?2:3));
+ const view=deskRange(source,{start:3,count:3});
+ for(const key of Object.keys(source.attributes))assert.equal(view.attributes[key],source.attributes[key]);
+ assert.deepEqual(view.boundingBox.min.toArray(),[3,0,0]);assert.deepEqual(view.boundingBox.max.toArray(),[4,1,0]);
+ const node=new T.Mesh(view),ray=new T.Raycaster(new T.Vector3(.2,.2,1),new T.Vector3(0,0,-1));
+ assert.equal(ray.intersectObject(node).length,0);ray.ray.origin.x=3.2;assert.equal(ray.intersectObject(node).length,1);
+ assert.throws(()=>deskRange(source,{start:4,count:3}),/range/);
+ view.dispose();node.material.dispose();source.dispose();
+});
+
+// Exercise the real component IDs and transforms of the shipped GLB. Here
+// each material piece is represented by its primitive extents, so the test
+// needs neither a browser nor asset-server traffic.
+async function bedroomFixture(){
+ const bytes=await fs.readFile(new URL('../assets/models/sketch-runtime/assemblies/bedroom.glb',import.meta.url));
+ const gltf=JSON.parse(bytes.toString('utf8',20,20+bytes.readUInt32LE(12)));
+ const material=new T.MeshStandardMaterial(),vertices=[],slices=[],expected=new Map();
+ function transform(spec){
+  return spec.matrix?new T.Matrix4().fromArray(spec.matrix):new T.Matrix4().compose(new T.Vector3(...(spec.translation??[0,0,0])),new T.Quaternion(...(spec.rotation??[0,0,0,1])),new T.Vector3(...(spec.scale??[1,1,1])));
  }
- root.position.set(.2,0,.3);root.updateMatrixWorld(true);return {root,texture,material};
+ function visit(i,parent,part){
+  const n=gltf.nodes[i],m=new T.Matrix4().multiplyMatrices(parent,transform(n)),id=n.extras?.mesh_id;
+  part=n.extras?.part_id??part;
+  if(isDeskMesh(id)){
+   const box=new T.Box3();
+   for(const prim of gltf.meshes[n.mesh].primitives){
+    const a=gltf.accessors[prim.attributes.POSITION];
+    const g=new T.BoxGeometry(...a.max.map((v,i)=>v-a.min[i])).toNonIndexed();
+    g.translate(...a.max.map((v,i)=>(v+a.min[i])/2));g.applyMatrix4(m);g.computeBoundingBox();box.union(g.boundingBox);
+    slices.push({id,part,start:vertices.length/3,count:g.attributes.position.count});
+    vertices.push(...g.attributes.position.array);g.dispose();
+   }
+   expected.set(id,box);
+  }
+  for(const j of n.children??[])visit(j,m,part);
+ }
+ for(const i of gltf.scenes[0].nodes)visit(i,new T.Matrix4());
+ const geometry=new T.BufferGeometry().setAttribute('position',new T.Float32BufferAttribute(vertices,3));
+ const node=new T.Mesh(geometry,material);node.userData.deskSlices=slices;
+ const stage={scene:new T.Scene(),loaded:{geometry:{meshes:new Map([['batch',{id:'batch',node}]])},building:{homePlacement:{offset:[-2.05,1.55,1.58]}}},
+  core:{contours:{localChildren:new Map()}}};
+ return {stage,expected,geometry,material};
 }
-function meshMap(root){const result=new Map();root.traverse(n=>{if(n.isMesh)result.set(n.userData.mesh_id,n);});return result;}
-function nearBox(actual,expected){for(const edge of ['min','max'])assert.ok(actual[edge].distanceTo(expected[edge])<.000002,edge+' bounds changed');}
 
-test('raw proxies preserve room placement and exact object selection boundaries',()=>{
- const {root}=fixture(),before=new Map(root.children.map(part=>[part.userData.part_id,new T.Box3().setFromObject(part,true)])),offset=new T.Vector3(-2.05,1.55,1.58);
- const proxies=createDeskObjects(root,offset);
- assert.deepEqual(proxies.objects.map(o=>o.id),DESK_OBJECTS.map(o=>o.id));
- assert.deepEqual(proxies.objects.map(o=>o.parts.length),[3,107,7,6,3]);
- for(const object of proxies.objects)for(const part of object.parts){assert.ok(part.userData.part_id.startsWith(object.prefix));nearBox(new T.Box3().setFromObject(part,true),before.get(part.userData.part_id).clone().translate(offset));}
- assert.equal(root.children.length,0,'Fresh source root is fully consumed');
- assert.ok(proxies.objects.every(o=>o.pickMeshes.length===o.parts.length));
- proxies.dispose();proxies.dispose();assert.equal(proxies.root.children.length,0);
-});
-
-test('detail clones are independently owned and keyboard has four actual layers',()=>{
- const {root,material,texture}=fixture(),offset=new T.Vector3(-2.05,1.55,1.58),proxies=createDeskObjects(root,offset);
- for(const object of proxies.objects){
-  const originals=new Map(object.pickMeshes.map(m=>[m.userData.mesh_id,m])),detail=makeDetailRoot(object),clones=meshMap(detail);
-  assert.equal(clones.size,originals.size);
-  assert.equal(detail.children.length,object.id==='keyboard'?4:object.parts.length);
-  for(const [id,clone]of clones){const original=originals.get(id);assert.ok(original);assert.notEqual(clone.geometry,original.geometry);assert.notEqual(clone.material,material);assert.notEqual(clone.material.map,texture);assert.equal(clone.material.name,material.name);nearBox(new T.Box3().setFromObject(clone,true),new T.Box3().setFromObject(original,true).translate(offset.clone().negate()));}
-  if(object.id==='keyboard'){const keys=detail.children.find(p=>p.userData.part_id==='workstation_keyboard_keys');assert.equal(keys.userData.source_part_ids.length,104);assert.equal(keys.children.length,104);assert.equal(keys.userData.explode_offset[1],.1);}
-  const whole=new T.Box3().setFromObject(detail,true),gap=Math.max(.002,whole.getSize(new T.Vector3()).length()*.025),boxes=[];
-  for(const part of detail.children){assert.ok(new T.Vector3(...part.userData.explode_offset).length()<.5);const box=new T.Box3().setFromObject(part,true).translate(new T.Vector3(...part.userData.explode_offset)).expandByScalar(gap*.49);assert.ok(boxes.every(previous=>!box.intersectsBox(previous)),'Exploded components overlap: '+part.userData.part_id);boxes.push(box);}
-  const clone=clones.values().next().value,original=originals.get(clone.userData.mesh_id),before=original.geometry.attributes.position.getX(0);clone.geometry.attributes.position.setX(0,999);assert.equal(original.geometry.attributes.position.getX(0),before);
+test('desk views preserve all five assemblies, their picking positions and exact reset poses across reuse',async()=>{
+ const {stage,expected,geometry,material}=await bedroomFixture(),desk=createRoomDesk(stage);
+ const offset=desk.proxyRoot.position,counts={monitor:34,keyboard:364,mouse:17,lamp:51,mini:31};
+ assert.deepEqual(desk.objects.map(o=>o.id),DESK_OBJECTS.map(o=>o.id));
+ let disposed=0;geometry.addEventListener('dispose',()=>disposed++);material.addEventListener('dispose',()=>disposed++);
+ for(const object of desk.objects){
+  const g=object.geometry;assert.equal(g.parts.size,counts[object.id]);
+  const at=name=>g.parts.get(object.prefix+name).position;
+  for(const [id,part] of g.parts){
+   const a=new T.Box3().setFromObject(part),b=expected.get(id);
+   assert.ok(a.min.distanceTo(b.min)<2e-6&&a.max.distanceTo(b.max)<2e-6);
+  }
+  const first=object.pickMeshes[0],model=[...g.meshes.values()][0].node;
+  const pickBox=new T.Box3().setFromObject(first).translate(offset.clone().negate());
+  assert.ok(pickBox.min.distanceTo(new T.Box3().setFromObject(model).min)<2e-6);
+  assert.equal(model.geometry,first.geometry);assert.equal(model.geometry.attributes.position,geometry.attributes.position);
+  setDeskSeparation(g,1);
+  if(object.id==='monitor')assert.ok(at('front_bezel').z<at('display_surface').z&&at('display_surface').z<at('internal_display_pack').z);
+  if(object.id==='keyboard')assert.ok(at('keycap_a').y-at('stem_a').y>.03&&at('stem_a').y-at('switch_a').y>.03);
+  setDeskSeparation(g,.5);setDeskSeparation(g,0);
+  for(const [id,part] of g.parts)assert.deepEqual(part.position,g.rest.get(id).position);
  }
- let disposed=0,textureDisposed=0;material.addEventListener('dispose',()=>disposed++);texture.addEventListener('dispose',()=>textureDisposed++);proxies.dispose();proxies.dispose();assert.equal(disposed,1,'Transferred proxy material is disposed exactly once');assert.equal(textureDisposed,1,'Shared transferred texture is disposed exactly once');
+ desk.dispose();assert.equal(disposed,0,'The room owns shared resources');geometry.dispose();material.dispose();
 });
-
-test('unused bedroom-only resources are released immediately, selected shared resources survive',()=>{
- const {root,material,texture}=fixture();let sharedMaterial=0,sharedTexture=0,unusedMaterial=0,unusedGeometry=0,unusedTexture=0;
- material.addEventListener('dispose',()=>sharedMaterial++);texture.addEventListener('dispose',()=>sharedTexture++);
- const map=new T.DataTexture(new Uint8Array([100,100,100,255]),1,1),mat=new T.MeshStandardMaterial({map}),geometry=new T.BoxGeometry(1,1,1),part=new T.Group();part.userData.part_id='bed_unselected';part.add(new T.Mesh(geometry,mat));root.add(part);
- mat.addEventListener('dispose',()=>unusedMaterial++);geometry.addEventListener('dispose',()=>unusedGeometry++);map.addEventListener('dispose',()=>unusedTexture++);
- const proxies=createDeskObjects(root,new T.Vector3());assert.equal(root.children.length,0);assert.deepEqual([unusedMaterial,unusedGeometry,unusedTexture],[1,1,1]);assert.deepEqual([sharedMaterial,sharedTexture],[0,0]);
- proxies.dispose();assert.deepEqual([sharedMaterial,sharedTexture],[1,1]);assert.deepEqual([unusedMaterial,unusedGeometry,unusedTexture],[1,1,1]);
-});
-

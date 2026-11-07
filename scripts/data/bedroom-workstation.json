@@ -6079,7 +6079,7 @@
   "selection": {
     "broadPhase": "Intersect each object bounds translated by current homeOffset; nearest box is only a candidate.",
     "narrowPhase": "Raycast the raw assembled parts in the nearest candidate objects, with proxyRoot translated by homeOffset and matrixWorld updated. Use recursive raycast: multi-primitive meshes may retain intermediate Groups. Find nearest ancestor part_id and match workstation_<object>_ prefix.",
-    "rendering": "Keep raw proxyRoot outside the rendered scene; Mesh.raycast works without scene membership. Use cached original root for proxy. Detail root clones ONLY the chosen matching parts, preserving part_id, mesh_id, material names and original bedroom appearanceByMesh/sketchByMaterial. Do not mutate linked_source or rename mesh IDs.",
-    "explode": "Keyboard: group all workstation_keyboard_key_* at one offset above switch_plate; move upper_case, switch_plate, lower_case in a vertical stack. Other objects have 1–17 authored parts and can decompose directly."
+    "rendering": "Use the bedroom batch range for each component mesh and material slot. Room picking and exploded fills share the same prepared attributes and bounds. Partition the cached crease strokes by component and draw the selected group on the room renderer.",
+    "explode": "The detail copy gives each authored mesh its own inspection pivot, preserving the source part ID and assembled transform. Caps, stems, switches and plates keep their keyboard registration as they separate. Panels, hinge pins and sockets follow their assembly axes."
   }
 }

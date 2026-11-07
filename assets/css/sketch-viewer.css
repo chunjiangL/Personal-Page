@@ -5,23 +5,48 @@
 .sketch-viewer button:hover:not(:disabled), .sketch-viewer button[aria-pressed="true"] { color: var(--game-link); background: var(--game-tint); }
 .sketch-viewer button:disabled, .sketch-viewer select:disabled { opacity: .45; cursor: default; }
 .sketch-viewer button:focus-visible, .sketch-viewer select:focus-visible, .sketch-viewer canvas:focus-visible { outline: 2px solid var(--game-link); outline-offset: -3px; }
-.viewer-toolbar { display: flex; align-items: center; flex-wrap: wrap; gap: 6px 18px; padding: 6px 10px; border-bottom: 1px solid var(--game-border); }
+.viewer-toolbar {
+  display: grid;
+  grid-template-columns: max-content max-content minmax(280px, 1fr) max-content;
+  align-items: center;
+  gap: 12px;
+  padding: 6px 10px;
+  border-bottom: 1px solid var(--game-border);
+  white-space: nowrap;
+  overflow-x: auto;
+}
 .viewer-scenes, .viewer-tools { display: flex; align-items: center; gap: 2px; }
 .viewer-scenes button[aria-pressed="true"] { box-shadow: inset 0 -2px var(--game-link); }
 .viewer-tools button { color: var(--game-text); }
+.viewer-zoom { display: flex; align-items: center; border-right: 1px solid var(--game-border); padding-right: 6px; margin-right: 4px; }
+.viewer-zoom button { min-width: 36px; padding: 8px; }
+.viewer-zoom #viewer-zoom-reset { min-width: 52px; font-size: 12px; font-variant-numeric: tabular-nums; }
 .viewer-tools svg { width: 17px; height: 17px; fill: none; stroke: currentColor; stroke-width: 1.3; }
-.viewer-weather { display: flex; align-items: center; gap: 10px; margin-left: auto; }
+.viewer-weather { display: flex; align-items: center; gap: 6px; }
 .viewer-weather label { font-size: 13px; }
-.viewer-weather select { min-width: 120px; padding: 6px 26px 6px 10px; border: 1px solid var(--game-border); border-radius: 0; background: var(--game-surface); }
+.viewer-weather select { padding: 6px 8px; border: 1px solid var(--game-border); border-radius: 0; background: var(--game-surface); }
+.viewer-light { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.viewer-light label { display: grid; grid-template-columns: 1fr auto; align-items: center; column-gap: 4px; padding-top: 3px; color: var(--game-heading); font-size: 13px; }
+.viewer-light span { color: var(--game-text); font-size: 12px; font-variant-numeric: tabular-nums; }
+.viewer-light input { grid-column: 1 / -1; appearance: none; margin: 0; width: 100%; height: 24px; background: transparent; accent-color: var(--game-link); cursor: pointer; }
+.viewer-light input::-webkit-slider-runnable-track { height: 2px; background: var(--game-border); }
+.viewer-light input::-moz-range-track { height: 2px; background: var(--game-border); }
+.viewer-light input::-webkit-slider-thumb { appearance: none; width: 11px; height: 11px; margin-top: -4.5px; border: 0; border-radius: 50%; background: var(--game-link); }
+.viewer-light input::-moz-range-thumb { width: 11px; height: 11px; border: 0; border-radius: 50%; background: var(--game-link); }
+.viewer-light input:disabled { opacity: .45; cursor: default; }
+.viewer-light input:focus-visible { outline: 2px solid var(--game-link); outline-offset: 1px; }
 .viewer-stage { position: relative; isolation: isolate; overflow: hidden; background: #eeeae1; }
-.viewer-stage::after { content: ''; position: absolute; inset: 0; z-index: 1; background: #f4f2ed38; opacity: 0; pointer-events: none; transition: opacity .25s ease; }
-.sketch-canvas { width: 100%; min-height: 440px; height: min(48vw, 580px); overflow: hidden; transition: filter .25s ease, opacity .25s ease; }
+.sketch-canvas { position: relative; width: 100%; min-height: 440px; height: min(48vw, 580px); overflow: hidden; }
 .sketch-canvas canvas, .inspection-canvas canvas { display: block; width: 100%; height: 100%; outline: none; }
-.sketch-canvas canvas { touch-action: pan-y; }
-.inspection-canvas { position: absolute; inset: 0; z-index: 2; background: transparent; }
-.inspection-canvas canvas { background: transparent; touch-action: none; }
-.is-inspecting .sketch-canvas { filter: blur(8px) brightness(.94); opacity: .62; pointer-events: none; }
-.is-inspecting .viewer-stage::after { opacity: 1; }
+.sketch-canvas canvas { touch-action: none; cursor: grab; }
+.sketch-canvas .desk-backdrop { position: absolute; inset: 0; z-index: 1; pointer-events: none; }
+.sketch-canvas[data-dragging] canvas { cursor: grabbing; }
+.inspection-canvas { position: absolute; inset: 0; z-index: 2; touch-action: none; cursor: grab; }
+.inspection-canvas:active { cursor: grabbing; }
+.inspection-canvas:focus-visible { outline: 2px solid var(--game-link); outline-offset: -3px; }
+.inspection-canvas canvas { background: transparent; pointer-events: none; }
+.is-inspecting .sketch-canvas { pointer-events: none; }
+.is-inspecting .desk-backdrop { --defocus: clamp(4px, .65vw, 8px); --bleed: calc(3 * var(--defocus)); inset: calc(-1 * var(--bleed)) auto auto calc(-1 * var(--bleed)); width: calc(100% + 2 * var(--bleed)); height: calc(100% + 2 * var(--bleed)); filter: blur(var(--defocus)); }
 .viewer-message { position: absolute; inset: 0; z-index: 3; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; padding: 28px; text-align: center; background: #f4f1e9; color: #595959; }
 .viewer-message p { margin: 0; font-size: 23px; line-height: 1.2; color: #043361; }
 .viewer-message-note { font-size: 14px; }
@@ -38,6 +63,11 @@
 .selection-panel { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 6px 20px; width: 100%; min-width: 0; }
 #selected-name { font-size: 17px; font-weight: 500; color: var(--game-heading); overflow-wrap: anywhere; }
 .selection-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; }
+.inspection-name { display: grid; gap: 2px; }
+#selected-part { color: var(--game-text); font-size: 12px; text-transform: capitalize; }
+#selected-part:empty { display: none; }
+.separation-control { display: inline-flex; align-items: center; gap: 8px; margin-right: 8px; font-size: 13px; }
+.separation-control input { width: clamp(72px, 10vw, 110px); accent-color: var(--game-link); }
 .selection-actions button { padding: 8px 12px; }
 #explode-object { border-color: var(--game-border); }
 .viewer-notes { display: flex; align-items: baseline; justify-content: space-between; gap: 4px 20px; padding: 10px 16px 12px; border-top: 1px solid var(--game-border); }
@@ -50,13 +80,12 @@
 .sketch-viewer:fullscreen .viewer-toolbar, .sketch-viewer:fullscreen .viewer-inspector, .sketch-viewer:fullscreen .viewer-notes { flex-shrink: 0; }
 @keyframes viewer-loading { to { transform: rotate(360deg); } }
 @media (max-width: 700px) {
-  .viewer-toolbar { gap: 3px 8px; padding: 5px 8px; }
-  .viewer-scenes { flex: 1; }
+  .viewer-toolbar { gap: 8px; padding: 5px 8px; }
   .viewer-scenes button { padding: 8px 10px; }
   .viewer-tools button { min-width: 44px; padding: 8px; }
   .viewer-tools #viewer-fullscreen span { display: none; }
-  .viewer-weather { order: 3; flex-basis: 100%; justify-content: flex-end; margin: 2px 0 0; padding: 5px 2px 0; border-top: 1px solid var(--game-border); }
-  .viewer-weather select { min-width: 112px; font-size: 13px; }
+  .viewer-light input { height: 30px; }
+  .viewer-weather select { font-size: 13px; }
   .sketch-canvas { min-height: 280px; height: clamp(280px, 82vw, 360px); }
   .viewer-inspector { padding: 10px 12px; }
   .desk-objects { gap: 5px; }
@@ -69,11 +98,9 @@
   #viewer-status { text-align: left; margin-top: 5px; }
   .sketch-viewer:fullscreen .viewer-notes { display: none; }
 }
-@media (prefers-color-scheme: dark) {
-  .games-auto-dark .is-inspecting .sketch-canvas { filter: blur(8px) brightness(.65); opacity: .72; }
-  .games-auto-dark .viewer-stage::after { background: #15212f30; }
+@media (forced-colors: active) {
+  .viewer-light input { appearance: auto; }
 }
 @media (prefers-reduced-motion: reduce) {
   .viewer-loading-mark { animation: none; }
-  .sketch-canvas, .viewer-stage::after { transition: none; }
 }

@@ -1,0 +1,24 @@
+name: Gallery production build
+on:
+  push:
+    branches: [codex/publish-gallery]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: actions/jekyll-build-pages@v1.0.13
+        with:
+          source: ./
+          destination: ./_site
+      - name: Check Gallery output
+        run: |
+          test -f _site/games.html
+          test -f _site/assets/gallery/life.html
+          test -f _site/assets/mirror-space/space/index.html
+          test -f _site/assets/models/sketch-runtime/manifest.json.gz
+          test "$(du -sb _site | cut -f1)" -lt 1000000000
+          du -sh _site

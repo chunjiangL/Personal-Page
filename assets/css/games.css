@@ -8,12 +8,33 @@
 }
 .games { max-width: 1080px; margin: 0 auto; padding: 32px 0 28px; }
 .games *, .games *::before, .games *::after { box-sizing: border-box; }
+.gallery-projects { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: clamp(10px,2.8vw,32px); }
+.gallery-card { display: block; min-width: 0; padding: 0 0 9px; border: 0; border-bottom: 2px solid transparent; text-align: left; font: inherit; background: transparent; color: var(--game-heading); cursor: pointer; }
+.gallery-card img { display: block; width: 100%; height: auto; aspect-ratio: 8 / 5; object-fit: cover; background: var(--game-tint); }
+.gallery-card span { display: block; margin-top: 8px; font-size: clamp(17px,2vw,23px); font-weight: 500; line-height: 1.2; }
+.gallery-card:hover, .gallery-card[aria-pressed="true"] { color: var(--game-link); border-color: var(--game-link); }
+.gallery-card:focus-visible, #close-project:focus-visible { outline: 2px solid var(--game-link); outline-offset: 3px; }
+#gallery-player { margin-top: 26px; border-top: 1px solid var(--game-border); }
+#gallery-player[hidden] { display: none; }
+.project-bar { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; }
+.project-bar h2 { font-size: 23px; font-weight: 500; margin: 0; color: var(--game-heading); }
+#close-project { padding: 6px 0 6px 12px; border: 0; background: transparent; color: var(--game-link); cursor: pointer; font: inherit; }
+.project-description { float: none; width: 100%; max-width: none; margin: 24px 0 8px; padding: 0; border: 0; color: var(--game-text); font-size: 16px; line-height: 1.65; }
+.project-description[hidden] { display: none; }
+.project-description h3 { margin: 0 0 10px; color: var(--game-heading); font-size: 20px; font-weight: 500; }
+.project-description ul { margin: 0; padding-inline-start: 1.25em; }
+.project-description li { padding-inline-start: .2em; margin-bottom: 10px; text-align: justify; text-justify: inter-word; hyphens: auto; }
+.project-description strong { color: var(--game-heading); font-weight: 500; }
+.life-frame { display: block; width: 100%; height: min(68vw,710px); border: 0; }
+.life-embed { margin: 0; overflow: hidden; background: var(--game-surface); }
+.life-embed *, .life-embed *::before, .life-embed *::after { box-sizing: border-box; }
+#project-stage .mirror-canvas { margin-top: 0; }
 .games-heading { display: flex; justify-content: flex-end; align-items: flex-end; gap: 20px 32px; margin-bottom: 26px; }
 .games h1 { font-size: 28px; font-weight: 500; margin: 0 0 6px; }
 .games-heading p { margin: 0; color: var(--game-text); }
 .games-index { display: flex; flex-wrap: wrap; gap: 4px 22px; flex-shrink: 0; }
 .games-index a { display: inline-flex; align-items: center; min-height: 44px; }
-.game-feature { padding: 25px 0 34px; border-top: 1px solid var(--game-border); scroll-margin-top: 24px; }
+.game-feature { padding: 25px 0 34px; border-top: 1px solid var(--game-border); scroll-margin-top: 64px; }
 .game-feature-heading { display: grid; grid-template-columns: minmax(220px, 1fr) minmax(0, 1.35fr); align-items: end; gap: 18px 42px; margin-bottom: 23px; }
 .game-field { font-size: 12px; letter-spacing: .07em; text-transform: uppercase; color: var(--game-text); margin: 0 0 8px; }
 .game-feature h2 { font-size: 32px; font-weight: 500; line-height: 1.15; color: var(--game-heading); margin: 0; }
@@ -48,3 +69,22 @@
 @media (prefers-color-scheme: dark) {
   .games-auto-dark { --game-heading: #3eb7f0; --game-text: #b8bac2; --game-link: #3eb7f0; --game-border: #4b4d5a; --game-surface: #20212b; --game-tint: #292e3b; }
 }
+
+/* The shared planet space fills the Worlds gallery player. */
+#mirror-world { grid-column: 1 / -1; }
+.mirror-canvas { position: relative; width: 100%; aspect-ratio: 16 / 9; margin-top: 0; background: #101b29; overflow: hidden; border-radius: 3px; }
+iframe.mirror-canvas { display: block; border: 0; }
+.mirror-canvas canvas { display: block; width: 100%; height: 100%; touch-action: none; cursor: grab; }
+.mirror-canvas canvas:active { cursor: grabbing; }
+.mirror-canvas canvas:focus-visible { outline: 2px solid #a8cde7; outline-offset: -3px; }
+.mirror-dice { position: absolute; right: 20px; bottom: 20px; display: grid; place-items: center; width: 46px; height: 46px; padding: 10px; color: #dce7f1; background: #182330cc; border: 1px solid #8299b144; border-radius: 12px; cursor: pointer; }
+.mirror-dice svg { width: 24px; height: 24px; }
+.mirror-dice:hover { background: #2b3d51; }
+.mirror-dice:focus-visible { outline: 2px solid #a8cde7; outline-offset: 3px; }
+.mirror-dice:disabled { opacity: .45; cursor: progress; }
+@media (max-width: 600px) { .mirror-canvas { aspect-ratio: 1 / 1.15; } }
+
+.mirror-mesh { right: 76px; width: auto; min-width: 60px; font: inherit; font-size: 13px; }
+.mirror-mesh[aria-pressed="true"] { background: #344d63; border-color: #aac9df88; }
+
+.mirror-status { position: absolute; left: 20px; bottom: 23px; max-width: calc(100% - 180px); color: #32453f; font-size: 13px; pointer-events: none; }

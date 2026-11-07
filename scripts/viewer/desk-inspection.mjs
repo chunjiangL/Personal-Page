@@ -1,4 +1,5 @@
 import * as T from 'three';
+import {mountingPairs} from './desk-layout.mjs';
 
 export const DESK_OBJECTS=Object.freeze([
  {id:'monitor',label:'Monitor',prefix:'workstation_monitor_'},
@@ -8,88 +9,36 @@ export const DESK_OBJECTS=Object.freeze([
  {id:'mini',label:'Mini computer',prefix:'workstation_mini_'},
 ]);
 
-function resources(root){const geometries=new Set(),materials=new Set(),textures=new Set();root.traverse(node=>{if(!node.isMesh)return;geometries.add(node.geometry);for(const material of Array.isArray(node.material)?node.material:[node.material]){materials.add(material);for(const value of Object.values(material))if(value?.isTexture)textures.add(value);}});return{geometries,materials,textures};}
+export function isDeskMesh(id){return typeof id==='string'&&DESK_OBJECTS.some(object=>id.startsWith(object.prefix));}
 
-/** Consumes the original unbatched bedroom root returned by loadAssetRoot. */
-export function createDeskObjects(rawBedroomRoot,homeOffset=new T.Vector3()){
- rawBedroomRoot.updateWorldMatrix(true,true);
- const root=new T.Group();root.name='desk_object_pick_proxies';
- const objects=DESK_OBJECTS.map(definition=>{
-  const parts=rawBedroomRoot.children.filter(part=>String(part.userData.part_id).startsWith(definition.prefix));
-  // attach() preserves every original room-space pose before applying the
-  // seated room's world offset once, at the proxy root.
-  for(const part of parts)root.attach(part);
-  const pickMeshes=[];for(const part of parts)part.traverse(node=>{if(node.isMesh)pickMeshes.push(node);});
-  return {...definition,parts,pickMeshes,proxyRoot:root};
- });
- root.position.copy(homeOffset);root.updateMatrixWorld(true);
- const owned=resources(root),remaining=resources(rawBedroomRoot);
- // The caller transfers this fresh parsed assembly in full. Release the bed,
- // wardrobe and other unselected assets now, retaining shared proxy resources.
- for(const category of ['geometries','materials','textures'])for(const item of remaining[category])if(!owned[category].has(item))item.dispose();
- rawBedroomRoot.clear();let disposed=false;
- return {root,objects,dispose(){if(disposed)return;disposed=true;root.removeFromParent();root.clear();
-  for(const category of ['geometries','materials','textures']){for(const item of owned[category])item.dispose();owned[category].clear();}
-  for(const object of objects){object.parts.length=0;object.pickMeshes.length=0;}
- }};
-}
-
-function cloneResources(root){
- const geometries=new Map(),materials=new Map(),textures=new Map();
- function texture(source){if(!textures.has(source)){const copy=source.clone();copy.source=new T.Source(source.source.data);copy.needsUpdate=true;textures.set(source,copy);}return textures.get(source);}
- function material(source){if(!materials.has(source)){const copy=source.clone();for(const [key,value]of Object.entries(source))if(value?.isTexture)copy[key]=texture(value);materials.set(source,copy);}return materials.get(source);}
- root.traverse(node=>{if(!node.isMesh)return;
-  if(!geometries.has(node.geometry))geometries.set(node.geometry,node.geometry.clone());node.geometry=geometries.get(node.geometry);
-  node.material=Array.isArray(node.material)?node.material.map(material):material(node.material);
-  if(node.isInstancedMesh){node.instanceMatrix=node.instanceMatrix.clone();if(node.instanceColor)node.instanceColor=node.instanceColor.clone();}
- });
-}
-
-const offsets={
- monitor:{base:[0,-.04,.04],display:[.04,.16,-.05],stand:[-.44,.02,.04]},
- keyboard:{lower_case:[0,-.04,0],switch_plate:[0,0,0],upper_case:[0,.04,0],keys:[0,.10,0]},
- mouse:{battery_cover:[0,-.03,0],chassis:[0,0,0],left_button:[.025,.045,.018],right_button:[-.025,.045,.018],palm_shell:[0,.06,-.025],power_slider:[-.04,-.015,-.01],scroll_wheel:[0,.10,.015]},
- lamp:{base:[0,-.025,.02],lamp_head:[.085,.12,-.07],lower_arm:[-.045,.025,.045],switch:[.04,.035,-.03],swivel:[0,.015,.045],upper_arm:[.04,.075,0]},
- mini:{base_cover:[0,-.025,0],chassis:[0,.035,0],power_button:[.045,0,-.015]},
-};
-
-/** Small authored component separation, checked against actual component boxes. */
-function assignExplodeOffsets(root,object){
- root.updateMatrixWorld(true);const whole=new T.Box3().setFromObject(root,true),gap=Math.max(.002,whole.getSize(new T.Vector3()).length()*.025),placed=[];
- for(const part of root.children){
-  const suffix=String(part.userData.part_id).slice(object.prefix.length),offset=new T.Vector3(...(offsets[object.id]?.[suffix]||[0,0,0]));
-  const box=new T.Box3().setFromObject(part,true).translate(offset);
-  const blocked=moved=>placed.some(previous=>previous.clone().expandByScalar(gap/2).intersectsBox(moved.clone().expandByScalar(gap/2)));
-  if(blocked(box)){
-   const candidates=[];for(const axis of ['x','y','z'])for(const previous of placed)for(const distance of [previous.max[axis]-box.min[axis]+gap+.00001,previous.min[axis]-box.max[axis]-gap-.00001]){const delta=new T.Vector3();delta[axis]=distance;candidates.push(delta);}
-   candidates.sort((a,b)=>a.lengthSq()-b.lengthSq());const delta=candidates.find(value=>!blocked(box.clone().translate(value)));if(delta){offset.add(delta);box.translate(delta);}
-  }
-  part.userData.explode_offset=offset.toArray();placed.push(box);
+// Desk components follow their mechanical axes. Parts designed to nest
+// (a key stem and its cap, for instance) share a footprint in the drawing.
+export function setDeskSeparation(geometry,amount){
+ for(const [id,part] of geometry.parts){
+  const rest=geometry.rest.get(id).position,[x,y,z]=part.userData.explode_offset;
+  part.position.set(rest.x+x*amount,rest.y+y*amount,rest.z+z*amount);
  }
+ geometry.wrapper.updateMatrixWorld(true);
 }
 
-/** Independent detail ownership, preserving the original render-core IDs/maps. */
-export function makeDetailRoot(object){
- const root=new T.Group();root.name='desk_detail_'+object.id;root.userData={asset_role:'asset',asset_id:'desk_detail_'+object.id};
- for(const source of object.parts){const part=source.clone(true);root.add(part);}
- cloneResources(root);
- if(object.id==='keyboard'){
-  const initialGeometries=resources(root).geometries;
-  const keys=root.children.filter(part=>String(part.userData.part_id).startsWith('workstation_keyboard_key_'));
-  const layer=new T.Group();layer.name='part_workstation_keyboard_keys';layer.userData={asset_role:'part',part_id:'workstation_keyboard_keys',linked_source:'workstation',source_id:'keyboard_keys',source_part_ids:keys.map(part=>part.userData.part_id)};
-  root.updateMatrixWorld(true);
-  for(const part of keys){
-   const meshes=[];part.traverse(node=>{if(node.isMesh)meshes.push(node);});
-   for(const mesh of meshes){const matrix=mesh.matrixWorld.clone();
-    if(mesh.isInstancedMesh){const instance=new T.Matrix4();for(let i=0;i<mesh.count;i++){mesh.getMatrixAt(i,instance);mesh.setMatrixAt(i,matrix.clone().multiply(instance));}mesh.instanceMatrix.needsUpdate=true;mesh.boundingBox=null;mesh.boundingSphere=null;}
-    else{mesh.geometry=mesh.geometry.clone();mesh.geometry.applyMatrix4(matrix);}
-    layer.add(mesh);mesh.position.set(0,0,0);mesh.quaternion.identity();mesh.scale.set(1,1,1);mesh.updateMatrix();
-   }
-   root.remove(part);
-  }
-  root.add(layer);
-  const retainedGeometries=resources(root).geometries;
-  for(const geometry of initialGeometries)if(!retainedGeometries.has(geometry))geometry.dispose();
+export function deskGuides(object,geometry,span){
+ const pairs=[];
+ for(const [tip,receiver] of mountingPairs[object.id]){
+  const tipId=object.prefix+tip,end=geometry.parts.get(tipId),start=geometry.parts.get(object.prefix+receiver);
+  if(start&&end)pairs.push({anchor:geometry.rest.get(tipId).position,start:start.userData.explode_offset,end:end.userData.explode_offset});
  }
- assignExplodeOffsets(root,object);root.updateMatrixWorld(true);return root;
+ const lines=new T.BufferGeometry();
+ const positions=new T.Float32BufferAttribute(pairs.length*6,3),distances=new T.Float32BufferAttribute(pairs.length*2,1);
+ lines.setAttribute('position',positions);lines.setAttribute('lineDistance',distances);
+ const material=new T.LineDashedMaterial({color:0x71858d,transparent:true,opacity:.52,dashSize:span*.009,gapSize:span*.006,depthWrite:false,toneMapped:false});
+ const node=new T.LineSegments(lines,material);node.frustumCulled=false;node.renderOrder=2;
+ return {node,update(amount){
+  node.visible=amount>.04;
+  for(const [i,{anchor,start,end}] of pairs.entries()){
+   positions.setXYZ(2*i,anchor.x+start[0]*amount,anchor.y+start[1]*amount,anchor.z+start[2]*amount);
+   positions.setXYZ(2*i+1,anchor.x+end[0]*amount,anchor.y+end[1]*amount,anchor.z+end[2]*amount);
+   distances.setX(2*i+1,amount*Math.hypot(end[0]-start[0],end[1]-start[1],end[2]-start[2]));
+  }
+  positions.needsUpdate=distances.needsUpdate=true;
+ },dispose(){node.removeFromParent();lines.dispose();material.dispose();}};
 }

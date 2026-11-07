@@ -2,6 +2,21 @@ import * as T from 'three';
 import {addLodBounds} from '@sketch/rendering/asset/sketch-lod';
 import {unpackAsset} from './asset-transfer.mjs';
 import {geometryCodecReady,decodeGeometryArray} from './geometry-codec.mjs';
+import {NEAR_FOLIAGE_PART, NEAR_FOLIAGE_MATERIALS} from './foliage-treatment.mjs';
+
+// The illustration pen uses metre-space positions and normals on the leaf
+// masses. These two surfaces have no triangle seams or structure-edge ink.
+function prepareLeafSurface(source) {
+ const geometry = source.index ? source.toNonIndexed() : source.clone();
+ const count = geometry.getAttribute('position').count;
+ const attribute = (size, value) => new T.BufferAttribute(new Float32Array(count * size).fill(value), size);
+ geometry.setAttribute('labStrokeUV', geometry.getAttribute('uv') ?? attribute(2, 0));
+ geometry.setAttribute('labStrokeSeam', attribute(3, 1));
+ geometry.setAttribute('labStructureDistance', attribute(3, 1));
+ geometry.setAttribute('labStructureEdges', attribute(3, -1));
+ geometry.userData.galleryLeafSurface = true;
+ return addLodBounds(geometry);
+}
 
 // Shared between the offline exporter and browser. All source attributes,
 // index bytes and material groups participate in the SHA-256 identity.
@@ -27,8 +42,8 @@ export async function loadPreparedDisplayCache(base,progress=()=>{},mode='full')
  const chunks=new Map(),queue=[...manifest.chunks];let done=0;
  async function worker(){while(queue.length){const item=queue.shift();const bytes=await(await unpackAsset(baseURL,item.file,item.sha256)).arrayBuffer();if(bytes.byteLength!==item.inflatedBytes)throw Error('Prepared geometry byte length differs: '+item.file);chunks.set(item.file,bytes);progress(++done,manifest.chunks.length);}}
  await Promise.all(Array.from({length:4},worker));
- const keys=new WeakMap(),sources=new Map(),views=new Map();
- const stats={hits:0,misses:0,sourceGeometries:0,entries:Object.keys(manifest.entries).length};
+ const keys=new WeakMap(),sources=new Map(),views=new Map(),leafSurfaces=new WeakSet();
+ const stats={hits:0,misses:0,leafSurfaces:0,sourceGeometries:0,entries:Object.keys(manifest.entries).length};
  function fields(key){
   if(views.has(key))return views.get(key);
   const entry=manifest.entries[key];if(!entry)return;
@@ -38,9 +53,13 @@ export async function loadPreparedDisplayCache(base,progress=()=>{},mode='full')
  }
  return {stats,manifest,
   async prepare(root,onProgress=()=>{}){
-   const geometries=new Set();root.traverse(node=>{if(node.isMesh)geometries.add(node.geometry);});
+   const geometries=new Set();root.traverse(node=>{
+    if(!node.isMesh)return;
+    geometries.add(node.geometry);
+    if(node.parent?.userData.part_id===NEAR_FOLIAGE_PART && Object.values(NEAR_FOLIAGE_MATERIALS).includes(node.material?.name))leafSurfaces.add(node.geometry);
+   });
    const queue=[...geometries],missing=[];let prepared=0;
-   async function worker(){while(queue.length){const geometry=queue.shift(),key=await geometryFingerprint(geometry);keys.set(geometry,key);sources.set(key,geometry);if(!manifest.entries[key])missing.push(key);onProgress(++prepared,geometries.size);}}
+   async function worker(){while(queue.length){const geometry=queue.shift(),key=await geometryFingerprint(geometry);keys.set(geometry,key);sources.set(key,geometry);if(!manifest.entries[key]&&!leafSurfaces.has(geometry))missing.push(key);onProgress(++prepared,geometries.size);}}
    await Promise.all(Array.from({length:4},worker));stats.sourceGeometries=geometries.size;
    // A platform-dependent procedural mesh may differ by a float bit. Rebuild
    // that mesh through the original algorithm rather than reuse an inexact chart.
@@ -48,7 +67,12 @@ export async function loadPreparedDisplayCache(base,progress=()=>{},mode='full')
   },
   key(node){const key=keys.get(node.geometry);if(key)sources.set(key,node.geometry);return key;},
   get(key){
-   const value=fields(key),source=sources.get(key);if(!value||!source){stats.misses++;return;}
+   const source=sources.get(key);
+   if(leafSurfaces.has(source)&&!manifest.entries[key]){
+    stats.leafSurfaces++;
+    return {geometry:{clone:()=>prepareLeafSurface(source)},field:{offset:0,data:[]}};
+   }
+   const value=fields(key);if(!value||!source){stats.misses++;return;}
    stats.hits++;
    // GeometryStage asks cached.geometry.clone(). Construct directly here so
    // there is no second copy of the large expanded position/normal buffers.

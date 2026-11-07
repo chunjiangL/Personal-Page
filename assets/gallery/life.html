@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Life</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="../css/font.css">
+  <link rel="stylesheet" href="../css/games.css">
+  <link rel="stylesheet" href="../css/sketch-viewer.css">
+</head>
+<body class="games-page games-auto-dark life-embed">
+  <div class="sketch-viewer" id="sketch-viewer" aria-label="Life" role="region">
+    <div class="viewer-toolbar">
+      <div class="viewer-scenes" role="group" aria-label="Choose a scene">
+        <button type="button" data-scene="neighborhood" aria-pressed="true">Neighborhood</button>
+        <button type="button" data-scene="bedroom" aria-pressed="false">Bedroom</button>
+      </div>
+      <div class="viewer-weather" role="group" aria-label="Scene atmosphere">
+        <label for="weather-select">Weather</label>
+        <select id="weather-select" autocomplete="off" disabled>
+          <option value="sunny">Sunny</option>
+          <option value="overcast">Overcast</option>
+          <option value="rain">Rain</option>
+          <option value="night">Night</option>
+        </select>
+      </div>
+      <div class="viewer-light" role="group" aria-label="Lighting">
+        <label for="light-time">Time of day <span id="light-time-value" aria-hidden="true">12:00</span>
+          <input type="range" id="light-time" min="330" max="1110" step="5" value="720" autocomplete="off" disabled>
+        </label>
+        <label for="light-strength">Intensity <span id="light-strength-value" aria-hidden="true">100%</span>
+          <input type="range" id="light-strength" aria-label="Light intensity" min="0" max="200" step="1" value="100" autocomplete="off" disabled>
+        </label>
+        <label for="light-azimuth" title="Horizontal rotation from the current weather's light direction">Azimuth <span id="light-azimuth-value" aria-hidden="true">0°</span>
+          <input type="range" id="light-azimuth" min="-180" max="180" step="1" value="0" autocomplete="off" disabled>
+        </label>
+      </div>
+      <div class="viewer-tools" role="group" aria-label="Display controls">
+        <div class="viewer-zoom" role="group" aria-label="Zoom controls">
+          <button type="button" id="viewer-zoom-out" aria-label="Zoom out" title="Zoom out" disabled>−</button>
+          <button type="button" id="viewer-zoom-reset" aria-label="Reset view" title="Reset view (0)" disabled>80%</button>
+          <button type="button" id="viewer-zoom-in" aria-label="Zoom in" title="Zoom in" disabled>+</button>
+        </div>
+        <button type="button" id="viewer-fullscreen" aria-label="Enter fullscreen" disabled><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M7 3H3v4m10-4h4v4M3 13v4h4m10-4v4h-4"/></svg><span>Fullscreen</span></button>
+      </div>
+    </div>
+
+    <div class="viewer-stage">
+      <div id="sketch-canvas" class="sketch-canvas" aria-label="3D scene" aria-describedby="viewer-help"></div>
+      <div id="inspection-canvas" class="inspection-canvas" role="region" aria-label="Object component view" aria-describedby="viewer-help" hidden></div>
+      <div id="viewer-loading" class="viewer-message" role="status">
+        <span class="viewer-loading-mark" aria-hidden="true"></span>
+        <p>Preparing the neighborhood</p>
+        <progress id="viewer-progress" aria-label="Loading scene"></progress>
+        <span class="viewer-message-note">Loading the scene and its objects.</span>
+      </div>
+      <div id="viewer-error" class="viewer-message" role="alert" hidden>
+        <p>The scene could not be loaded.</p>
+        <span class="viewer-message-note">Please try again.</span>
+        <button type="button" id="viewer-retry">Retry</button>
+      </div>
+    </div>
+
+    <div class="viewer-inspector">
+      <div id="desk-objects" class="desk-objects" role="group" aria-label="Objects on the desk" hidden></div>
+      <div id="selection-panel" class="selection-panel" hidden>
+        <div class="inspection-name"><strong id="selected-name"></strong><span id="selected-part" aria-live="polite"></span></div>
+        <div class="selection-actions" role="group" aria-label="Selected object">
+          <label class="separation-control">Separation <input id="desk-separation" type="range" min="0" max="100" step="1" value="100"></label>
+          <button type="button" id="explode-object" aria-pressed="true">Assemble</button>
+          <button type="button" id="reset-detail-view">Reset view</button>
+          <button type="button" id="clear-selection">Back to bedroom</button>
+        </div>
+      </div>
+    </div>
+    <div class="viewer-notes"><p id="viewer-help">Choose Bedroom to explore the objects on the desk.</p><p id="viewer-status" role="status" aria-live="polite" aria-atomic="true">Loading neighborhood…</p></div>
+    <noscript><p class="viewer-noscript">Enable JavaScript to view the neighborhood and bedroom.</p></noscript>
+  </div>
+  <script type="module">
+    const viewer = document.getElementById('sketch-viewer');
+    function report() {
+      if (parent === window) return;
+      const url = new URL(location.href);
+      parent.postMessage({action:'life-view', height:Math.ceil(viewer.getBoundingClientRect().height),
+        scene:url.searchParams.get('scene'), time:url.searchParams.get('time')}, location.origin);
+    }
+    new ResizeObserver(report).observe(viewer);
+    new MutationObserver(report).observe(viewer.querySelector('.viewer-scenes'), {subtree:true, attributes:true, attributeFilter:['aria-pressed']});
+    document.getElementById('light-time').addEventListener('change', () => queueMicrotask(report));
+    const bundle = new URL('../js/sketch-viewer.bundle.js', location.href);
+    bundle.searchParams.set('v', new URL(location.href).searchParams.get('v') || '');
+    await import(bundle.href);
+  </script>
+</body>
+</html>

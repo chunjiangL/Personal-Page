@@ -13,5 +13,8 @@ vendor
 atlas-preview.html
 node_modules/
 artifacts/
+.wrangler/
+.deploy-state/
+.dev.vars*
 assets/models/sketch-game/
 assets/models/sketch-runtime/**/*.glb

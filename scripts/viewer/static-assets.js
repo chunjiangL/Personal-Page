@@ -30,5 +30,4 @@ export async function api(route,body){
 }
 export function assemblyURL(key){const entry=Object.values(manifest.assemblies).find(value=>value.record.assemblyKey===key);if(!entry)throw Error('Unknown assembly key');return urls.get(entry.model)||resolved(entry.model);}
 export function fileURL(file){const relative=manifest?.files[file];if(!relative)throw Error('Unknown asset: '+file);return urls.get(relative)||resolved(relative);}
-export async function assemblyData(id){await prepareAssets();const entry=manifest.assemblies[id];return{record:entry.record,bytes:await(await fetch(assemblyURL(entry.record.assemblyKey))).arrayBuffer()};}
 export function getPreparedDisplayCache(){return preparedDisplayCache;}

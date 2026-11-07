@@ -26,6 +26,13 @@ export async function loadContourCache(baseURL,progress=()=>{},mode='full'){
 
 /** Falls back to the exact original algorithm for edited or uncached geometry. */
 export function preparedEdges(geometry,angle=1){
+ if(geometry.userData.galleryLeafSurface){
+  // ContourStage builds its silhouette hull from the live leaf geometry.
+  // Its separate (transparent) triangle-crease pass needs no segments.
+  const edges=new T.EdgesGeometry(null,angle);
+  edges.setAttribute('position',new T.Float32BufferAttribute([],3));
+  return edges;
+ }
  const sourceKey=geometry?.userData?.showcaseSourceKey;
  const positions=sourceKey&&active.get(contourKey(sourceKey,angle));
  if(!positions){statistics.misses++;return new T.EdgesGeometry(geometry,angle);}

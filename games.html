@@ -8,7 +8,7 @@ permalink: /games.html
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Gallery | {{ site.title }}</title>
-  <meta name="description" content="Sketch Studies, Mirror World, and Ink Game — visual experiments by Chunjiang Liu.">
+  <meta name="description" content="Life and Worlds — visual experiments by Chunjiang Liu.">
   <link rel="canonical" href="{{ site.canonical }}games.html">
   {% include favicon.html %}
   {% assign asset_version = site.github.build_revision | default: site.time %}
@@ -24,7 +24,6 @@ permalink: /games.html
   {% endif %}
   <link rel="stylesheet" href="{{ '/assets/css/research-atlas.css' | relative_url }}?v={{ asset_version }}">
   <link rel="stylesheet" href="{{ '/assets/css/games.css' | relative_url }}?v={{ asset_version }}">
-  <link rel="stylesheet" href="{{ '/assets/css/sketch-viewer.css' | relative_url }}?v={{ asset_version }}">
 </head>
 <body class="atlas-page games-page{% if site.auto_dark_mode %} atlas-auto-dark games-auto-dark{% endif %}">
   <nav class="atlas-nav" aria-label="Main navigation">
@@ -32,82 +31,42 @@ permalink: /games.html
     <div class="atlas-nav-links"><a href="{{ '/' | relative_url }}">Home</a><a href="{{ '/' | relative_url }}#publications">Publications</a><a href="{{ '/world.html' | relative_url }}">Atlas</a><a href="{{ '/games.html' | relative_url }}" aria-current="page">Gallery</a></div>
   </nav>
   <main class="games" aria-label="Gallery">
-    <div class="games-heading" id="games-title">
-      <nav class="games-index" aria-label="Projects">
-        {% for game in site.data.games %}<a href="#{{ game.id }}">{{ game.name }}</a>{% endfor %}
-      </nav>
-    </div>
-    {% assign sketch = site.data.games | where: 'id', 'sketch-game' | first %}
-    <article class="game-feature" id="sketch-game" aria-labelledby="sketch-game-title">
-      <div class="game-feature-heading">
-        <div><p class="game-field">{{ sketch.field }}</p><h2 id="sketch-game-title">{{ sketch.name }}</h2></div>
-        <p class="game-description">A neighborhood in changing weather, and a quiet bedroom. Take a closer look at the objects on the desk and explore their modeled parts.</p>
+    <nav class="gallery-projects" aria-label="Projects">
+      {% for game in site.data.games %}
+      <button class="gallery-card" type="button" data-project="{{ game.id }}" data-view="{{ game.viewer | relative_url }}"
+        aria-label="Open {{ game.name }}" aria-pressed="false" aria-controls="gallery-player">
+        <img src="{{ game.thumbnail | relative_url }}?v={{ asset_version }}" alt="" width="640" height="400">
+        <span>{{ game.name }}</span>
+      </button>
+      {% endfor %}
+    </nav>
+    <div id="gallery-player" role="region" aria-labelledby="project-title" hidden>
+      <div class="project-bar">
+        <h2 id="project-title"></h2>
+        <button id="close-project" type="button" aria-label="Close project">Close <span aria-hidden="true">×</span></button>
       </div>
-
-      <div class="sketch-viewer" id="sketch-viewer" aria-label="Interactive Sketch Studies scenes">
-        <div class="viewer-toolbar">
-          <div class="viewer-scenes" role="group" aria-label="Choose a scene">
-            <button type="button" data-scene="neighborhood" aria-pressed="true">Neighborhood</button>
-            <button type="button" data-scene="bedroom" aria-pressed="false">Bedroom</button>
-          </div>
-          <div class="viewer-weather" role="group" aria-label="Scene atmosphere">
-            <label for="weather-select">Weather</label>
-            <select id="weather-select" disabled>
-              <option value="sunny">Sunny</option>
-              <option value="overcast">Overcast</option>
-              <option value="rain">Rain</option>
-              <option value="sunset">Sunset</option>
-              <option value="night">Night</option>
-            </select>
-          </div>
-          <div class="viewer-tools" role="group" aria-label="Display controls">
-            <button type="button" id="viewer-fullscreen" aria-label="Enter fullscreen" disabled><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M7 3H3v4m10-4h4v4M3 13v4h4m10-4v4h-4"/></svg><span>Fullscreen</span></button>
-          </div>
-        </div>
-
-        <div class="viewer-stage">
-          <div id="sketch-canvas" class="sketch-canvas" aria-label="3D scene" aria-describedby="viewer-help"></div>
-          <div id="inspection-canvas" class="inspection-canvas" role="region" aria-label="Object component view" hidden></div>
-          <div id="viewer-loading" class="viewer-message" role="status">
-            <span class="viewer-loading-mark" aria-hidden="true"></span>
-            <p>Preparing the neighborhood</p>
-            <progress id="viewer-progress" aria-label="Loading scene"></progress>
-            <span class="viewer-message-note">Loading the scene and its objects.</span>
-          </div>
-          <div id="viewer-error" class="viewer-message" role="alert" hidden>
-            <p>The scene could not be loaded.</p>
-            <span class="viewer-message-note">Please try again.</span>
-            <button type="button" id="viewer-retry">Retry</button>
-          </div>
-        </div>
-
-        <div class="viewer-inspector">
-          <div id="desk-objects" class="desk-objects" role="group" aria-label="Objects on the desk" hidden></div>
-          <div id="selection-panel" class="selection-panel" hidden>
-            <strong id="selected-name"></strong>
-            <div class="selection-actions" role="group" aria-label="Selected object">
-              <button type="button" id="explode-object" aria-pressed="true">Assemble</button>
-              <button type="button" id="clear-selection">Back to bedroom</button>
-            </div>
-          </div>
-        </div>
-        <div class="viewer-notes"><p id="viewer-help">Choose Bedroom to explore the objects on the desk.</p><p id="viewer-status" role="status" aria-live="polite" aria-atomic="true">Loading neighborhood…</p></div>
-        <noscript><p class="viewer-noscript">Enable JavaScript to view the neighborhood and bedroom.</p></noscript>
-      </div>
-    </article>
-
-    <div class="game-notes">
-      {% for game in site.data.games %}{% unless game.id == 'sketch-game' %}
-      <article class="game-project" id="{{ game.id }}" aria-labelledby="{{ game.id }}-title">
-        <p class="game-field">{{ game.field }}</p>
-        <h2 id="{{ game.id }}-title">{{ game.name }}</h2>
-        <p class="game-description">{{ game.description }}</p>
-        <div class="game-focus"><h3>In development</h3><p>{{ game.focus }}</p></div>
-      </article>
-      {% endunless %}{% endfor %}
+      <div id="project-stage"></div>
+      <section class="project-description" data-project-description="sketch-game" aria-labelledby="life-description-title" hidden>
+        <h3 id="life-description-title">About Life</h3>
+        <ul>
+          <li><strong>Procedural environments.</strong> Everyday spaces built from streets, buildings, vegetation, furnished interiors and the objects within them.</li>
+          <li><strong>Illustrative rendering.</strong> Ink contours, soft colors and material details give architecture, furniture and household objects a consistent visual style.</li>
+          <li><strong>Changing atmosphere.</strong> Daylight, sunset, overcast skies, rain and night reshape the scenes through lighting, reflections, moving traffic and interior illumination.</li>
+          <li><strong>Object construction.</strong> Component-based models reveal how everyday products fit together through interactive inspection, separation and reassembly.</li>
+        </ul>
+      </section>
+      <section class="project-description" data-project-description="mirror-world" aria-labelledby="worlds-description-title" hidden>
+        <h3 id="worlds-description-title">About Worlds</h3>
+        <ul>
+          <li><strong>Procedural planets.</strong> Large landforms and fine terrain detail combine to create distinct mountain ridges, cliffs, valleys and coastlines.</li>
+          <li><strong>Ink and terrain materials.</strong> Contour lines define the landscape, while elevation and slope shape the distribution of snow, exposed rock, grassland and ochre soil.</li>
+          <li><strong>Fragment-filled space.</strong> Animated, reflective glass fragments form distinct orbital patterns and nebula fields around rotating planets.</li>
+          <li><strong>Exploration across scales.</strong> Terrain streaming and levels of detail connect planetary views to surface exploration, retaining the original terrain mesh in close views.</li>
+        </ul>
+      </section>
     </div>
-    <div class="games-footer"><a href="{{ '/' | relative_url }}">← Back to home</a><a href="#games-title">Back to top ↑</a></div>
+    <noscript><p>Enable JavaScript to open the projects.</p></noscript>
   </main>
-  <script type="module" src="{{ '/assets/js/sketch-viewer.bundle.js' | relative_url }}?v={{ asset_version }}"></script>
+  <script type="module" src="{{ '/assets/gallery/gallery.js' | relative_url }}?v={{ asset_version }}"></script>
 </body>
 </html>
