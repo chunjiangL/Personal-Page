@@ -11,7 +11,7 @@
 <div class="pub-row">
   <div class="col-sm-3 abbr" style="position: relative;padding-right: 15px;padding-left: 15px;">
     {% if link.image %}
-    <img src="{{ link.image }}" class="teaser img-fluid z-depth-1" style="width=100;height=40%">
+    <img src="{{ link.thumbnail | default: link.image }}"{% if link.thumbnail %} srcset="{{ link.thumbnail }} 360w, {{ link.thumbnail_2x }} 720w" sizes="(max-width: 600px) calc(100vw - 32px), 270px"{% endif %} class="teaser img-fluid z-depth-1" width="270" height="123" loading="{% if forloop.first %}eager{% else %}lazy{% endif %}" decoding="async" alt="{{ link.title | escape }}">
     {% if link.conference_short %}
     <abbr class="badge">{{ link.conference_short }}</abbr>
     {% endif %}

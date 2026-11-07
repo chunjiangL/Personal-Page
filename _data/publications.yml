@@ -6,6 +6,8 @@ main:
     conference: Submitted to <strong>NeurIPS 2026</strong>.
     pdf: https://arxiv.org/abs/2607.01766
     image: ./assets/img/simworlds_preview.png
+    thumbnail: ./assets/img/home/simworlds-360.webp
+    thumbnail_2x: ./assets/img/home/simworlds-720.webp
 
   # Venue and author order verified against the official COLM 2026 proceedings:
   # https://proceedings.colm.cc/paper_files/paper/2026/hash/b1ccad30cbede18aa76c8d5cf408fa4e-Abstract-Conference.html
@@ -20,6 +22,8 @@ main:
     code: https://github.com/BakeLab/Visual-Aesthetic-Benchmark
     page: https://vab.bakelab.ai/
     image: ./assets/img/vab_preview.png
+    thumbnail: ./assets/img/home/vab-360.webp
+    thumbnail_2x: ./assets/img/home/vab-720.webp
 
   # Venue and authors: https://memobench-team.github.io/
   # Also listed as ECCV 2026 by the coauthors at https://ccvl.jhu.edu/publication/
@@ -33,6 +37,8 @@ main:
     code: https://github.com/MemoBench-Team/MemoBench
     page: https://memobench-team.github.io/
     image: ./assets/img/memobench_preview.jpg
+    thumbnail: ./assets/img/home/memobench-360.webp
+    thumbnail_2x: ./assets/img/home/memobench-720.webp
 
   - title: "MOSIV: Multi-Object System Identification from Videos"
     authors: <strong>Chunjiang Liu</strong>, Xiaoyuan Wang, Qingran Lin, Albert Xiao, Haoyu Chen, Shizheng Wen, Hao Zhang, Lu Qi, Ming-Hsuan Yang, Laszlo A. Jeni, Min Xu, Yizhou Zhao
@@ -42,6 +48,8 @@ main:
     conference: International Conference on Learning Representations <strong>(ICLR)</strong>, 2026.
     pdf: https://arxiv.org/abs/2603.06022
     image: ./assets/img/mosiv_preview.jpg
+    thumbnail: ./assets/img/home/mosiv-360.webp
+    thumbnail_2x: ./assets/img/home/mosiv-720.webp
 
   - title: "MASIV: Toward Material-Agnostic System Identification from Videos"
     authors: Yizhou Zhao, Haoyu Chen, <strong>Chunjiang Liu</strong>, Zhenyang Li, Charles Herrmann, Junhwa Hur, Yinxiao Li, Ming-Hsuan Yang, Bhiksha Raj, Min Xu
@@ -52,6 +60,8 @@ main:
     pdf: https://www.arxiv.org/abs/2508.01112
     code: https://github.com/Skaldak/MASIV
     image: ./assets/img/masiv_preview.jpg
+    thumbnail: ./assets/img/home/masiv-360.webp
+    thumbnail_2x: ./assets/img/home/masiv-720.webp
 
   - title: "Total-Editing: Head Avatar with Editable Appearance, Motion, and Lighting"
     authors: Yizhou Zhao, <strong>Chunjiang Liu</strong>, Haoyu Chen, Bhiksha Raj, Min Xu, Tadas Baltrusaitis, Mitch Rundle, HsiangTao Wu, Kamran Ghasedi
@@ -61,3 +71,5 @@ main:
     conference: IEEE/CVF International Conference on Computer Vision Workshop <strong>(ICCV Workshop)</strong>, 2025.
     pdf: https://arxiv.org/abs/2505.20582
     image: ./assets/img/total_editing_preview.jpg
+    thumbnail: ./assets/img/home/total-editing-360.webp
+    thumbnail_2x: ./assets/img/home/total-editing-720.webp

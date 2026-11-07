@@ -22,7 +22,7 @@ linkedin: https://www.linkedin.com/in/chunjiang-liu/
 
 # Images (e.g., your profile picture and your website's favicon)
 # "favicon" and "favicon_dark" are used for the light and dark modes, respectively.
-avatar: ./assets/img/avatar-clean.png
+avatar: ./assets/img/home/avatar-480.webp
 favicon: ./assets/img/favicon-l.png
 favicon_dark: ./assets/img/favicon-l.png
 

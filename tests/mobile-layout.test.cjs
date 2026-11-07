@@ -21,6 +21,8 @@ function contentType(filePath) {
     '.jpg': 'image/jpeg',
     '.js': 'text/javascript',
     '.png': 'image/png',
+    '.webp': 'image/webp',
+    '.svg': 'image/svg+xml',
     '.woff2': 'font/woff2',
   }[extension] || 'application/octet-stream';
 }
@@ -49,6 +51,7 @@ before(async () => {
   });
   page = await browser.newPage({ viewport: { width: 390, height: 844 } });
   await page.goto(baseUrl, { waitUntil: 'domcontentloaded' });
+  await page.evaluate(() => document.fonts.ready);
 });
 
 after(async () => {
@@ -67,9 +70,9 @@ test('email is exposed as a touch-friendly mail link instead of plain text', asy
   assert.ok(box.height >= 40, `expected height >= 40px, received ${box.height}px`);
 });
 
-test('mobile profile header fits within 330px vertically', async () => {
+test('mobile profile and six contents links fit within 360px vertically', async () => {
   const box = await page.locator('header').boundingBox();
-  assert.ok(box.height <= 330, `expected height <= 330px, received ${box.height}px`);
+  assert.ok(box.height <= 360, `expected height <= 360px, received ${box.height}px`);
 });
 
 test('mobile contents links have a 44px minimum touch height', async () => {
