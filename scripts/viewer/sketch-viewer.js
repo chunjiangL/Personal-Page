@@ -145,7 +145,14 @@ function chooseScene(id){
  motionView?.finish();
  cancelGesture?.();
  stage.renderer.domElement.style.cursor='';
- if((id==='bedroom'&&loadedMode==='neighborhood')||(compactDevice&&id==='neighborhood'&&loadedMode==='full')){void start(id);return;}
+ const requestedMode=id==='bedroom'?'full':'neighborhood';
+ if(compactDevice&&loadedMode!==requestedMode){
+  // A new document releases the previous JS/WASM/GPU ownership together.
+  // Only an explicit scene click navigates; startup/failures never retry.
+  const url=new URL(location);url.searchParams.set('scene',id);url.searchParams.set('weather',$('weather-select').value);
+  location.replace(url);return;
+ }
+ if(id==='bedroom'&&loadedMode==='neighborhood'){void start(id);return;}
  closeDetail();current=id==='bedroom'?'bedroom':'neighborhood';stage.setFreeCamera(false);
  if(current==='bedroom'){stage.focusBedroomDetail('seated',false);bedroomPose();ensureDesk();desk.captureNext=true;}
  else stage.focusBuilding('exterior','all',false);
@@ -358,6 +365,8 @@ timeSlider.addEventListener('change',()=>{
  history.replaceState(null,'',url);
 });
 updateLightControls();
+const linkedWeather=new URL(location.href).searchParams.get('weather');
+if([...$('weather-select').options].some(option=>option.value===linkedWeather))$('weather-select').value=linkedWeather;
 $('weather-select').addEventListener('change',()=>{if(busy||!stage?.ready)return;motionView?.finish();closeDetail();stage.setWeather($('weather-select').value);syncTimeControl();applyNightTraffic(stage);status(names[current]+' · '+$('weather-select').selectedOptions[0].text);report();});
 $('explode-object').addEventListener('click',()=>setDetailGoal(detail?.goal>0?0:1));
 $('desk-separation').addEventListener('input',event=>setDetailGoal(event.target.valueAsNumber/100,true));
