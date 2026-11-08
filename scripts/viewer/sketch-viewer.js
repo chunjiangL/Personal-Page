@@ -6,7 +6,7 @@ import {prepareAssets,releaseSceneSources} from './static-assets.js';
 import {setDeskSeparation} from './desk-inspection.mjs';
 import {createRoomDesk} from './desk-room-view.mjs';
 import {createDeskCamera} from './desk-camera.mjs';
-import {transferStats} from './asset-transfer.mjs';
+import {transferStats,subscribeTransfers} from './asset-transfer.mjs';
 import {contourCacheStats} from './contour-cache.mjs';
 import {applyNightTraffic} from './night-traffic.mjs';
 import {createFixedViewZoom,wheelZoomFactor,zoomLimits} from './fixed-view-zoom.mjs';
@@ -276,7 +276,15 @@ async function start(requested=new URLSearchParams(location.search).get('scene')
   if(compactDevice)stage?.renderer.forceContextLoss();
   stage=undefined;
   if(diagnostic)window.__lifeStage=undefined;
-  await prepareAssets((done,total)=>{$('viewer-progress').max=total;$('viewer-progress').value=done;},mode);$('viewer-progress').removeAttribute('value');
+  const note=$('viewer-loading').querySelector('.viewer-message-note');
+  const stopProgress=subscribeTransfers(event=>{
+   const name=new URL(event.url).pathname.split('/').slice(-2).join('/');
+   const mb=n=>(n/1048576).toFixed(1)+' MB';
+   note.textContent=(event.state==='retrying'?'Retrying ':'Downloading ')+name+' · '+mb(event.loaded)+(event.total?' / '+mb(event.total):'');
+  });
+  try{await prepareAssets((done,total)=>{$('viewer-progress').max=total;$('viewer-progress').value=done;},mode);}
+  finally{stopProgress();}
+  note.textContent='Preparing the scene and its objects.';$('viewer-progress').removeAttribute('value');
   loadPhase('renderer');stage=new ApartmentStage(host);fixedZoom=createFixedViewZoom(stage.camera,()=>{stage.dirty=true;},{reduced,views:zoomViews});
   if(diagnostic)window.__lifeStage=stage;
   stage.onBeforeFrame=dt=>{stage.core.galleryBedroom=stage.seated;flushSceneLight();applyNightTraffic(stage);if(fixedZoom.update(dt))motionView?.sample();bedroomAir?.tick(dt);if(bedroomAir)bedroomAir.uniforms.uPixelRatio.value=stage.renderer.getPixelRatio();};

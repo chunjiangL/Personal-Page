@@ -14,6 +14,16 @@ export async function syncMirrorSpace(){
   for(const name of ['index.html','space.js','mesh-worker.js','worlds.json','demo-bootstrap.js'])await fs.copyFile(path.join(dataRoot,'space',name),path.join(output,name));
   const entry=path.join(output,'index.html');
   await fs.writeFile(entry,(await fs.readFile(entry,'utf8')).replace(/name="worlds-data-base" content="[^"]*"/,()=>`name="worlds-data-base" content="${dataBase}"`));
+  // The small first-view meshes and pigments must not depend on a second domain
+  // being reachable. Native .3m terrain remains on the existing bounded host.
+  const catalog=JSON.parse(await fs.readFile(path.join(dataRoot,'space/worlds.json'),'utf8'));
+  for(const dir of ['worlds','overview','materials'])await fs.mkdir(path.join(output,'bootstrap',dir),{recursive:true});
+  for(const world of catalog){
+    if(!/^[a-z0-9-]+$/.test(world.id))throw Error('Invalid world id');
+    for(const dir of ['worlds','overview'])await fs.copyFile(path.join(dataRoot,'space',dir,world.id+'.gz'),path.join(output,'bootstrap',dir,world.id+'.gz'));
+    await fs.copyFile(path.join(dataRoot,'gallery',world.id,'full/mineral.rgba.gz'),path.join(output,'bootstrap/materials',world.id+'.gz'));
+  }
+  await fs.writeFile(entry,(await fs.readFile(entry,'utf8')).replace('</head>','<meta name="worlds-bootstrap-base" content="./bootstrap/"></head>'));
   const generated=path.join(project,'_site/gallery.html');
   const source=await fs.readFile(path.join(project,'_data/games.yml'),'utf8');
   const world=source.split('- id: mirror-world')[1]?.split('\n- id:')[0];

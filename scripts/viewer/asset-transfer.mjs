@@ -1,4 +1,5 @@
 import {gzipResponse} from './gzip-response.mjs';
+import {downloadBytes,optionalCache} from './resilient-download.mjs';
 // Cache compressed public assets by content, independently of page deployments.
 // The cache is an accelerator only: quota/private-mode failures use normal fetch.
 const cacheName='sketch-showcase-assets-v1';
@@ -12,12 +13,15 @@ const mobileTransfers=typeof matchMedia==='function'&&matchMedia('(pointer: coar
 const packLoads=new Map();
 let packsDisabled=false;
 export const transferStats={hits:0,downloads:0,compressedBytes:0,packedMembers:0};
-async function cache(){return cachePromise??=(globalThis.caches?caches.open(cacheName).catch(()=>null):Promise.resolve(null));}
+const listeners=new Set();
+export function subscribeTransfers(listener){listeners.add(listener);return()=>listeners.delete(listener);}
+function notify(event){for(const listener of listeners)listener(event);}
+async function cache(){return cachePromise??=(globalThis.caches?optionalCache(()=>caches.open(cacheName)):Promise.resolve(null));}
 export function assetURL(base,relative,hash){const url=new URL(relative,base);url.search=hash?'h='+hash:'';return url.href;}
 const checksum=async bytes=>[...new Uint8Array(await crypto.subtle.digest('SHA-256',bytes))].map(n=>n.toString(16).padStart(2,'0')).join('');
 async function download(url){
- const response=await fetch(url,coldBenchmark?{cache:'reload'}:undefined);if(!response.ok)throw Error('Could not load '+url);
- transferStats.downloads++;const bytes=await response.arrayBuffer();transferStats.compressedBytes+=bytes.byteLength;return bytes;
+ const bytes=await downloadBytes(url,{rangeSize:mobileTransfers?524288:0,cache:coldBenchmark?'reload':undefined,onProgress:notify});
+ transferStats.downloads++;transferStats.compressedBytes+=bytes.byteLength;return bytes;
 }
 function beginPacks(base){
  // Start the three balanced transfers together. In particular, the small
@@ -42,11 +46,13 @@ async function packedMember(base,relative,hash){
 }
 export async function unpackAsset(base,relative,hash){
  const url=assetURL(base,relative,hash),storage=hash?await cache():null;
- let response=coldBenchmark?undefined:await storage?.match(url).catch(()=>undefined);
+ let response=coldBenchmark?undefined:await optionalCache(()=>storage?.match(url));
+ let cached=response?await optionalCache(()=>response.arrayBuffer()):undefined;
+ if(!cached)response=undefined;
  const hit=!!response;
  if(hit)transferStats.hits++;
- const compressed=hit?await response.arrayBuffer():await packedMember(base,relative,hash)??await download(url);
- if(hash){const actual=await checksum(compressed);if(actual!==hash){await storage?.delete(url).catch(()=>{});if(hit){cachePromise=Promise.resolve(null);return unpackAsset(base,relative,hash);}throw Error('Asset checksum mismatch: '+relative);}}
+ const compressed=hit?cached:await packedMember(base,relative,hash)??await download(url);
+ if(hash){const actual=await checksum(compressed);if(actual!==hash){await optionalCache(()=>storage?.delete(url));if(hit){cachePromise=Promise.resolve(null);return unpackAsset(base,relative,hash);}throw Error('Asset checksum mismatch: '+relative);}}
  if(storage&&!hit)void storage.put(url,new Response(compressed)).catch(()=>{});
  return gzipResponse(compressed);
 }

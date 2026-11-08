@@ -4,7 +4,7 @@ The public page is https://chunjiangliu.com/gallery.html. The legacy /games.html
 
 Project thumbnails are real links to their Gallery hash. The URL selects the project ahead of stored history state. Each player has a separate iframe identity; repeated taps and restored pages retain a healthy matching player and repair mismatched documents. Resize messages and history writes are deduplicated. tests/gallery-mobile-routing.mjs covers touch targets, conflicting restored state, back/forward, refresh and closing.
 
-The website is built by GitHub Pages from the main branch of chunjiangL/Personal-Page. Gallery embeds Life and Worlds under the same website origin. Life's compressed assets are included in this repository. Worlds keeps its viewer and worker JavaScript here, while baked terrain is served through https://worlds-assets.chunjiang-liu-richard.workers.dev/v1/.
+The website is built by GitHub Pages from the main branch of chunjiangL/Personal-Page. Gallery embeds Life and Worlds under the same website origin. Life's compressed assets are included in this repository. Worlds keeps its viewer, worker, and 16,871,910-byte first-view mesh/height/pigment set here. High-detail terrain is served through https://worlds-assets.chunjiang-liu-richard.workers.dev/v1/. If that domain is unreachable, the ten-world overview and arrival still render, but native near terrain cannot load. The local first-view files are exact copies of the existing exports, not newly simplified geometry.
 
 ## Zero-budget limits
 
@@ -20,7 +20,7 @@ Current provider terms: https://developers.cloudflare.com/r2/pricing/ and https:
 
 Life: npm run build:viewer followed by npm run test:viewer. The standalone Worlds source remains in F:/MirrorWorld-gallery-lab/planet-1km-native/space-lab and imports the original engine read-only. After building it, npm run sync:mirror-space copies the small viewer files and preserves the configured public data root. Set MIRROR_DATA_BASE to an empty string to use local baked data, or to a public HTTPS root to change hosting.
 
-For a local full preview, run npm run preview:gallery. The local server mounts the baked files from F:/MirrorWorld-gallery-lab/planet-1km-native/site when the viewer uses its local data root. No terrain data is copied into this repository.
+For a local full preview, run npm run preview:gallery. The local server mounts the native baked files from F:/MirrorWorld-gallery-lab/planet-1km-native/site when the viewer uses its local data root. Only the small first-view set is copied into this repository by sync:mirror-space.
 
 Worker configuration is in scripts/cloudflare/wrangler.jsonc. The public Worker only serves approved terrain paths and GET/HEAD/OPTIONS, preserves raw gzip bytes, sets origin-specific CORS and caches immutable responses. tests/worlds-assets.test.mjs checks those boundaries. tests/worlds-hosting.mjs verifies original 0.3 m near terrain through the public host and return to all ten worlds. Set GALLERY_ORIGIN to the public website when testing the actual deployment.
 
