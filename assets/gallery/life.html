@@ -79,6 +79,7 @@
     <div class="viewer-notes"><p id="viewer-help">Choose Bedroom to explore the objects on the desk.</p><p id="viewer-status" role="status" aria-live="polite" aria-atomic="true">Loading neighborhood…</p></div>
     <noscript><p class="viewer-noscript">Enable JavaScript to view the neighborhood and bedroom.</p></noscript>
   </div>
+  <script src="./demo-bootstrap.js?v=android-compat-20261107"></script>
   <script type="module">
     const viewer = document.getElementById('sketch-viewer');
     let lastReport = '';
@@ -98,7 +99,7 @@
     for (const link of document.querySelectorAll('link[rel="stylesheet"]')) {
       const url = new URL(link.href); url.searchParams.set('v', bundle.searchParams.get('v')); link.href = url.href;
     }
-    await import(bundle.href);
+    import(bundle.href).catch(window.galleryDemo.fail);
   </script>
 </body>
 </html>

@@ -36,7 +36,7 @@ function display(key) {
   const card = cards.get(key);
   if (active === key && frameMatches(key)) return;
   // Removing the browsing context also stops its renderer, workers and pending loads.
-  stage.replaceChildren();
+  stage.textContent = '';
   frame = null;
   active = card ? key : null;
   for (const [id, link] of cards) {

@@ -1,3 +1,4 @@
+import './browser-compat.mjs';
 import * as T from 'three';
 import {ApartmentStage} from '@sketch/apps/apartment/stage';
 import {setDaylight} from '@sketch/apps/apartment/load-scene';
@@ -342,7 +343,7 @@ async function start(requested=new URLSearchParams(location.search).get('scene')
   });resizeObserver.observe(host);
   setBusy(false);$('viewer-fullscreen').disabled=false;startupMS??=Math.round(performance.now()-startupAt);loading(true,'Rendering the '+desired);
   chooseScene(desired);if(weather!=='sunny')stage.setWeather(weather);applyNightTraffic(stage);report();
- }catch(error){console.error(error);setBusy(false);loading(false);$('viewer-error').hidden=false;status('Scene loading failed.');if(diagnostic)diagnostic.textContent=JSON.stringify({error:error.message});}
+ }catch(error){console.error(error);setBusy(false);loading(false);$('viewer-error').hidden=false;status('Scene loading failed.');window.galleryDemo?.fail(error);if(diagnostic)diagnostic.textContent=JSON.stringify({error:error.message});}
 }
 document.querySelectorAll('[data-scene]').forEach(button=>button.addEventListener('click',()=>chooseScene(button.dataset.scene)));
 $('viewer-zoom-in').addEventListener('click',()=>changeZoom(1.2));

@@ -1,3 +1,4 @@
+import {gzipResponse} from './gzip-response.mjs';
 // Cache compressed public assets by content, independently of page deployments.
 // The cache is an accelerator only: quota/private-mode failures use normal fetch.
 const cacheName='sketch-showcase-assets-v1';
@@ -47,5 +48,5 @@ export async function unpackAsset(base,relative,hash){
  const compressed=hit?await response.arrayBuffer():await packedMember(base,relative,hash)??await download(url);
  if(hash){const actual=await checksum(compressed);if(actual!==hash){await storage?.delete(url).catch(()=>{});if(hit){cachePromise=Promise.resolve(null);return unpackAsset(base,relative,hash);}throw Error('Asset checksum mismatch: '+relative);}}
  if(storage&&!hit)void storage.put(url,new Response(compressed)).catch(()=>{});
- return new Response(new Blob([compressed]).stream().pipeThrough(new DecompressionStream('gzip')));
+ return gzipResponse(compressed);
 }

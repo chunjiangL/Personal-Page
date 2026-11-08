@@ -11,6 +11,7 @@
     "test:worlds": "node tests/worlds-integration.mjs"
   },
   "devDependencies": {
+    "core-js": "3.49.0",
     "esbuild": "0.28.2",
     "playwright": "^1.62.1",
     "three": "0.180.0"

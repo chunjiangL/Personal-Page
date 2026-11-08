@@ -29,7 +29,7 @@ const payloadHash=async file=>JSON.stringify(createHash('sha256').update(await f
 const startupPacks=await buildStartupPacks();
 const result=await build({
  define:{__SKETCH_STARTUP_PACKS__:JSON.stringify(startupPacks),__SKETCH_ASSET_MANIFEST__:await payloadHash('manifest.json.gz'),__SKETCH_PREPARED_MANIFEST__:await payloadHash('prepared-compact/manifest.json.gz'),__SKETCH_NEIGHBORHOOD_GEOMETRY__:await payloadHash('prepared-compact/neighborhood-manifest.json.gz'),__SKETCH_CONTOUR_MANIFEST__:await payloadHash('contours/manifest.json.gz'),__SKETCH_NEIGHBORHOOD_CONTOURS__:await payloadHash('contours/neighborhood-manifest.json.gz')},
- entryPoints:['scripts/viewer/sketch-viewer.js'],outfile:'assets/js/sketch-viewer.bundle.js',bundle:true,format:'esm',target:['es2022'],minify:true,legalComments:'eof',logLevel:'info',metafile:true,
+ entryPoints:['scripts/viewer/sketch-viewer.js'],outfile:'assets/js/sketch-viewer.bundle.js',bundle:true,format:'esm',target:['chrome80','safari15'],minify:true,legalComments:'eof',logLevel:'info',metafile:true,
  alias:{'@sketch':path.join(root,'src'),'@showcase-static':adapter},
  plugins:[{name:'static-original-runtime',setup(b){
   b.onLoad({filter:/apps[\\/]apartment[\\/]street-props\.ts$/},async args=>{
