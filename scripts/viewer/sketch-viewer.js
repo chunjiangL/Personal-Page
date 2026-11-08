@@ -263,6 +263,7 @@ async function start(requested=new URLSearchParams(location.search).get('scene')
  if(busy)return;setBusy(true);
  try{
   loading(true,desired==='bedroom'?'Loading the bedroom':'Loading the neighborhood');$('viewer-error').hidden=true;
+  closeDetail();desk?.snapshot.remove();
   resizeObserver?.disconnect();desk?.dispose();desk=undefined;motionView?.dispose();motionView=undefined;bedroomAir?.dispose();bedroomAir=undefined;stage?.dispose();
   if(compactDevice)stage?.renderer.forceContextLoss();
   stage=undefined;

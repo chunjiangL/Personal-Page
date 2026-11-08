@@ -30,7 +30,9 @@ try{
   report.push({scene,...state});console.log(report.at(-1));
   if(scene==='bedroom'){
    await page.locator('[data-object="monitor"]').click();await page.waitForFunction(()=>document.querySelector('#sketch-viewer').classList.contains('is-inspecting'));
-   await page.waitForTimeout(1000);await page.locator('#clear-selection').click();
+   // Switching from an open inspector must also stop its animation loop and
+   // release the old context, rather than retaining a second hidden renderer.
+   await page.waitForTimeout(1000);
   }
  }
  assert.ok(!requests.some(u=>/\/prepared-compact\/|\/startup\//.test(u)));
