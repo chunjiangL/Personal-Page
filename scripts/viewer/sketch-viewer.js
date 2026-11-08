@@ -1,7 +1,7 @@
 import * as T from 'three';
 import {ApartmentStage} from '@sketch/apps/apartment/stage';
 import {setDaylight} from '@sketch/apps/apartment/load-scene';
-import {prepareAssets} from './static-assets.js';
+import {prepareAssets,releaseSceneSources} from './static-assets.js';
 import {setDeskSeparation} from './desk-inspection.mjs';
 import {createRoomDesk} from './desk-room-view.mjs';
 import {createDeskCamera} from './desk-camera.mjs';
@@ -145,7 +145,7 @@ function chooseScene(id){
  motionView?.finish();
  cancelGesture?.();
  stage.renderer.domElement.style.cursor='';
- if(id==='bedroom'&&loadedMode==='neighborhood'){void start('bedroom');return;}
+ if((id==='bedroom'&&loadedMode==='neighborhood')||(compactDevice&&id==='neighborhood'&&loadedMode==='full')){void start(id);return;}
  closeDetail();current=id==='bedroom'?'bedroom':'neighborhood';stage.setFreeCamera(false);
  if(current==='bedroom'){stage.focusBedroomDetail('seated',false);bedroomPose();ensureDesk();desk.captureNext=true;}
  else stage.focusBuilding('exterior','all',false);
@@ -163,10 +163,12 @@ function ensureDesk(){
  }));
  // Register studio shader variants on the existing GPU context as soon as
  // the room materials are ready. The room and the inspector share vertices.
- for(const o of desk.objects)o.geometry.wrapper.visible=true;
- const camera=new T.PerspectiveCamera(38,1,.001,100);
- stage.renderer.compileAsync(desk.scene,camera).catch(error=>console.warn('Desk shader warmup',error));
- for(const o of desk.objects)o.geometry.wrapper.visible=false;
+ if(!compactDevice){
+  for(const o of desk.objects)o.geometry.wrapper.visible=true;
+  const camera=new T.PerspectiveCamera(38,1,.001,100);
+  stage.renderer.compileAsync(desk.scene,camera).catch(error=>console.warn('Desk shader warmup',error));
+  for(const o of desk.objects)o.geometry.wrapper.visible=false;
+ }
 }
 function backdropKey(){
  return [stage.weather,lightAdjustment.minutes,lightAdjustment.strength,lightAdjustment.offset,
@@ -261,8 +263,11 @@ async function start(requested=new URLSearchParams(location.search).get('scene')
  if(busy)return;setBusy(true);
  try{
   loading(true,desired==='bedroom'?'Loading the bedroom':'Loading the neighborhood');$('viewer-error').hidden=true;
-  await prepareAssets((done,total)=>{$('viewer-progress').max=total;$('viewer-progress').value=done;},mode);$('viewer-progress').removeAttribute('value');
   resizeObserver?.disconnect();desk?.dispose();desk=undefined;motionView?.dispose();motionView=undefined;bedroomAir?.dispose();bedroomAir=undefined;stage?.dispose();
+  if(compactDevice)stage?.renderer.forceContextLoss();
+  stage=undefined;
+  if(diagnostic)window.__lifeStage=undefined;
+  await prepareAssets((done,total)=>{$('viewer-progress').max=total;$('viewer-progress').value=done;},mode);$('viewer-progress').removeAttribute('value');
   loadPhase('renderer');stage=new ApartmentStage(host);fixedZoom=createFixedViewZoom(stage.camera,()=>{stage.dirty=true;},{reduced,views:zoomViews});
   if(diagnostic)window.__lifeStage=stage;
   stage.onBeforeFrame=dt=>{stage.core.galleryBedroom=stage.seated;flushSceneLight();applyNightTraffic(stage);if(fixedZoom.update(dt))motionView?.sample();bedroomAir?.tick(dt);if(bedroomAir)bedroomAir.uniforms.uPixelRatio.value=stage.renderer.getPixelRatio();};
@@ -273,6 +278,7 @@ async function start(requested=new URLSearchParams(location.search).get('scene')
   stage.onStreetFramed=()=>streetOrbit.capture(stage.loaded.building.groundY);
   stage.renderer.domElement.setAttribute('aria-label',names[desired]+' scene');
   await stage.initialize(label=>{loadPhase(label.replace(/\d+%/,'geometry'));const percentage=label.match(/\d+%/);loading(true,percentage?'Preparing original materials · '+percentage[0]:'Preparing the '+desired);});loadPhase('first-render');
+  releaseSceneSources();
   if(mode==='full'){
    bedroomAir=new BedroomAtmosphere(stage,reduced);limitBedroomDraws(stage);
    motionView=createBedroomMotionView(stage,[BEDROOM_WINDOW,LIVING_WINDOW]);

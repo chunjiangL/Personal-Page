@@ -1,6 +1,7 @@
 import {loadPreparedDisplayCache} from './prepared-geometry-cache.js';
 import {unpackAsset,releaseStartupPacks} from './asset-transfer.mjs';
 import {loadContourCache} from './contour-cache.mjs';
+import {compactDevice} from './device-budget.mjs';
 const base=new URL('../models/sketch-runtime/',import.meta.url);
 let manifest,pending,pendingMode,preparedDisplayCache,sceneLoadMode='neighborhood';
 const urls=new Map();
@@ -31,3 +32,11 @@ export async function api(route,body){
 export function assemblyURL(key){const entry=Object.values(manifest.assemblies).find(value=>value.record.assemblyKey===key);if(!entry)throw Error('Unknown assembly key');return urls.get(entry.model)||resolved(entry.model);}
 export function fileURL(file){const relative=manifest?.files[file];if(!relative)throw Error('Unknown asset: '+file);return urls.get(relative)||resolved(relative);}
 export function getPreparedDisplayCache(){return preparedDisplayCache;}
+// Once the original loader has parsed its models/textures, their temporary
+// inflated Blob URLs are no longer needed. A later scene load can unpack the
+// immutable compressed CacheStorage entries again instead of retaining both.
+export function releaseSceneSources(){
+ if(!compactDevice)return;
+ for(const url of urls.values())URL.revokeObjectURL(url);
+ urls.clear();preparedDisplayCache=undefined;pending=undefined;pendingMode=undefined;
+}

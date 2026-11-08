@@ -4,6 +4,7 @@ import {unpackAsset} from './asset-transfer.mjs';
 import {geometryCodecReady,decodeGeometryArray} from './geometry-codec.mjs';
 import {NEAR_FOLIAGE_PART, NEAR_FOLIAGE_MATERIALS} from './foliage-treatment.mjs';
 import {compactDevice,displayAttribute} from './device-budget.mjs';
+import {mobileDisplayGeometry,indexMobileGeometry} from './mobile-geometry.mjs';
 
 // The illustration pen uses metre-space positions and normals on the leaf
 // masses. These two surfaces have no triangle seams or structure-edge ink.
@@ -33,6 +34,26 @@ export async function geometryFingerprint(geometry){
 
 /** Exact display preparation cache; source meshes and authored materials survive. */
 export async function loadPreparedDisplayCache(base,progress=()=>{},mode='full'){
+ if(compactDevice){
+  const keys=new WeakMap(),sources=new Map();
+  const stats={hits:0,misses:0,sourceGeometries:0,entries:0,mobile:true};
+  return {stats,async prepare(root,onProgress=()=>{}){
+   const geometries=new Set(),deskRanges=new Set();root.traverse(node=>{if(node.isMesh){geometries.add(node.geometry);if(node.userData.deskSlices)deskRanges.add(node.geometry);}});
+   let done=0;const deskKeys=new Set();
+   // Hash one original buffer at a time, without downloading/decoding the
+   // desktop display cache or holding four fingerprint copies simultaneously.
+   for(const geometry of geometries){
+    const key=await geometryFingerprint(geometry);keys.set(geometry,key);
+    if(deskRanges.has(geometry)){deskKeys.add(key);sources.set(key,geometry);}
+    else if(!deskKeys.has(key)){indexMobileGeometry(geometry);sources.set(key,geometry);}
+    onProgress(++done,geometries.size);
+   }
+   stats.sourceGeometries=geometries.size;
+  },key(node){return keys.get(node.geometry);},get(key){
+   const source=sources.get(key);if(!source)return;stats.hits++;
+   return {geometry:{clone:()=>addLodBounds(mobileDisplayGeometry(source,key))},field:{offset:0,data:new Float32Array(0)}};
+  },put(){},dispose(){sources.clear();}};
+ }
  const baseURL=new URL(base,globalThis.location?.href||import.meta.url);
  const compact=typeof __SKETCH_PREPARED_MANIFEST__!=='undefined';
  const neighborhood=compact&&mode==='neighborhood';

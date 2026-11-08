@@ -6,10 +6,10 @@ import {createHash} from 'node:crypto';
 import {fileURLToPath} from 'node:url';
 
 const base='https://example.com/assets/models/sketch-runtime/';
-const original={fetch:globalThis.fetch,caches:globalThis.caches,location:globalThis.location};
+const original={fetch:globalThis.fetch,caches:globalThis.caches,location:globalThis.location,matchMedia:globalThis.matchMedia};
 let moduleId=0;
 const hash=bytes=>createHash('sha256').update(bytes).digest('hex');
-test.afterEach(()=>{globalThis.fetch=original.fetch;globalThis.caches=original.caches;if(original.location===undefined)delete globalThis.location;else globalThis.location=original.location;});
+test.afterEach(()=>{globalThis.fetch=original.fetch;globalThis.caches=original.caches;if(original.location===undefined)delete globalThis.location;else globalThis.location=original.location;if(original.matchMedia===undefined)delete globalThis.matchMedia;else globalThis.matchMedia=original.matchMedia;});
 function fixture(){
  const index={packs:[],members:{}},files=new Map(),contents=new Map();
  for(let pack=0;pack<3;pack++){
@@ -45,6 +45,13 @@ async function consume(module,f,relative){
  const result=await(await module.unpackAsset(base,relative,f.index.members[relative].sha256)).arrayBuffer();assert.ok(f.contents.get(relative).equals(new Uint8Array(result)));return result;
 }
 const nextTurn=()=>new Promise(resolve=>setImmediate(resolve));
+
+test('touch devices download only requested members, never desktop startup packs',async()=>{
+ globalThis.matchMedia=()=>({matches:true});globalThis.caches=undefined;
+ const f=fixture(),calls=network(f),module=await moduleFor(f.index),relative=Object.keys(f.index.members)[0];
+ await consume(module,f,relative);
+ assert.deepEqual(calls.map(c=>c.relative),[relative]);assert.equal(module.transferStats.packedMembers,0);
+});
 
 test('six concurrent exact gzip members start only three pack transfers, including before the first member finishes',async()=>{
  globalThis.caches=undefined;const f=fixture(),gates=new Map(f.index.packs.map(pack=>{let resolve;const promise=new Promise(done=>{resolve=done;});return [pack.file,{promise,resolve}];}));

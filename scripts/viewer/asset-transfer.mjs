@@ -7,6 +7,7 @@ const query=typeof location==='undefined'?null:new URL(location.href).searchPara
 // a first visit. This leaves ordinary visitors and their saved cache unchanged.
 const coldBenchmark=query?.has('qa')&&query?.get('cold')==='1';
 const startupPacks=typeof __SKETCH_STARTUP_PACKS__==='undefined'?null:__SKETCH_STARTUP_PACKS__;
+const mobileTransfers=typeof matchMedia==='function'&&matchMedia('(pointer: coarse)').matches;
 const packLoads=new Map();
 let packsDisabled=false;
 export const transferStats={hits:0,downloads:0,compressedBytes:0,packedMembers:0};
@@ -29,6 +30,7 @@ function beginPacks(base){
 // repopulate the cleared pack map. Retry reloads the module with a clean state.
 export function releaseStartupPacks(disable=false){if(disable)packsDisabled=true;packLoads.clear();}
 async function packedMember(base,relative,hash){
+ if(mobileTransfers)return; // Desktop packs include the large expanded ink cache.
  const member=!packsDisabled&&startupPacks?.members[relative];if(!member||member.sha256!==hash)return;
  const pack=startupPacks.packs.find(item=>item.file===member.pack);if(!pack)return;
  beginPacks(base);const bytes=await packLoads.get(assetURL(base,pack.file,pack.sha256));
