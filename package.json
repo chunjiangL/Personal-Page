@@ -3,12 +3,13 @@
   "private": true,
   "scripts": {
     "build:viewer": "node scripts/build-sketch-viewer.mjs",
-    "test:viewer": "node --max-old-space-size=10000 --test tests/sketch-viewer.test.mjs tests/desk-inspection.test.mjs tests/vehicle-fleet.test.mjs tests/geometry-codec.test.mjs tests/contour-cache.test.mjs tests/asset-transfer.test.mjs tests/scene-loading.test.mjs tests/startup-packs.test.mjs tests/startup-transfer.test.mjs tests/night-traffic.test.mjs tests/foliage-treatment.test.mjs tests/fixed-view-zoom.test.mjs tests/bedroom-view.test.mjs tests/instance-contour-lod.test.mjs tests/ground-line-filter.test.mjs tests/pavement-palette.test.mjs tests/street-perspective.test.mjs tests/mobile-render-budget.test.mjs",
+    "test:viewer": "node --max-old-space-size=10000 --test tests/sketch-viewer.test.mjs tests/desk-inspection.test.mjs tests/vehicle-fleet.test.mjs tests/geometry-codec.test.mjs tests/contour-cache.test.mjs tests/asset-transfer.test.mjs tests/scene-loading.test.mjs tests/startup-packs.test.mjs tests/startup-transfer.test.mjs tests/night-traffic.test.mjs tests/foliage-treatment.test.mjs tests/fixed-view-zoom.test.mjs tests/bedroom-view.test.mjs tests/instance-contour-lod.test.mjs tests/ground-line-filter.test.mjs tests/pavement-palette.test.mjs tests/street-perspective.test.mjs tests/mobile-render-budget.test.mjs tests/street-visibility.test.mjs",
     "test": "bundle exec jekyll build --destination _site && node --test tests/mobile-layout.test.cjs",
     "build:mirror": "node scripts/build-mirror-viewer.mjs",
     "sync:mirror-space": "node scripts/sync-mirror-space.mjs",
     "preview:gallery": "node scripts/preview-gallery.mjs",
-    "test:worlds": "node tests/worlds-integration.mjs"
+    "test:worlds": "node tests/worlds-integration.mjs",
+    "build:viewer:release": "node scripts/build-life-visibility.mjs"
   },
   "devDependencies": {
     "core-js": "3.49.0",

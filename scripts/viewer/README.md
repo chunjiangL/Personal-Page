@@ -37,6 +37,25 @@ The fleet adapter keeps the original orange bus, yellow hatchback and pickup. On
 
 ## Integration checks
 
+Mobile Neighborhood visibility is refined per material instance against both
+the main camera and the shadow cameras. Instances outside both are skipped;
+the shadow pass draws only its packed caster prefix. Fully fog-hidden instances
+retire from the color pass, while actual opaque wall triangles conservatively
+occlude enclosed objects and their ink. Window/door gaps, grazing bounds and
+off-screen shadow casters remain intact. Decisions are cached until camera,
+light, fog or native instance lists change. Bedroom and desktop retain their
+existing render paths. `qa=1&budget=mobile&culling=off` is the controlled baseline;
+`data-visibility` records counts and CPU preparation time.
+
+For this visibility-only release use `npm run build:viewer:release`. It extends
+the SHA-256-checked published runtime from commit `30ff0e8` using a guarded stage
+hook, keeping its exact cached geometry/runtime pairing. The LIFE working tree
+has since advanced beyond the baked loader fingerprint; the normal source build
+continues to reject that mismatch. Do not bypass that guard or bake unrelated
+LIFE changes into a performance patch. The same hook is also integrated in the
+website entry source for a future source/cache refresh. The release build needs
+that Git commit available locally; it does not read or modify the LIFE checkout.
+
 Touch rendering starts at at most one device pixel per CSS pixel. Neighborhood
 can step down to 0.8 after sustained slow frames, with a longer recovery window
 to avoid resolution oscillation. It uses Three's single transmission capture

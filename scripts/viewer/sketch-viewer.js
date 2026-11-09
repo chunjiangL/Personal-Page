@@ -19,6 +19,7 @@ import {limitBedroomDraws} from './bedroom-window-visibility.mjs';
 import {createBedroomMotionView} from './bedroom-motion-view.mjs';
 import {compactDevice} from './device-budget.mjs';
 import {createMobileRenderBudget} from './mobile-render-budget.mjs';
+import {installStreetVisibility} from './street-visibility.mjs';
 import {createStreetPerspective,streetDuration} from './street-perspective.mjs';
 import {BEDROOM_WINDOW,LIVING_WINDOW} from '@sketch/assets/scenes/bedroom-window';
 
@@ -303,6 +304,7 @@ async function start(requested=new URLSearchParams(location.search).get('scene')
   note.textContent='Preparing the scene and its objects.';$('viewer-progress').removeAttribute('value');
   loadPhase('renderer');stage=new ApartmentStage(host);fixedZoom=createFixedViewZoom(stage.camera,()=>{stage.dirty=true;},{reduced,views:zoomViews});
   renderBudget=createMobileRenderBudget(stage);
+  installStreetVisibility(stage);
   if(diagnostic)window.__lifeStage=stage;
   stage.onBeforeFrame=dt=>{stage.core.galleryBedroom=stage.seated;stage.core.galleryStreet=!stage.seated&&!detail;flushSceneLight();applyNightTraffic(stage);if(!streetPerspective?.update(dt,performance.now())&&fixedZoom.update(dt))motionView?.sample();bedroomAir?.tick(dt);if(bedroomAir)bedroomAir.uniforms.uPixelRatio.value=stage.renderer.getPixelRatio();};
   stage.onGalleryLightBounds=applySceneLight;
