@@ -18,6 +18,7 @@ import {BedroomAtmosphere} from './bedroom-atmosphere.mjs';
 import {limitBedroomDraws} from './bedroom-window-visibility.mjs';
 import {createBedroomMotionView} from './bedroom-motion-view.mjs';
 import {compactDevice} from './device-budget.mjs';
+import {createMobileRenderBudget} from './mobile-render-budget.mjs';
 import {createStreetPerspective,streetDuration} from './street-perspective.mjs';
 import {BEDROOM_WINDOW,LIVING_WINDOW} from '@sketch/assets/scenes/bedroom-window';
 
@@ -28,7 +29,7 @@ const sceneLoads={},zoomViews=new Map([['neighborhood',streetOpeningView.zoom]])
 const streetAngles={yaw:streetOpeningView.yaw,pitch:streetOpeningView.pitch};
 const bedroomAngles={yaw:bedroomOpeningView.yaw,pitch:bedroomOpeningView.pitch};
 const openingZoom=scene=>scene==='neighborhood'?streetOpeningView.zoom:1;
-let fixedZoom,streetOrbit,bedroomOrbit,cancelGesture,bedroomAir,motionView;
+let fixedZoom,streetOrbit,bedroomOrbit,cancelGesture,bedroomAir,motionView,renderBudget;
 const perspectivePreview=new URLSearchParams(location.search).get('preview')==='perspective';
 let streetPerspective,introButton;
 {
@@ -129,6 +130,7 @@ function report(){
  const key=stage.core.lighting.group.getObjectByName('window');
  if(key)diagnostic.dataset.light=JSON.stringify({...lightAdjustment,intensity:key.intensity,direction:key.position.clone().sub(key.target.position).normalize().toArray(),color:key.color.getHexString(),fog:stage.atmosphere.galleryFog?.getHexString()});
  diagnostic.dataset.camera=JSON.stringify({zoom:fixedZoom?.value,targetZoom:fixedZoom?.target,fov:stage.camera.fov,orbit:current==='neighborhood'?streetAngles:bedroomAngles,calls:stage.renderer.info.render.calls,triangles:stage.renderer.info.render.triangles});
+ diagnostic.dataset.renderBudget=JSON.stringify({...renderBudget?.snapshot(),cloudSteps:stage.atmosphere.root.getObjectByName('apartment_volumetric_ink_clouds')?.children[0]?.material?.uniforms.uCloudSteps.value,geometries:stage.renderer.info.memory.geometries,textures:stage.renderer.info.memory.textures});
  diagnostic.textContent=JSON.stringify({ready:true,startupMS,firstFrameMS,loadTimings,loadedMode,sceneLoads,transfer:transferStats,contours:contourCacheStats(),vehicles:stage.loaded.building.streetLife.vehicles.map(v=>v.id),visibleVehicles:[...new Set([...stage.loaded.geometry.parts.values()].filter(p=>p.userData.street_vehicle&&p.visible).map(p=>p.userData.street_vehicle))],trafficPaused:stage.trafficPaused,scene:current,weather:stage.weather,camera:stage.camera.position.toArray(),target:stage.viewTarget.toArray(),mode:'bounded-orbit',windowView:stage.seated,objects:desk?.objects.map(o=>o.id),selection:detail?.object.id,detailParts:detail?.geometry.parts.size,exploded:detail?.goal===1,blurred:viewer.classList.contains('is-inspecting'),frames:stage.renderedFrames,resources:performance.getEntriesByType('resource').filter(r=>r.name.includes('/sketch-runtime/')).map(r=>({file:r.name.split('/sketch-runtime/')[1],bytes:r.transferSize,ms:Math.round(r.duration)}))});
 }
 function bedroomPose(){
@@ -300,8 +302,9 @@ async function start(requested=new URLSearchParams(location.search).get('scene')
   finally{stopProgress();}
   note.textContent='Preparing the scene and its objects.';$('viewer-progress').removeAttribute('value');
   loadPhase('renderer');stage=new ApartmentStage(host);fixedZoom=createFixedViewZoom(stage.camera,()=>{stage.dirty=true;},{reduced,views:zoomViews});
+  renderBudget=createMobileRenderBudget(stage);
   if(diagnostic)window.__lifeStage=stage;
-  stage.onBeforeFrame=dt=>{stage.core.galleryBedroom=stage.seated;flushSceneLight();applyNightTraffic(stage);if(!streetPerspective?.update(dt,performance.now())&&fixedZoom.update(dt))motionView?.sample();bedroomAir?.tick(dt);if(bedroomAir)bedroomAir.uniforms.uPixelRatio.value=stage.renderer.getPixelRatio();};
+  stage.onBeforeFrame=dt=>{stage.core.galleryBedroom=stage.seated;stage.core.galleryStreet=!stage.seated&&!detail;flushSceneLight();applyNightTraffic(stage);if(!streetPerspective?.update(dt,performance.now())&&fixedZoom.update(dt))motionView?.sample();bedroomAir?.tick(dt);if(bedroomAir)bedroomAir.uniforms.uPixelRatio.value=stage.renderer.getPixelRatio();};
   stage.onGalleryLightBounds=applySceneLight;
   const viewChanged=()=>{stage.dirty=true;};
   streetOrbit=createViewOrbit(stage.camera,stage.viewTarget,streetAngles,viewChanged);
@@ -325,7 +328,7 @@ async function start(requested=new URLSearchParams(location.search).get('scene')
    motionView=createBedroomMotionView(stage,[BEDROOM_WINDOW,LIVING_WINDOW]);
    stage.drawGalleryMotion=()=>!detail&&!busy&&motionView.draw(lightAdjustment.minutes);
   }
-  loadedMode=mode;let lastReport=0,viewRendered=false;stage.onRender=()=>{if(!viewRendered){viewRendered=true;streetPerspective?.pauseClock();sceneLoads[desired]=Math.round(performance.now()-loadAt);loading(false);}if(!firstFrameMS){firstFrameMS=Math.round(performance.now()-startupAt);loadPhase('ready');}
+  loadedMode=mode;let lastReport=0,viewRendered=false;stage.onRender=()=>{renderBudget.sample(performance.now());if(!viewRendered){viewRendered=true;streetPerspective?.pauseClock();sceneLoads[desired]=Math.round(performance.now()-loadAt);loading(false);}if(!firstFrameMS){firstFrameMS=Math.round(performance.now()-startupAt);loadPhase('ready');}
    if(current==='bedroom'&&desk&&!motionView?.active){const key=backdropKey();if(desk.captureNext||backgroundPending||key!==desk.backdropKey)captureBackdrop(key);}
    if(!detail&&desk?.snapshot.parentNode)desk.snapshot.remove();
    if(backgroundPending){backgroundPending=false;if(detail)drawDetail();syncSuspension();}if(performance.now()-lastReport>500){report();lastReport=performance.now();}};

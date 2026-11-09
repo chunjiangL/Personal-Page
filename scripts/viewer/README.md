@@ -37,6 +37,16 @@ The fleet adapter keeps the original orange bus, yellow hatchback and pickup. On
 
 ## Integration checks
 
+Touch rendering starts at at most one device pixel per CSS pixel. Neighborhood
+can step down to 0.8 after sustained slow frames, with a longer recovery window
+to avoid resolution oscillation. It uses Three's single transmission capture
+for street windows instead of the asset inspector's multilayer glass compositor;
+the desktop and Bedroom inspection compositor are unchanged. Mobile clouds retain
+the authored density and pen, with up to 40 view samples and four weighted sunlight
+samples. `qa=1&budget=mobile` exercises this branch on a desktop browser; it does
+not emulate phone hardware. `data-render-budget` on the diagnostic output records
+frame time, resolution and cloud steps.
+
 On touch devices compressed downloads use 512 KiB HTTP ranges with validated Content-Range and a whole-file SHA-256 check. A 25-second idle timeout retries the current segment twice; servers returning a complete 200 response remain supported. Storage reads have a two-second fallback deadline so stalled CacheStorage does not hold startup indefinitely. The loading panel reports the active file and transferred bytes. Mobile model and contour download concurrency is reduced; geometry and authored detail are unchanged. `tests/resilient-download.test.mjs` covers resumed segments, stalls, truncated responses and servers ignoring Range.
 
 Serve the Jekyll output over HTTP and open `gallery.html?qa=1`. The hidden `viewer-diagnostics` output reports startup time, camera position and aim, weather and component inspection state for DOM-based QA; its `data-camera` attribute reports lens zoom and render counts. Check both views, weather changes, zoom limits/reset, that street drags move the eye around a fixed target at constant radius and FOV, that reset restores the original pose, and that Bedroom restores its opening composition on reset and supports individual desktop object picking after a drag, decomposition/reassembly, background blur, fullscreen and narrow mobile framing. No private asset server or external CDN is needed.

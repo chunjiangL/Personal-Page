@@ -57,6 +57,15 @@ const liveVolume = [
   '  if(density==0.) return vec2(0.,1.);',
   '  const float stepWidth[8]=float[8](.018,.024,.032,.044,.060,.082,.11,.15);',
   '  float opticalDepth=0., distanceToSample=.008;',
+  '  if(uCloudMobile>.5){',
+  '    for(int i=0;i<8;i+=2){',
+  '      float width=stepWidth[i]+stepWidth[i+1];',
+  '      float midpoint=distanceToSample+stepWidth[i]+stepWidth[i+1]*stepWidth[i+1]/width;',
+  '      opticalDepth+=width*textureLod(uCloudDensity,uv+vCloudSunDirection*midpoint,0.).r;',
+  '      distanceToSample+=width;',
+  '    }',
+  '    return vec2(density,exp(-10.*opticalDepth));',
+  '  }',
   '  for(int i=0;i<8;i++){',
   '    distanceToSample+=stepWidth[i];',
   '    opticalDepth+=stepWidth[i]*textureLod(uCloudDensity,uv+vCloudSunDirection*distanceToSample,0.).r;',
@@ -75,11 +84,11 @@ export function adaptCloudSource(source, modulePath) {
     ['private readonly inverse=new T.Matrix4();', ''],
     ['private sun=new T.Vector3(-.38,.74,.55).normalize();', 'private gallerySun=new CloudSun();'],
     [/   const \{width,height,depth\}=density\.image;[\s\S]+?this\.volumes\.push\(volume\);/, ''],
-    ['uCloudDensity:{value:volume}', '...cloudDensityBounds(density),uCloudDensity:{value:density},uCloudSunDirection:{value:this.gallerySun.direction}'],
+    ['uCloudDensity:{value:volume}', '...cloudDensityBounds(density),uCloudMobile:{value:compactDevice?1:0},uCloudDensity:{value:density},uCloudSunDirection:{value:this.gallerySun.direction}'],
     ['vCloudOrigin=(inverse(modelMatrix)*vec4(cameraPosition,1.)).xyz;',
       'vCloudSunDirection=normalize((inverse(modelMatrix)*vec4(uCloudSunDirection,0.)).xyz);\n vCloudOrigin=(inverse(modelMatrix)*vec4(cameraPosition,1.)).xyz;'],
     ['const vertex=`', 'const vertex=`\nuniform vec3 uCloudSunDirection;\nflat varying vec3 vCloudSunDirection;\n'],
-    ['precision highp sampler3D;', 'precision highp sampler3D;\nflat varying vec3 vCloudSunDirection;\nuniform vec3 uCloudMin,uCloudMax;'],
+    ['precision highp sampler3D;', 'precision highp sampler3D;\nuniform float uCloudMobile;\nflat varying vec3 vCloudSunDirection;\nuniform vec3 uCloudMin,uCloudMax;'],
     [/vec2 volume\(vec3 p\)\{[\s\S]+?\n}/, liveVolume],
     ['for(int i=0;i<96;i++){\n  if(float(i)>=uCloudSteps)break;', [
       'vec3 ar=(uCloudMin-vCloudOrigin)*inv,br=(uCloudMax-vCloudOrigin)*inv;',
@@ -116,5 +125,11 @@ export function adaptCloudSource(source, modulePath) {
     if (source.split(original).length !== 2) throw Error('Original cloud lighting changed: ' + original);
     source = source.replace(original, replacement);
   }
-  return 'import {CloudSun,cloudDensityBounds} from ' + JSON.stringify(modulePath) + ';\n' + source;
+  // Native prepare picks its weather/aspect budget every frame. Limit it after
+  // that assignment, including the ordinary interactive view after the intro.
+  const steps=/cloud\.material\.uniforms\.uCloudSteps\.value=([^;]+);/;
+  if(source.split(steps).length!==3)throw Error('Original cloud ray budget changed');
+  source=source.replace(steps,'cloud.material.uniforms.uCloudSteps.value=compactDevice?Math.min(40,$1):($1);');
+  return 'import {compactDevice} from '+JSON.stringify(modulePath.replace(/cloud-light\.mjs$/,'device-budget.mjs'))+';\n'
+    + 'import {CloudSun,cloudDensityBounds} from ' + JSON.stringify(modulePath) + ';\n' + source;
 }

@@ -192,8 +192,8 @@ const result=await build({
   b.onLoad({filter:/rendering[\\/]asset[\\/]render-core\.ts$/},async args=>{
    const source=await fs.readFile(args.path,'utf8'),passes="if(active){const scale=";
    if(source.split(passes).length!==2)throw Error('Original transparency passes changed');
-   const contents=source.replace(passes,"if(this.galleryBedroom&&!this.glass.needsRefinement&&!hasTransmissiveSurface(this.scene)){r.render(this.scene,camera);return;}\n  "+passes);
-   return {contents:"import {hasTransmissiveSurface} from "+JSON.stringify(path.resolve('scripts/viewer/bedroom-window-visibility.mjs'))+";\n"+contents,loader:'ts'};
+   const contents=source.replace(passes,"if(compactDevice&&this.galleryStreet){const transmission=r.transmissionResolutionScale;try{r.transmissionResolutionScale=.5;r.render(this.scene,camera);}finally{r.transmissionResolutionScale=transmission;}return;}\n  if(this.galleryBedroom&&!this.glass.needsRefinement&&!hasTransmissiveSurface(this.scene)){r.render(this.scene,camera);return;}\n  "+passes);
+   return {contents:"import {compactDevice} from "+JSON.stringify(path.resolve('scripts/viewer/device-budget.mjs'))+";\nimport {hasTransmissiveSurface} from "+JSON.stringify(path.resolve('scripts/viewer/bedroom-window-visibility.mjs'))+";\n"+contents,loader:'ts'};
   });
   b.onLoad({filter:/apps[\\/]apartment[\\/]stage\.ts$/},async args=>{
    let source=await fs.readFile(args.path,'utf8');

@@ -1,6 +1,8 @@
 import {BufferAttribute, InstancedBufferAttribute} from 'three';
 // Touch devices share their graphics memory with a much smaller browser process.
-export const compactDevice = typeof matchMedia === 'function' && matchMedia('(pointer: coarse)').matches;
+const budgetQuery = typeof location === 'undefined' ? null : new URLSearchParams(location.search);
+export const compactDevice = (typeof matchMedia === 'function' && matchMedia('(pointer: coarse)').matches)
+  || (budgetQuery?.has('qa') && budgetQuery.get('budget') === 'mobile');
 
 // A divisor larger than every instance count broadcasts one exact tuple to
 // every vertex/instance. This avoids repeating constant ink/bounds data millions
